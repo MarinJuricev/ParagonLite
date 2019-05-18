@@ -1,0 +1,21 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation Dependencies.kotlinStandardLibrary
+
+    // Kotlin Coroutines
+    implementation Dependencies.coroutinesCore
+
+    // Koin for Kotlin
+    implementation Dependencies.koinCore
+    // Koin extended & experimental features
+    implementation Dependencies.koinCoreExt
+    // Koin AndroidX Scope feature
+    implementation Dependencies.koinAndrodixScope
+    // Koin for Unit tests
+    testImplementation Dependencies.koinTest
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"

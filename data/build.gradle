@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: "kotlin-kapt"
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+}
+
+dependencies {
+    implementation project(":domain")
+
+    implementation Dependencies.kotlinStandardLibrary
+
+    // Kotlin Android Coroutines
+    implementation Dependencies.coroutinesCore
+    implementation Dependencies.coroutinesAndroid
+
+    // Room
+    implementation Dependencies.roomRuntime
+    kapt Dependencies.roomCompiler
+
+    // Koin for Kotlin
+    implementation Dependencies.koinCore
+    // Koin extended & experimental features
+    implementation Dependencies.koinCoreExt
+    // Koin AndroidX Scope feature
+    implementation Dependencies.koinAndrodixScope
+    // Koin for Unit tests
+    testImplementation Dependencies.koinTest
+
+    implementation Dependencies.lifecyleExtensions
+
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}

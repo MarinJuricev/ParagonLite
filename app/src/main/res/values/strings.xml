@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ParagonLite</string>
+    <string name="kasa">Kasa</string>
+    <string name="artikli">Artikli</string>
+    <string name="spoji">Spoji</string>
+    <string name="dodaj_artikl">Dodaj Artikl</string>
+    <string name="nema_artikala_kreiraj_novi">Nema artikala,\nkreiraj novi</string>
+    <string name="naziv_proizvoda">Naziv Proizvoda</string>
+    <string name="cijena">Cijena</string>
+    <string name="otkazi">Otkazi</string>
+    <string name="spremi">Spremi</string>
+
+    <string-array name="array_kolicina">
+        <item>Komad(Kom)</item>
+        <item>Litra(L)</item>
+    </string-array>
+</resources>
