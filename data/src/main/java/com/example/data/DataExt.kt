@@ -9,3 +9,15 @@ internal val Article.toRoomArticle: RoomArticle
         this.quantity,
         this.price
     )
+
+internal val RoomArticle.toArticle: Article
+    get() = Article(
+        this.name,
+        this.quantity,
+        this.price
+    )
+
+//Maps from lists of different Data Model types
+internal fun List<RoomArticle>.toArticleList(): List<Article> = this.flatMap {
+    listOf(it.toArticle)
+}

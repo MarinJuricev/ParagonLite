@@ -1,5 +1,7 @@
 package com.example.data.article
 
+import com.example.data.model.RoomArticle
+import com.example.data.toArticleList
 import com.example.data.toRoomArticle
 import com.example.domain.DispatcherProvider
 import com.example.domain.error.ParagonError
@@ -22,5 +24,14 @@ class ArticleRepositoryImpl(
             }
         }
 
+    override suspend fun getArticles(): Result<Exception, List<Article>> =
+        withContext(dispatcherProvider.provideIOContext()) {
 
+            val result = articleDao.getArticles()
+
+            when (result) {
+                listOf<RoomArticle>() -> Result.build { throw ParagonError.LocalIOException }
+                else -> Result.build { result.value!!.toArticleList() }
+            }
+        }
 }

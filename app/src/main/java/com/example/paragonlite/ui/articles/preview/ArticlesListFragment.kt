@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.paragonlite.R
 import kotlinx.android.synthetic.main.articles_list_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ArticlesListFragment : Fragment() {
 
-    private lateinit var viewModel: ArticlesListViewModel
+    private val articlesListViewModel: ArticlesListViewModel by viewModel()
     private lateinit var articleAdapter: ArticleAdapter
 
     override fun onCreateView(
@@ -24,7 +25,10 @@ class ArticlesListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ArticlesListViewModel::class.java)
+
+        articlesListViewModel.articleData.observe(this@ArticlesListFragment, Observer {
+
+        })
 
         bindUI()
     }
