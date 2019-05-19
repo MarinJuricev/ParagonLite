@@ -1,13 +1,13 @@
-package com.example.domain.usecase
+package com.example.domain.usecase.article
 
 import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.repository.IArticleRepository
 
-class CreateArticle {
+class DeleteArticle {
 
-    suspend fun createArticle(
+    suspend fun deleteArticle(
         articleRepository: IArticleRepository,
         article: Article
-    ): Result<Exception, Unit> = articleRepository.createArticle(article)
+    ): Result<Exception, Unit> = articleRepository.deleteArticle(article)
 }

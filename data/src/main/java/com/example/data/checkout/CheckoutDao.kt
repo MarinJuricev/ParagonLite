@@ -1,23 +1,23 @@
-package com.example.data.article
+package com.example.data.checkout
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.data.model.RoomArticle
+import com.example.data.model.RoomCheckout
 
 @Dao
-interface ArticleDao {
+interface CheckoutDao {
 
-    @Query("SELECT * FROM article_table")
-    fun getArticles(): LiveData<List<RoomArticle>>
+    @Query("SELECT * FROM checkout_table")
+    fun getArticles(): LiveData<List<RoomCheckout>>
 
     //if update successful, will return number of rows effected, which should be 1
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsert(article: RoomArticle): Long
+    fun upsert(article: RoomCheckout): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg article: RoomArticle)
+    fun insertAll(vararg article: RoomCheckout)
 
     //if update successful, will return number of rows effected, which should be 1
     @Delete
-    fun deleteArticle(article: RoomArticle): Int
+    fun deleteArticle(article: RoomCheckout): Int
 }

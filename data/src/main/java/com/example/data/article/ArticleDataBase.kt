@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.data.model.RoomArticle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Database(
     entities = [RoomArticle::class],
@@ -31,6 +35,18 @@ abstract class ArticleDataBase : RoomDatabase() {
                 context.applicationContext,
                 ArticleDataBase::class.java,
                 "article.db"
-            ).build()
+            ).addCallback(object : Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    GlobalScope.launch(Dispatchers.IO) {
+                        instance
+                            ?.articleDao()
+                            ?.insertAll(*populateData())
+                    }
+                }
+            }).build()
+
+        fun populateData() = LocalData.getInitialArticles()
     }
+
 }

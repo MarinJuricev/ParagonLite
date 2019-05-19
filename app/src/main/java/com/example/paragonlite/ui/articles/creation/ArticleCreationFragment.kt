@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -40,6 +41,19 @@ class ArticleCreationFragment : Fragment() {
                 false -> showArticleCreationFail()
             }
         })
+
+        bindUI()
+    }
+
+    private fun bindUI() {
+        spinnerQuantity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selection = parent?.getItemAtPosition(position)
+
+            }
+        }
     }
 
     private fun showArticleCreationFail() {

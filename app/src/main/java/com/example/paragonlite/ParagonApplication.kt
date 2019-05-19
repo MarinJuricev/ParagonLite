@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.data.di.localPersistableModule
 import com.example.data.di.repositoryModule
 import com.example.domain.di.articleModule
+import com.example.domain.di.checkoutModule
 import com.example.domain.di.dispatcherModule
 import com.example.paragonlite.di.articleCreationFeatureModule
 import com.example.paragonlite.di.articleListModule
@@ -25,7 +26,7 @@ class ParagonApplication : Application() {
                 listOf(
                     dispatcherModule, articleCreationFeatureModule,
                     articleModule, localPersistableModule, repositoryModule,
-                    articleListModule
+                    articleListModule, checkoutModule
                 )
             )
         }

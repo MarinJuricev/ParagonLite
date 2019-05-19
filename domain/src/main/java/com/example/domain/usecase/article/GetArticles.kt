@@ -1,13 +1,13 @@
-package com.example.domain.usecase
+package com.example.domain.usecase.article
 
+import androidx.lifecycle.LiveData
 import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.repository.IArticleRepository
-import java.lang.Exception
 
-class GetArticles{
+class GetArticles {
 
     suspend fun getArticles(
         articleRepository: IArticleRepository
-    ): Result<Exception, List<Article>> = articleRepository.getArticles()
+    ): Result<Exception, LiveData<List<Article>>> = articleRepository.getArticles()
 }

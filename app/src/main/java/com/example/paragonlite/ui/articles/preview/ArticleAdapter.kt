@@ -4,13 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Article
 import com.example.paragonlite.R
 import kotlinx.android.synthetic.main.item_article.view.*
 
-class ArticleAdapter : ListAdapter<Article, ArticleAdapter.ArticleViewHolder>(ArticleDiffUtilCallback()) {
+class ArticleAdapter(
+    private val onArticleClick: (Article) -> (Unit),
+    private val onArticleLongClick: (Article) -> (Unit)
+) : ListAdapter<Article, ArticleAdapter.ArticleViewHolder>(ArticleDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,14 +30,22 @@ class ArticleAdapter : ListAdapter<Article, ArticleAdapter.ArticleViewHolder>(Ar
                 name.text = article.name
                 price.text = article.price.toString()
                 quantity.text = article.quantity
+
+                root.setOnClickListener { onArticleClick(article) }
+
+                root.setOnLongClickListener {
+                    onArticleLongClick(article)
+                    true
+                }
             }
         }
     }
 
-    class ArticleViewHolder(private val root: View) : RecyclerView.ViewHolder(root) {
+    class ArticleViewHolder(root: View) : RecyclerView.ViewHolder(root) {
         var name: AppCompatTextView = root.tvArticleName
         var price: AppCompatTextView = root.tvArticlePrice
         var quantity: AppCompatTextView = root.tvArticleQuantity
+        var root: ConstraintLayout = root.itemArticleRoot
     }
 
 }

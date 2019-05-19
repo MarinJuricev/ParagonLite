@@ -69,6 +69,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etArticlePrice"
                         android:layout_width="match_parent"
+                        android:inputType="number"
                         android:hint="@string/cijena"
                         android:layout_height="wrap_content"/>
 

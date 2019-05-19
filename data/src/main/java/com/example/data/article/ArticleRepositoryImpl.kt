@@ -1,5 +1,7 @@
 package com.example.data.article
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.example.data.model.RoomArticle
 import com.example.data.toArticleList
 import com.example.data.toRoomArticle
@@ -24,14 +26,28 @@ class ArticleRepositoryImpl(
             }
         }
 
-    override suspend fun getArticles(): Result<Exception, List<Article>> =
+    override suspend fun getArticles(): Result<Exception, LiveData<List<Article>>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
-            val result = articleDao.getArticles()
-
-            when (result) {
+            when (val result = articleDao.getArticles()) {
                 listOf<RoomArticle>() -> Result.build { throw ParagonError.LocalIOException }
-                else -> Result.build { result.value!!.toArticleList() }
+                else -> Result.build {
+                    Transformations.map(
+                        result,
+                        ::mapToArticle
+                    )
+                }
             }
         }
+
+    override suspend fun deleteArticle(article: Article): Result<Exception, Unit> =
+        withContext(dispatcherProvider.provideIOContext()) {
+
+            when (articleDao.deleteArticle(article.toRoomArticle)) {
+                0 -> Result.build { throw ParagonError.LocalIOException }
+                else -> Result.build { Unit }
+            }
+        }
+
+    private fun mapToArticle(list: List<RoomArticle>) = list.toArticleList()
 }

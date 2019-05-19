@@ -11,7 +11,13 @@
     <string name="spremi">Spremi</string>
 
     <string-array name="array_kolicina">
-        <item>Komad(Kom)</item>
-        <item>Litra(L)</item>
+        <item>Komad(kom)</item>
+        <item>Litra(l)</item>
+        <item>200g</item>
+        <item>Piece</item>
+        <item>0.75l</item>
+        <item>1dcl</item>
+        <item>2dcl</item>
+
     </string-array>
 </resources>
