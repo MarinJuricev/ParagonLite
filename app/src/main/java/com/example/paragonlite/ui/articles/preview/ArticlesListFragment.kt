@@ -18,7 +18,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ArticlesListFragment : Fragment() {
 
     private val articlesListViewModel: ArticlesListViewModel by viewModel()
-    private lateinit var articleAdapter: ArticleAdapter
     private lateinit var binding: ArticlesListFragmentBinding
 
     override fun onCreateView(
@@ -26,8 +25,7 @@ class ArticlesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.articles_list_fragment, container, false
-        )
+            inflater, R.layout.articles_list_fragment, container, false)
 
         return binding.root
     }
@@ -43,7 +41,7 @@ class ArticlesListFragment : Fragment() {
             view.findNavController().navigate(R.id.action_navigation_articles_to_articleCreation)
         }
 
-        articleAdapter = ArticleAdapter(
+        val articleAdapter = ArticleAdapter(
             ({ article: Article -> onArticleClick(article) }),
             ({ article: Article -> onArticleLongClick(article) })
         )

@@ -21,15 +21,15 @@ class ArticlesListViewModel(
     private val sendArticleToCheckout: SendArticleToCheckout
 ) : BaseViewModel() {
 
+    init {
+        fetchArticles()
+    }
+
     private val _articleData = MediatorLiveData<List<Article>>()
     val articleData: LiveData<List<Article>> get() = _articleData
 
     private val _isArticleDeletionSuccess = MutableLiveData<Boolean>()
     val isArticleDeletionSuccess: LiveData<Boolean> get() = _isArticleDeletionSuccess
-
-    init {
-        fetchArticles()
-    }
 
     private fun fetchArticles() = launch {
         when (val result = getArticles.getArticles(articleRepository)) {
@@ -49,7 +49,6 @@ class ArticlesListViewModel(
             is Result.Value -> _isArticleDeletionSuccess.postValue(true)
             is Result.Error -> _isArticleDeletionSuccess.postValue(false)
         }
-
     }
 
     fun sendArticleToCheckout(article: Article) = launch {

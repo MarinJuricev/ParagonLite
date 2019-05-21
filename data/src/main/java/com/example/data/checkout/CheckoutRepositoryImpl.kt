@@ -1,9 +1,14 @@
 package com.example.data.checkout
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.data.model.RoomCheckout
+import com.example.data.toCheckoutList
 import com.example.data.toRoomCheckoutArticle
 import com.example.domain.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Article
+import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
 import com.example.domain.repository.ICheckoutRepository
 import kotlinx.coroutines.withContext
@@ -21,4 +26,20 @@ class CheckoutRepositoryImpl(
                 else -> Result.build { Unit }
             }
         }
+
+    override suspend fun getArticlesInCheckout(): Result<Exception, LiveData<List<CheckoutArticle>>> =
+        withContext(dispatcherProvider.provideIOContext()) {
+
+            when (val result = checkoutDao.getArticles()) {
+                listOf<RoomCheckout>() -> Result.build { throw ParagonError.LocalIOException }
+                else -> Result.build {
+                    Transformations.map(
+                        result,
+                        ::mapToCheckoutArticle
+                    )
+                }
+            }
+        }
 }
+
+private fun mapToCheckoutArticle(list: List<RoomCheckout>) = list.toCheckoutList()

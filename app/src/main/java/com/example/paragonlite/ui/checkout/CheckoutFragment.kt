@@ -1,33 +1,47 @@
 package com.example.paragonlite.ui.checkout
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.example.paragonlite.R
+import com.example.paragonlite.databinding.CheckoutFragmentBinding
+import kotlinx.android.synthetic.main.checkout_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CheckoutFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = CheckoutFragment()
-    }
-
-    private lateinit var viewModel: CheckoutViewModel
+    private val checkoutViewModel: CheckoutViewModel by viewModel()
+    private lateinit var binding: CheckoutFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.checkout_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.checkout_fragment, container, false
+        )
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CheckoutViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        bindUI()
+    }
+
+    private fun bindUI() {
+        val checkoutAdapter = CheckoutAdapter()
+
+        checkoutViewModel.articleData.observe(this@CheckoutFragment, Observer {
+            checkoutAdapter.submitList(it)
+        })
+
+        rvCheckoutList.adapter = checkoutAdapter
     }
 
 }

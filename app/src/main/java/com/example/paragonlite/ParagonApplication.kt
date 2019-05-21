@@ -8,6 +8,7 @@ import com.example.domain.di.checkoutModule
 import com.example.domain.di.dispatcherModule
 import com.example.paragonlite.di.articleCreationFeatureModule
 import com.example.paragonlite.di.articleListModule
+import com.example.paragonlite.di.checkoutListModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -26,7 +27,7 @@ class ParagonApplication : Application() {
                 listOf(
                     dispatcherModule, articleCreationFeatureModule,
                     articleModule, localPersistableModule, repositoryModule,
-                    articleListModule, checkoutModule
+                    articleListModule, checkoutModule, checkoutListModule
                 )
             )
         }

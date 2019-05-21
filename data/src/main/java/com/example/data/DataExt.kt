@@ -40,7 +40,19 @@ internal val Article.toRoomCheckoutArticle: RoomCheckout
         this.price
     )
 
+internal val RoomCheckout.toCheckoutArticle: CheckoutArticle
+    get() = CheckoutArticle(
+        this.name,
+        this.quantity,
+        this.price
+    )
+
 //Maps from lists of different Data Model types
 internal fun List<RoomArticle>.toArticleList(): List<Article> = this.flatMap {
     listOf(it.toArticle)
+}
+
+//Maps from lists of different Data Model types
+internal fun List<RoomCheckout>.toCheckoutList(): List<CheckoutArticle> = this.flatMap {
+    listOf(it.toCheckoutArticle)
 }
