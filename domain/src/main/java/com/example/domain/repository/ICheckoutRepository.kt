@@ -9,4 +9,5 @@ interface ICheckoutRepository {
 
     suspend fun sendArticleToCheckout(article: Article): Result<Exception, Unit>
     suspend fun getArticlesInCheckout(): Result<Exception, LiveData<List<CheckoutArticle>>>
+    suspend fun deleteArticle(checkoutArticle: CheckoutArticle): Result<Exception, Unit>
 }

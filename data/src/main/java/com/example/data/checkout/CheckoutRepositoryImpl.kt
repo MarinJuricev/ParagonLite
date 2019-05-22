@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.data.model.RoomCheckout
 import com.example.data.toCheckoutList
+import com.example.data.toRoomCheckout
 import com.example.data.toRoomCheckoutArticle
 import com.example.domain.DispatcherProvider
 import com.example.domain.error.ParagonError
@@ -38,6 +39,14 @@ class CheckoutRepositoryImpl(
                         ::mapToCheckoutArticle
                     )
                 }
+            }
+        }
+
+    override suspend fun deleteArticle(checkoutArticle: CheckoutArticle): Result<Exception, Unit> =
+        withContext(dispatcherProvider.provideIOContext()) {
+            when (checkoutDao.deleteArticle(checkoutArticle.toRoomCheckout)) {
+                0 -> Result.build { throw ParagonError.LocalIOException }
+                else -> Result.build { Unit }
             }
         }
 }

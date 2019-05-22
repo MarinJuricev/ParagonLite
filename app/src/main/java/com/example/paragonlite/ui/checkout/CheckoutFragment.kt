@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.example.domain.model.CheckoutArticle
 import com.example.paragonlite.R
 import com.example.paragonlite.databinding.CheckoutFragmentBinding
 import kotlinx.android.synthetic.main.checkout_fragment.*
@@ -35,13 +36,23 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun bindUI() {
-        val checkoutAdapter = CheckoutAdapter()
+        val checkoutAdapter = CheckoutAdapter { checkoutArticle: CheckoutArticle -> onDeleteClick(checkoutArticle) }
 
         checkoutViewModel.articleData.observe(this@CheckoutFragment, Observer {
             checkoutAdapter.submitList(it)
         })
 
         rvCheckoutList.adapter = checkoutAdapter
+
+        checkoutViewModel.checkoutValue.observe(this@CheckoutFragment, Observer {
+            val stringToDisplay = "Ukupno: $it kn"
+            tvCheckoutPrice.text = stringToDisplay
+        })
+
+    }
+
+    private fun onDeleteClick(checkoutArticle: CheckoutArticle) {
+        checkoutViewModel.deleteArticle(checkoutArticle)
     }
 
 }
