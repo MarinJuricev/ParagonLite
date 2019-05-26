@@ -47,5 +47,4 @@ class ArticleAdapter(
         var quantity: AppCompatTextView = root.tvArticleQuantity
         var root: ConstraintLayout = root.itemArticleRoot
     }
-
 }

@@ -66,6 +66,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
+    // Permissions
+    implementation 'com.karumi:dexter:5.0.0'
+
     // Koin for Kotlin
     implementation Dependencies.koinCore
     // Koin extended & experimental features

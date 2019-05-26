@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.data.di.localPersistableModule
 import com.example.data.di.repositoryModule
 import com.example.domain.di.articleModule
+import com.example.domain.di.bluetoothDomainModel
 import com.example.domain.di.checkoutModule
 import com.example.domain.di.dispatcherModule
 import com.example.paragonlite.di.articleCreationFeatureModule
@@ -29,7 +30,7 @@ class ParagonApplication : Application() {
                     dispatcherModule, articleCreationFeatureModule,
                     articleModule, localPersistableModule, repositoryModule,
                     articleListModule, checkoutModule, checkoutListModule,
-                    bluetoothModule
+                    bluetoothModule, bluetoothDomainModel
                 )
             )
         }

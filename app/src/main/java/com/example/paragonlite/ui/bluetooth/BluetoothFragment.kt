@@ -37,14 +37,27 @@ class BluetoothFragment : Fragment() {
 
         bluetoothViewModel.isBluetoothAvailable.observe(this@BluetoothFragment, Observer {
             handleBluetoothAvailability(it)
+            bluetoothViewModel.getBluetoothDevices()
         })
 
-        bluetoothViewModel.isBluetoothEnabled.observe(this@BluetoothFragment, Observer {
-            if (it)
-                swBluetoothEnabled.isChecked = true
-            else
-                enableBluetooth()
+        bluetoothViewModel.isBluetoothEnabled.observe(this@BluetoothFragment, Observer { isBluetoothEnabled ->
+            when (isBluetoothEnabled) {
+                true -> swBluetoothEnabled.isChecked = true
+                false -> enableBluetooth()
+            }
         })
+
+        bindUI()
+    }
+
+    private fun bindUI() {
+        val blueToothAdapter = BluetoothDeviceAdapter()
+
+        bluetoothViewModel.bluetoothData.observe(this@BluetoothFragment, Observer {
+            blueToothAdapter.submitList(it)
+        })
+
+        rvAvailableBluetoothDevices.adapter = blueToothAdapter
     }
 
     private fun handleBluetoothAvailability(isBluetoothAvailable: Boolean) {
@@ -64,7 +77,7 @@ class BluetoothFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == REQUEST_ENABLE_BT)
+        if (requestCode == REQUEST_ENABLE_BT)
             bluetoothViewModel.isBluetoothAvailable()
     }
 }

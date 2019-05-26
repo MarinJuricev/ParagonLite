@@ -5,4 +5,5 @@ import java.lang.Exception
 sealed class ParagonError: Exception(){
 
     object LocalIOException: ParagonError()
+    object BluetoothException: ParagonError()
 }

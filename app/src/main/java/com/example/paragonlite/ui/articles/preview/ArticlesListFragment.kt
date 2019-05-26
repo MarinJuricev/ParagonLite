@@ -25,7 +25,8 @@ class ArticlesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.articles_list_fragment, container, false)
+            inflater, R.layout.articles_list_fragment, container, false
+        )
 
         return binding.root
     }
@@ -60,13 +61,12 @@ class ArticlesListFragment : Fragment() {
     }
 
     private fun showArticleDeletionSuccess() {
-        val snack = Snackbar.make(articleListRoot, "Artikl uspjesno pobrisan!", Snackbar.LENGTH_LONG)
-        snack.show()
+        Snackbar.make(articleListRoot, "Artikl uspjesno pobrisan!", Snackbar.LENGTH_LONG).show()
     }
 
     private fun showArticleDeletionFail() {
-        val snack = Snackbar.make(articleListRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG)
-        snack.show()
+        Snackbar.make(articleListRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG).show()
+
     }
 
     private fun onArticleClick(article: Article) {

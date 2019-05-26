@@ -12,6 +12,13 @@
     <string name="pair_new_printer">Pair new Printer</string>
     <string name="bluetooth_will_turn_on_to_pair">Bluetooth will turn on to pair</string>
     <string name="no_bluetooth">Bluetooth isn\'t supported on this device</string>
+    <string name="location_permission_needed">Bluetooth won\'t work unless location permission is granted!</string>
+    <string name="permission_granted">Permission successfully granted</string>
+    <string name="permission_denied">The core of this application won\'t work without this permission, please consider
+        granting this permission
+    </string>
+    <string name="printer_name">Printer name:</string>
+    <string name="mac_address">MAC Adress</string>
 
     <string-array name="array_kolicina">
         <item>Komad(kom)</item>
