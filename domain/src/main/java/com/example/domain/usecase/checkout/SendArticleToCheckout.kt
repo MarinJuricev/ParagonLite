@@ -6,7 +6,7 @@ import com.example.domain.repository.ICheckoutRepository
 
 class SendArticleToCheckout {
 
-    suspend fun sendArticleToCheckout(
+    suspend fun execute(
         checkoutRepository: ICheckoutRepository,
         article: Article
     ): Result<Exception, Unit> = checkoutRepository.sendArticleToCheckout(article)

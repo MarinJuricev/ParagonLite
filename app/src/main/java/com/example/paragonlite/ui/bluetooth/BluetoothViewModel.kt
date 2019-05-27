@@ -7,12 +7,14 @@ import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
 import com.example.domain.usecase.bluetooth.GetNearbyBluetoothDevices
+import com.example.domain.usecase.bluetooth.SaveBluetoothAddress
 import com.example.paragonlite.shared.BaseViewModel
 import kotlinx.coroutines.launch
 
 class BluetoothViewModel(
     private val bluetoothRepository: IBluetoothRepository,
-    private val getBluetoothDevices: GetNearbyBluetoothDevices
+    private val getBluetoothDevices: GetNearbyBluetoothDevices,
+    private val saveBluetoothAddress: SaveBluetoothAddress
 ) : BaseViewModel() {
 
     init {
@@ -28,6 +30,9 @@ class BluetoothViewModel(
     private val _bluetoothData = MutableLiveData<List<BluetoothEntry>>()
     val bluetoothData: LiveData<List<BluetoothEntry>> get() = _bluetoothData
 
+    private val _isMacAddressSaved = MutableLiveData<Boolean>()
+    val isMacAddressSaved: LiveData<Boolean> get() = _isMacAddressSaved
+
     // TODO Implement BLE ?
     fun isBluetoothAvailable() = launch {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -42,7 +47,7 @@ class BluetoothViewModel(
     }
 
     fun getBluetoothDevices() = launch {
-        when (val result = getBluetoothDevices.getNearbyBluetoothDevices(bluetoothRepository)) {
+        when (val result = getBluetoothDevices.execute(bluetoothRepository)) {
             is Result.Value -> _bluetoothData.postValue(result.value)
             is Result.Error -> _bluetoothData.postValue(listOf())
         }
@@ -51,5 +56,12 @@ class BluetoothViewModel(
     override fun onCleared() {
         super.onCleared()
         bluetoothRepository.unRegisterReceiver()
+    }
+
+    fun saveMacAddress(macAddress: String) = launch {
+        when (saveBluetoothAddress.execute(bluetoothRepository, macAddress)) {
+            is Result.Value -> _isMacAddressSaved.postValue(true)
+            is Result.Error -> _isMacAddressSaved.postValue(false)
+        }
     }
 }

@@ -19,7 +19,7 @@ class ArticleCreationViewModel(
 
     fun onSaveClick(article: Article) = launch {
 
-        when (createArticle.createArticle(articleRepository, article)) {
+        when (createArticle.execute(articleRepository, article)) {
             is Result.Value -> _isArticleCreationSuccess.postValue(true)
             is Result.Error -> _isArticleCreationSuccess.postValue(false)
         }

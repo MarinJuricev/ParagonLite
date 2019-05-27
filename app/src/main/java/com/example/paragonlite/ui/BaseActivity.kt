@@ -17,6 +17,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class BaseActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController

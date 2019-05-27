@@ -6,7 +6,7 @@ import com.example.domain.repository.IBluetoothRepository
 
 class GetNearbyBluetoothDevices {
 
-    suspend fun getNearbyBluetoothDevices(
+    suspend fun execute(
         bluetoothRepository: IBluetoothRepository
     ): Result<Exception, List<BluetoothEntry>> = bluetoothRepository.getNearbyBluetoothDevices()
 

@@ -7,7 +7,7 @@ import com.example.domain.repository.IArticleRepository
 
 class GetArticles {
 
-    suspend fun getArticles(
+    suspend fun execute(
         articleRepository: IArticleRepository
     ): Result<Exception, LiveData<List<Article>>> = articleRepository.getArticles()
 }

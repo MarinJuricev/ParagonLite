@@ -60,21 +60,14 @@ class ArticlesListFragment : Fragment() {
         rvArticleList.adapter = articleAdapter
     }
 
-    private fun showArticleDeletionSuccess() {
+    private fun showArticleDeletionSuccess() =
         Snackbar.make(articleListRoot, "Artikl uspjesno pobrisan!", Snackbar.LENGTH_LONG).show()
-    }
 
-    private fun showArticleDeletionFail() {
+    private fun showArticleDeletionFail() =
         Snackbar.make(articleListRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG).show()
 
-    }
+    private fun onArticleClick(article: Article) = articlesListViewModel.sendArticleToCheckout(article)
 
-    private fun onArticleClick(article: Article) {
-        articlesListViewModel.sendArticleToCheckout(article)
-    }
-
-    private fun onArticleLongClick(article: Article) {
-        articlesListViewModel.deleteArticle(article)
-    }
+    private fun onArticleLongClick(article: Article) = articlesListViewModel.deleteArticle(article)
 
 }

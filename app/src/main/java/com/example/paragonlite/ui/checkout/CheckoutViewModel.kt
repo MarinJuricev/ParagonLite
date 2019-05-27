@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
+import com.example.domain.repository.IBluetoothRepository
 import com.example.domain.repository.ICheckoutRepository
 import com.example.domain.usecase.checkout.CalculateCheckout
 import com.example.domain.usecase.checkout.DeleteCheckoutArticle
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class CheckoutViewModel(
     private val checkoutRepository: ICheckoutRepository,
+    private val bluetoothRepository: IBluetoothRepository,
     private val getArticlesInCheckout: GetArticlesInCheckout,
     private val deleteCheckoutArticle: DeleteCheckoutArticle,
     private val calculateCheckout: CalculateCheckout,
@@ -30,13 +32,14 @@ class CheckoutViewModel(
     val articleData: LiveData<List<CheckoutArticle>> get() = _checkoutArticles
 
     private val _isArticleDeletionSuccess = MutableLiveData<Boolean>()
+    //TODO Implement after crunch is over...
     val isArticleDeletionSuccess: LiveData<Boolean> get() = _isArticleDeletionSuccess
 
     private val _checkoutValue = MutableLiveData<String>()
     val checkoutValue: LiveData<String> get() = _checkoutValue
 
     private fun fetchCheckoutArticles() = launch {
-        when (val result = getArticlesInCheckout.getArticlesInCheckout(checkoutRepository)) {
+        when (val result = getArticlesInCheckout.execute(checkoutRepository)) {
             is Result.Value -> {
                 _checkoutArticles.addSource(
                     result.value
@@ -52,14 +55,16 @@ class CheckoutViewModel(
     private fun updateCheckoutAmount(newArticleList: List<CheckoutArticle>?) = launch {
         val list = newArticleList ?: listOf()
 
-        _checkoutValue.postValue(calculateCheckout.calculateCheckoutValue(dispatcherProvider, list))
+        _checkoutValue.postValue(calculateCheckout.execute(dispatcherProvider, list))
     }
 
     fun deleteArticle(checkoutArticle: CheckoutArticle) = launch {
-        //TODO Implement after crunch is over...
-        when (deleteCheckoutArticle.deleteArticle(checkoutRepository, checkoutArticle)) {
+        when (deleteCheckoutArticle.execute(checkoutRepository, checkoutArticle)) {
             is Result.Value -> _isArticleDeletionSuccess.postValue(true)
             is Result.Error -> _isArticleDeletionSuccess.postValue(false)
         }
+    }
+
+    fun printCheckout() {
     }
 }

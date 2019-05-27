@@ -1,5 +1,6 @@
 package com.example.paragonlite.ui.checkout
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.example.domain.model.CheckoutArticle
 import com.example.paragonlite.R
 import com.example.paragonlite.databinding.CheckoutFragmentBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.checkout_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,14 +47,38 @@ class CheckoutFragment : Fragment() {
         rvCheckoutList.adapter = checkoutAdapter
 
         checkoutViewModel.checkoutValue.observe(this@CheckoutFragment, Observer {
+
+            when (it) {
+                "0.0" -> hidePrintFab()
+                else -> showPrintFab()
+            }
+
             val stringToDisplay = "Ukupno: $it kn"
             tvCheckoutPrice.text = stringToDisplay
         })
 
+        fabPrint.setOnClickListener {
+            buildDialog()
+        }
     }
 
-    private fun onDeleteClick(checkoutArticle: CheckoutArticle) {
-        checkoutViewModel.deleteArticle(checkoutArticle)
+    private fun buildDialog() {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(getString(R.string.printing))
+            .setMessage(getString(R.string.print_checkout))
+            .setPositiveButton("OK", DialogInterface.OnClickListener(positiveDialogClick))
+            .show()
     }
+
+    private val positiveDialogClick = { dialog: DialogInterface, _: Int ->
+        checkoutViewModel.printCheckout()
+        dialog.dismiss()
+    }
+
+    private fun showPrintFab() = fabPrint.show()
+
+    private fun hidePrintFab() = fabPrint.hide()
+
+    private fun onDeleteClick(checkoutArticle: CheckoutArticle) = checkoutViewModel.deleteArticle(checkoutArticle)
 
 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.paragonlite.R
 import com.example.paragonlite.databinding.BluetoothFragmentBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bluetooth_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,14 +52,31 @@ class BluetoothFragment : Fragment() {
     }
 
     private fun bindUI() {
-        val blueToothAdapter = BluetoothDeviceAdapter()
+        pbBluetooth.show()
+
+        val blueToothAdapter = BluetoothDeviceAdapter { macAddress -> saveBluetoothMACAddress(macAddress) }
 
         bluetoothViewModel.bluetoothData.observe(this@BluetoothFragment, Observer {
+            pbBluetooth.hide()
             blueToothAdapter.submitList(it)
+        })
+
+        bluetoothViewModel.isMacAddressSaved.observe(this@BluetoothFragment, Observer {
+            when (it) {
+                true -> showMacAddressSavedSuccess()
+                false -> showMacAddressSavedFail()
+            }
         })
 
         rvAvailableBluetoothDevices.adapter = blueToothAdapter
     }
+
+    private fun showMacAddressSavedSuccess() =
+        Snackbar.make(bluetoothRoot, getString(R.string.printer_saved), Snackbar.LENGTH_SHORT).show()
+
+
+    private fun showMacAddressSavedFail() =
+        Snackbar.make(bluetoothRoot, getString(R.string.printer_save_error), Snackbar.LENGTH_SHORT).show()
 
     private fun handleBluetoothAvailability(isBluetoothAvailable: Boolean) {
         if (!isBluetoothAvailable) {
@@ -73,6 +91,8 @@ class BluetoothFragment : Fragment() {
         val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
     }
+
+    private fun saveBluetoothMACAddress(macAddress: String) = bluetoothViewModel.saveMacAddress(macAddress)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -7,7 +7,7 @@ import java.lang.Exception
 
 class DeleteCheckoutArticle {
 
-    suspend fun deleteArticle(
+    suspend fun execute(
         checkoutRepository: ICheckoutRepository,
         checkoutArticle: CheckoutArticle
     ): Result<Exception, Unit> = checkoutRepository.deleteArticle(checkoutArticle)

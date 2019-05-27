@@ -6,7 +6,7 @@ import com.example.domain.repository.IArticleRepository
 
 class DeleteArticle {
 
-    suspend fun deleteArticle(
+    suspend fun execute(
         articleRepository: IArticleRepository,
         article: Article
     ): Result<Exception, Unit> = articleRepository.deleteArticle(article)

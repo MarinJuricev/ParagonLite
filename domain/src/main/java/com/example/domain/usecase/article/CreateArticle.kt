@@ -6,7 +6,7 @@ import com.example.domain.repository.IArticleRepository
 
 class CreateArticle {
 
-    suspend fun createArticle(
+    suspend fun execute(
         articleRepository: IArticleRepository,
         article: Article
     ): Result<Exception, Unit> = articleRepository.createArticle(article)

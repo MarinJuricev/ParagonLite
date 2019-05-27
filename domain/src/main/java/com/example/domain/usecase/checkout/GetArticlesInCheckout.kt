@@ -8,7 +8,7 @@ import java.lang.Exception
 
 class GetArticlesInCheckout {
 
-    suspend fun getArticlesInCheckout(
+    suspend fun execute(
         checkoutRepository: ICheckoutRepository
     ): Result<Exception, LiveData<List<CheckoutArticle>>> = checkoutRepository.getArticlesInCheckout()
 }

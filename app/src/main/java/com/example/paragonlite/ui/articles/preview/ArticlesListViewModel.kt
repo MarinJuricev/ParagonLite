@@ -32,7 +32,7 @@ class ArticlesListViewModel(
     val isArticleDeletionSuccess: LiveData<Boolean> get() = _isArticleDeletionSuccess
 
     private fun fetchArticles() = launch {
-        when (val result = getArticles.getArticles(articleRepository)) {
+        when (val result = getArticles.execute(articleRepository)) {
             is Result.Value -> {
                 _articleData.addSource(
                     result.value
@@ -45,14 +45,14 @@ class ArticlesListViewModel(
     }
 
     fun deleteArticle(article: Article) = launch {
-        when (deleteArticle.deleteArticle(articleRepository, article)) {
+        when (deleteArticle.execute(articleRepository, article)) {
             is Result.Value -> _isArticleDeletionSuccess.postValue(true)
             is Result.Error -> _isArticleDeletionSuccess.postValue(false)
         }
     }
 
     fun sendArticleToCheckout(article: Article) = launch {
-        when(sendArticleToCheckout.sendArticleToCheckout(checkoutRepository, article)){
+        when(sendArticleToCheckout.execute(checkoutRepository, article)){
             //TODO IMPLEMENT ?
 //            is Result.Value ->
 //            is Result.Error ->

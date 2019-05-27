@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 
 class CalculateCheckout {
 
-    suspend fun calculateCheckoutValue(
+    suspend fun execute(
         dispatcherProvider: DispatcherProvider,
         checkoutList: List<CheckoutArticle>
     ) = withContext(dispatcherProvider.provideComputationContext()){
