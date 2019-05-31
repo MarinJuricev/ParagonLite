@@ -11,6 +11,7 @@ import com.example.domain.repository.ICheckoutRepository
 import com.example.domain.usecase.checkout.CalculateCheckout
 import com.example.domain.usecase.checkout.DeleteCheckoutArticle
 import com.example.domain.usecase.checkout.GetArticlesInCheckout
+import com.example.domain.usecase.print.PrintCheckout
 import com.example.paragonlite.shared.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,7 @@ class CheckoutViewModel(
     private val getArticlesInCheckout: GetArticlesInCheckout,
     private val deleteCheckoutArticle: DeleteCheckoutArticle,
     private val calculateCheckout: CalculateCheckout,
+    private val printCheckout: PrintCheckout,
     private val dispatcherProvider: DispatcherProvider
 ) : BaseViewModel() {
 
@@ -65,6 +67,13 @@ class CheckoutViewModel(
         }
     }
 
-    fun printCheckout() {
+    fun printCheckout() = launch {
+        printCheckout.execute(
+            bluetoothRepository,
+            checkoutRepository,
+            dispatcherProvider,
+            articleData.value
+        )
+
     }
 }

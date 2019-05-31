@@ -74,6 +74,8 @@ class BluetoothRepositoryImpl(
         val deviceName = device.name
         val deviceHardwareAddress = device.address
 
+        bluetoothAdapter.bondedDevices
+
         bluetoothList.add(BluetoothEntry(deviceName, deviceHardwareAddress))
     }
 
@@ -88,6 +90,17 @@ class BluetoothRepositoryImpl(
             when (editor.commit()) {
                 true -> Result.build { Unit }
                 else -> Result.build { throw ParagonError.LocalIOException }
+            }
+        }
+
+    override suspend fun getMacAddress(): Result<Exception, String> =
+        withContext(dispatcherProvider.provideIOContext()) {
+
+            val preferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
+
+            when (val result = preferences.getString(BLUETOOTH_MAC_ADDRESS_KEY, "")) {
+                "" -> Result.build { throw BluetoothException }
+                else -> Result.build { result }
             }
         }
 
