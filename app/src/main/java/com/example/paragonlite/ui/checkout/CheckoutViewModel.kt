@@ -8,9 +8,11 @@ import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
 import com.example.domain.repository.ICheckoutRepository
+import com.example.domain.usecase.bluetooth.GetBluetoothAddress
 import com.example.domain.usecase.checkout.CalculateCheckout
 import com.example.domain.usecase.checkout.DeleteCheckoutArticle
 import com.example.domain.usecase.checkout.GetArticlesInCheckout
+import com.example.domain.usecase.print.GeneratePrintData
 import com.example.domain.usecase.print.PrintCheckout
 import com.example.paragonlite.shared.BaseViewModel
 import kotlinx.coroutines.launch
@@ -22,6 +24,8 @@ class CheckoutViewModel(
     private val getArticlesInCheckout: GetArticlesInCheckout,
     private val deleteCheckoutArticle: DeleteCheckoutArticle,
     private val calculateCheckout: CalculateCheckout,
+    private val getBluetoothMacAddress: GetBluetoothAddress,
+    private val generatePrintData: GeneratePrintData,
     private val printCheckout: PrintCheckout,
     private val dispatcherProvider: DispatcherProvider
 ) : BaseViewModel() {
@@ -68,12 +72,33 @@ class CheckoutViewModel(
     }
 
     fun printCheckout() = launch {
+
+        when(val result = getBluetoothMacAddress.execute(bluetoothRepository)){
+            is Result.Value -> {
+                generateDataToPrint(result.value)
+            }
+            is Result.Error -> TODO()
+        }
+
+    }
+
+    private suspend fun generateDataToPrint(macAddress: String) {
+        when(val result = generatePrintData.execute(articleData.value!!, dispatcherProvider)){
+            is Result.Value -> printGeneratedData(result.value, macAddress)
+            is Result.Error -> TODO()
+        }
+    }
+
+    private suspend fun printGeneratedData(
+        dataToPrint: List<ByteArray>,
+        macAddress: String
+    ) {
         printCheckout.execute(
             bluetoothRepository,
             checkoutRepository,
             dispatcherProvider,
-            articleData.value
+            dataToPrint,
+            macAddress
         )
-
     }
 }

@@ -7,12 +7,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Looper
 import com.example.domain.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.error.ParagonError.BluetoothException
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
+import com.zebra.sdk.comm.BluetoothConnectionInsecure
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -104,12 +106,48 @@ class BluetoothRepositoryImpl(
             }
         }
 
-    override fun unRegisterReceiver(): Result<Exception, Unit> {
-        if (bluetoothAdapter.isDiscovering)
-            bluetoothAdapter.cancelDiscovery()
 
-        context.unregisterReceiver(bluetoothReceiver)
+    override suspend fun connectAndSendDataOverBluetooth(
+        savedMacAddress: String,
+        dataToPrint: List<ByteArray>): Result<Exception, Unit> {
 
+        Thread(Runnable {
+            try {
+                // Instantiate insecure connection for given Bluetooth&reg; MAC Address.
+                val thePrinterConn = BluetoothConnectionInsecure(savedMacAddress)
+
+                // Initialize
+                Looper.prepare()
+
+                // Open the connection - physical connection is established here.
+                thePrinterConn.open()
+
+                // Send the data to printer as a byte array.
+                for (data in dataToPrint)
+                    thePrinterConn.write(data)
+
+                // Make sure the data got to the printer before closing the connection
+                Thread.sleep(500)
+
+                // Close the insecure connection to release resources.
+                thePrinterConn.close()
+
+                Looper.myLooper()!!.quit()
+            } catch (e: Exception) {
+                // Handle communications error here.
+                e.printStackTrace()
+            }
+        }).start()
+        // TODO Error handling, make it a continuation coroutine ?
         return Result.build { Unit }
     }
+
+override fun unRegisterReceiver(): Result<Exception, Unit> {
+    if (bluetoothAdapter.isDiscovering)
+        bluetoothAdapter.cancelDiscovery()
+
+    context.unregisterReceiver(bluetoothReceiver)
+
+    return Result.build { Unit }
+}
 }
