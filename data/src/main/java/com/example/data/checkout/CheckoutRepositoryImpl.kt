@@ -49,6 +49,11 @@ class CheckoutRepositoryImpl(
                 else -> Result.build { Unit }
             }
         }
+
+    override suspend fun deleteAllArticles() =
+        withContext(dispatcherProvider.provideIOContext()) {
+            checkoutDao.deleteAll()
+        }
 }
 
 private fun mapToCheckoutArticle(list: List<RoomCheckout>) = list.toCheckoutList()

@@ -20,4 +20,7 @@ interface CheckoutDao {
     //if update successful, will return number of rows effected, which should be 1
     @Delete
     fun deleteArticle(article: RoomCheckout): Int
+
+    @Query("DELETE FROM checkout_table")
+    fun deleteAll()
 }

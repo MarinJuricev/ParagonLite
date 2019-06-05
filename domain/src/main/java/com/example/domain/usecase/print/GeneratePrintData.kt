@@ -4,6 +4,8 @@ import com.example.domain.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 private const val SHENZEN_LINE = "================================\n"
@@ -16,6 +18,7 @@ class GeneratePrintData {
 
     suspend fun execute(
         valuesToPrint: List<CheckoutArticle>,
+        checkoutSum: String,
         dispatcherProvider: DispatcherProvider
     ): Result<Exception, List<ByteArray>> =
         withContext(dispatcherProvider.provideComputationContext()) {
@@ -80,8 +83,6 @@ class GeneratePrintData {
                 )!!
             )
 
-            // Prodavac section
-
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
                     alignRight(
@@ -93,12 +94,11 @@ class GeneratePrintData {
                 )!!
             )
 
-            //TODO actually implement todays date and time
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
                     alignRight(
-                        "12.05.19",
-                        "13:38:13",
+                        generateCurrentDate(),
+                        generateCurrentTime(),
                         SHENZEN_LINE_LENGHT_WIDTH_0
                     ) + "\n",
                     0, 0, 0, 0
@@ -176,6 +176,19 @@ class GeneratePrintData {
                         0, 0, 0, 0
                     )!!
                 )
+
+                //TODO Remove the 1.00 and actually send a list that has the correct number of products
+                // Example 2 peka should be shown 2 peka not 1 peka and 1 peka
+                dataToReturn.add(
+                    ESCPrinterCommand.POS_Set_Font_And_Print(
+                        alignRight(
+                            "1.00",
+                            "1.00       ${value.price}",
+                            SHENZEN_LINE_LENGHT_WIDTH_0
+                        ) + "\n",
+                        0, 0, 0, 0
+                    )!!
+                )
             }
 
             dataToReturn.add(
@@ -185,12 +198,11 @@ class GeneratePrintData {
                 )!!
             )
 
-            // TODO add the actual sum
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
                     alignRight(
                         "Ukupno",
-                        "150.00kn",
+                        "$checkoutSum kn",
                         SHENZEN_LINE_LENGHT_WIDTH_0
                     ) + "\n",
                     1, 0, 0, 0
@@ -199,27 +211,33 @@ class GeneratePrintData {
 
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
+                        "Nacin placanja: \n",
+                    0, 0, 0, 0
+                )!!
+            )
+
+            dataToReturn.add(
+                ESCPrinterCommand.POS_Set_Font_And_Print(
                     alignRight(
-                        "Nacin placanja:",
+                        "",
                         "NOVCANICA",
                         SHENZEN_LINE_LENGHT_WIDTH_0
-                    ) + "\n\n",
+                    ) + "\n",
                     0, 0, 0, 0
                 )!!
             )
 
-            // TODO Actually generate a random hash here
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
-                    "Zastitni kod: 123123123123123123123123123\n",
+                    "Zastitni kod: ${generateRandomCharacters(36)}\n",
                     0, 0, 0, 0
                 )!!
             )
 
-            // TODO Actually generate a random hash here
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
-                    "JIR: 123123123123123123123123123\n\n",
+                    "JIR: ${generateRandomCharacters(8)}-${generateRandomCharacters(4)}-" +
+                            "${generateRandomCharacters(4)}-${generateRandomCharacters(4)}-${generateRandomCharacters(12)}\n\n",
                     0, 0, 0, 0
                 )!!
             )
@@ -238,15 +256,31 @@ class GeneratePrintData {
                 )!!
             )
 
-
             return@withContext Result.build { dataToReturn }
         }
 
+    private fun generateCurrentDate(): String {
+        val date = Date()
+        val formatter = SimpleDateFormat("dd.mm.yy", Locale.ENGLISH)
+
+        return formatter.format(date)
+    }
+
+    private fun generateCurrentTime(): String {
+        val sdf = SimpleDateFormat("hh:mm:ss", Locale.ENGLISH)
+        return sdf.format(Date())
+    }
+
+    private fun generateRandomCharacters(length: Int): String {
+        val allowedChars = "abcdefghiklmnopqrstuvwxyz1234567890"
+        return (1..length)
+            .map { allowedChars.random() }
+            .joinToString("")
+    }
+
     private fun validatePrintData(valuesToPrint: List<CheckoutArticle>?) =
         valuesToPrint?.isEmpty()
-
 }
-
 
 /**
  * Used in any other printer to help align text, in this case center the text

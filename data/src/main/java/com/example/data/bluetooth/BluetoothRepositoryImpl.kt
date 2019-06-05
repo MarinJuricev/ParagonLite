@@ -14,6 +14,7 @@ import com.example.domain.error.ParagonError.BluetoothException
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
+
 import com.zebra.sdk.comm.BluetoothConnectionInsecure
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
@@ -78,7 +79,9 @@ class BluetoothRepositoryImpl(
 
         bluetoothAdapter.bondedDevices
 
-        bluetoothList.add(BluetoothEntry(deviceName, deviceHardwareAddress))
+        // No need for duplicate entries
+        if (!bluetoothList.contains(BluetoothEntry(deviceName, deviceHardwareAddress)))
+            bluetoothList.add(BluetoothEntry(deviceName, deviceHardwareAddress))
     }
 
     @SuppressLint("ApplySharedPref")
@@ -109,7 +112,8 @@ class BluetoothRepositoryImpl(
 
     override suspend fun connectAndSendDataOverBluetooth(
         savedMacAddress: String,
-        dataToPrint: List<ByteArray>): Result<Exception, Unit> {
+        dataToPrint: List<ByteArray>
+    ): Result<Exception, Unit> {
 
         Thread(Runnable {
             try {
@@ -142,12 +146,12 @@ class BluetoothRepositoryImpl(
         return Result.build { Unit }
     }
 
-override fun unRegisterReceiver(): Result<Exception, Unit> {
-    if (bluetoothAdapter.isDiscovering)
-        bluetoothAdapter.cancelDiscovery()
+    override fun unRegisterReceiver(): Result<Exception, Unit> {
+        if (bluetoothAdapter.isDiscovering)
+            bluetoothAdapter.cancelDiscovery()
 
-    context.unregisterReceiver(bluetoothReceiver)
+        context.unregisterReceiver(bluetoothReceiver)
 
-    return Result.build { Unit }
-}
+        return Result.build { Unit }
+    }
 }

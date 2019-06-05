@@ -44,6 +44,9 @@ class CheckoutViewModel(
     private val _checkoutValue = MutableLiveData<String>()
     val checkoutValue: LiveData<String> get() = _checkoutValue
 
+    private val _getBluetoothAddressError = MutableLiveData<Boolean>()
+    val getBluetoothAddressError: LiveData<Boolean> get() = _getBluetoothAddressError
+
     private fun fetchCheckoutArticles() = launch {
         when (val result = getArticlesInCheckout.execute(checkoutRepository)) {
             is Result.Value -> {
@@ -72,18 +75,20 @@ class CheckoutViewModel(
     }
 
     fun printCheckout() = launch {
-
         when(val result = getBluetoothMacAddress.execute(bluetoothRepository)){
             is Result.Value -> {
                 generateDataToPrint(result.value)
             }
-            is Result.Error -> TODO()
+            is Result.Error -> _getBluetoothAddressError.postValue(true)
         }
 
     }
 
     private suspend fun generateDataToPrint(macAddress: String) {
-        when(val result = generatePrintData.execute(articleData.value!!, dispatcherProvider)){
+        when(val result = generatePrintData.execute(
+            articleData.value!!,
+            checkoutValue.value ?: "",
+            dispatcherProvider)){
             is Result.Value -> printGeneratedData(result.value, macAddress)
             is Result.Error -> TODO()
         }

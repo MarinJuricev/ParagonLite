@@ -24,6 +24,7 @@
     <string name="print">Print</string>
     <string name="print_checkout">Printaj racun?</string>
     <string name="printing">PRINTANJE</string>
+    <string name="article_name">Ime Artikla</string>
 
     <string-array name="array_kolicina">
         <item>Komad(kom)</item>

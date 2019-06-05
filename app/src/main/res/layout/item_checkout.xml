@@ -15,6 +15,22 @@
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCheckoutArticle"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxLength="12"
+                android:text="@string/article_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/ivRemoveCheckoutItem"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvCheckoutQuantityPrice"
+                app:layout_constraintBottom_toBottomOf="@+id/ivRemoveCheckoutItem"
+                app:layout_constraintStart_toEndOf="@+id/tiCheckoutQuantity" android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvCheckoutArticleName"
                 style="@style/TextAppearance.MaterialComponents.Body2"
                 tools:text="Peka s zara"
@@ -23,19 +39,20 @@
                 android:maxLength="12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/tvCheckoutArticle"
+                app:layout_constraintEnd_toEndOf="@+id/tvCheckoutArticle"
+                app:layout_constraintTop_toBottomOf="@+id/tvCheckoutArticle"
+        />
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiCheckoutQuantity"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:layout_constraintTop_toTopOf="@+id/tvCheckoutArticleName"
-                app:layout_constraintBottom_toBottomOf="@+id/tvCheckoutArticleName"
-                app:layout_constraintEnd_toStartOf="@+id/tvCheckoutQuantityPrice" android:layout_marginEnd="24dp">
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etCheckoutQuantity"
@@ -53,9 +70,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toStartOf="@+id/ivRemoveCheckoutItem"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/ivRemoveCheckoutItem" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivRemoveCheckoutItem"
+                app:layout_constraintTop_toTopOf="@+id/ivRemoveCheckoutItem" android:layout_marginBottom="8dp"/>
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvCheckoutQuantityValue"
@@ -73,9 +90,9 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_close_24dp"
                 android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/tvCheckoutArticleName"
-                app:layout_constraintBottom_toBottomOf="@+id/tvCheckoutArticleName"
-        />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tiCheckoutQuantity"
+                app:layout_constraintBottom_toBottomOf="@+id/tiCheckoutQuantity"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

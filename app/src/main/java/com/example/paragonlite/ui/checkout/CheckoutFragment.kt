@@ -12,6 +12,7 @@ import com.example.domain.model.CheckoutArticle
 import com.example.paragonlite.R
 import com.example.paragonlite.databinding.CheckoutFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.checkout_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,7 +48,6 @@ class CheckoutFragment : Fragment() {
         rvCheckoutList.adapter = checkoutAdapter
 
         checkoutViewModel.checkoutValue.observe(this@CheckoutFragment, Observer {
-
             when (it) {
                 "0.0" -> hidePrintFab()
                 else -> showPrintFab()
@@ -57,9 +57,23 @@ class CheckoutFragment : Fragment() {
             tvCheckoutPrice.text = stringToDisplay
         })
 
+        checkoutViewModel.getBluetoothAddressError.observe(this@CheckoutFragment, Observer {
+            if (it)
+                showBluetoothMacAddressError()
+        })
+
         fabPrint.setOnClickListener {
             buildDialog()
         }
+    }
+
+    private fun showBluetoothMacAddressError() {
+        val snack = Snackbar.make(
+            checkoutRoot,
+            "Nismo nasli spremljenu bluetooth adresu, molimo spojite se na printer.",
+            Snackbar.LENGTH_LONG
+        )
+        snack.show()
     }
 
     private fun buildDialog() {
