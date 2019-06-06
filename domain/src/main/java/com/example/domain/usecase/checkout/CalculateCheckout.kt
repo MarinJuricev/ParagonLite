@@ -13,7 +13,7 @@ class CalculateCheckout {
         var result = 0.0
 
         checkoutList.map {
-            result += it.price
+            result += it.price * it.inCheckout
         }
 
         return@withContext result.toString()

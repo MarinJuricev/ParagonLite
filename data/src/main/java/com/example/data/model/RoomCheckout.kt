@@ -9,6 +9,7 @@ data class RoomCheckout(
     @PrimaryKey(autoGenerate = false)
     val name: String,
     val quantity: String,
-    val price: Double
+    val price: Double,
+    val inCheckout: Int
 )
 

@@ -19,6 +19,7 @@ class GeneratePrintData {
     suspend fun execute(
         valuesToPrint: List<CheckoutArticle>,
         checkoutSum: String,
+        receiptNumber: Int,
         dispatcherProvider: DispatcherProvider
     ): Result<Exception, List<ByteArray>> =
         withContext(dispatcherProvider.provideComputationContext()) {
@@ -114,7 +115,7 @@ class GeneratePrintData {
 
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
-                    "Broj racuna: 5:\n",
+                    "Broj racuna: $receiptNumber\n",
                     0, 0, 0, 0
                 )!!
             )
@@ -177,13 +178,11 @@ class GeneratePrintData {
                     )!!
                 )
 
-                //TODO Remove the 1.00 and actually send a list that has the correct number of products
-                // Example 2 peka should be shown 2 peka not 1 peka and 1 peka
                 dataToReturn.add(
                     ESCPrinterCommand.POS_Set_Font_And_Print(
                         alignRight(
-                            "1.00",
-                            "1.00       ${value.price}",
+                            value.inCheckout.toString(),
+                            "${value.price}       ${value.price * value.inCheckout}",
                             SHENZEN_LINE_LENGHT_WIDTH_0
                         ) + "\n",
                         0, 0, 0, 0
@@ -211,7 +210,7 @@ class GeneratePrintData {
 
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
-                        "Nacin placanja: \n",
+                    "Nacin placanja: \n",
                     0, 0, 0, 0
                 )!!
             )
@@ -237,7 +236,8 @@ class GeneratePrintData {
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
                     "JIR: ${generateRandomCharacters(8)}-${generateRandomCharacters(4)}-" +
-                            "${generateRandomCharacters(4)}-${generateRandomCharacters(4)}-${generateRandomCharacters(12)}\n\n",
+                            "${generateRandomCharacters(4)}-${generateRandomCharacters(4)}-" +
+                            "${generateRandomCharacters(12)}\n\n",
                     0, 0, 0, 0
                 )!!
             )

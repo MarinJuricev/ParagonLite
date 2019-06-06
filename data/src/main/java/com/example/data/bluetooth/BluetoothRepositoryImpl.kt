@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Looper
+import com.example.data.BLUETOOTH_MAC_ADDRESS_KEY
+import com.example.data.PACKAGE_NAME
 import com.example.domain.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.error.ParagonError.BluetoothException
@@ -19,9 +21,6 @@ import com.zebra.sdk.comm.BluetoothConnectionInsecure
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-
-const val BLUETOOTH_MAC_ADDRESS_KEY = "BLUETOOTH_MAC_ADDRESS_KEY"
-const val PACKAGE_NAME = "\"com.example.data\""
 
 class BluetoothRepositoryImpl(
     private val context: Context,

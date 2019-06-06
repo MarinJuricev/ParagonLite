@@ -13,16 +13,16 @@ object LocalData {
                 "Sir", "200g", 120.00
             ),
             RoomArticle(
-                "Peka", "", 150.00
+                "Peka", "Kom", 150.00
             ),
             RoomArticle(
-                "Peka za dvoje", "", 320.00
+                "Peka za dvoje", "Kom", 320.00
             ),
             RoomArticle(
-                "Domaci kolac od badema", "Piece", 30.00
+                "Domaci kolac od badema", "Kom", 30.00
             ),
             RoomArticle(
-                "Panna cotta s plodovima sume", "Piece", 30.00
+                "Panna cotta s plodovima sume", "Kom", 30.00
             ),
             RoomArticle(
                 "Babic 1l", "1l", 180.00

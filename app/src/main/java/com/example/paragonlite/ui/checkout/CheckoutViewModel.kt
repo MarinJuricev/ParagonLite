@@ -13,7 +13,9 @@ import com.example.domain.usecase.checkout.CalculateCheckout
 import com.example.domain.usecase.checkout.DeleteCheckoutArticle
 import com.example.domain.usecase.checkout.GetArticlesInCheckout
 import com.example.domain.usecase.print.GeneratePrintData
+import com.example.domain.usecase.print.GetReceiptNumber
 import com.example.domain.usecase.print.PrintCheckout
+import com.example.domain.usecase.print.SaveReceiptNumber
 import com.example.paragonlite.shared.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -27,6 +29,8 @@ class CheckoutViewModel(
     private val getBluetoothMacAddress: GetBluetoothAddress,
     private val generatePrintData: GeneratePrintData,
     private val printCheckout: PrintCheckout,
+    private val getReceiptNumber: GetReceiptNumber,
+    private val saveReceiptNumber: SaveReceiptNumber,
     private val dispatcherProvider: DispatcherProvider
 ) : BaseViewModel() {
 
@@ -75,35 +79,54 @@ class CheckoutViewModel(
     }
 
     fun printCheckout() = launch {
-        when(val result = getBluetoothMacAddress.execute(bluetoothRepository)){
+        when (val result = getBluetoothMacAddress.execute(bluetoothRepository)) {
             is Result.Value -> {
-                generateDataToPrint(result.value)
+                getReceiptNumber(result.value)
             }
             is Result.Error -> _getBluetoothAddressError.postValue(true)
         }
-
     }
 
-    private suspend fun generateDataToPrint(macAddress: String) {
-        when(val result = generatePrintData.execute(
+    private fun getReceiptNumber(bluetoothMacAddress: String) = launch {
+        when (val result = getReceiptNumber.execute(checkoutRepository)) {
+            is Result.Value -> {
+                generateDataToPrint(bluetoothMacAddress, result.value)
+            }
+            is Result.Error -> _getBluetoothAddressError.postValue(true)
+        }
+    }
+
+    private suspend fun generateDataToPrint(macAddress: String, receiptNumber: Int) {
+        when (val result = generatePrintData.execute(
             articleData.value!!,
             checkoutValue.value ?: "",
-            dispatcherProvider)){
-            is Result.Value -> printGeneratedData(result.value, macAddress)
+            receiptNumber,
+            dispatcherProvider
+        )) {
+            is Result.Value -> {
+                printGeneratedData(result.value, macAddress, receiptNumber)
+            }
             is Result.Error -> TODO()
         }
     }
 
     private suspend fun printGeneratedData(
         dataToPrint: List<ByteArray>,
-        macAddress: String
+        macAddress: String,
+        receiptNumber: Int
     ) {
-        printCheckout.execute(
+        when (printCheckout.execute(
             bluetoothRepository,
             checkoutRepository,
             dispatcherProvider,
             dataToPrint,
             macAddress
-        )
+        )) {
+            is Result.Value -> {
+                val incrementedReceiptNumber = receiptNumber + 1
+                saveReceiptNumber.execute(checkoutRepository, incrementedReceiptNumber)
+            }
+            is Result.Error -> TODO()
+        }
     }
 }

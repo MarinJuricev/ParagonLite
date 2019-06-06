@@ -54,7 +54,6 @@ class CheckoutAdapter(
 
     class CheckoutViewHolder(root: View) : RecyclerView.ViewHolder(root) {
         var name: AppCompatTextView = root.tvCheckoutArticleName
-        var tilQuantity: TextInputLayout = root.tiCheckoutQuantity
         var tieQuantity: TextInputEditText = root.etCheckoutQuantity
         var quantityPrice: AppCompatTextView = root.tvCheckoutQuantityPrice
         var quantityValue: AppCompatTextView = root.tvCheckoutQuantityValue

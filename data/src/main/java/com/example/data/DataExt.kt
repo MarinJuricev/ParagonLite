@@ -23,28 +23,25 @@ internal val CheckoutArticle.toRoomCheckout: RoomCheckout
     get() = RoomCheckout(
         this.name,
         this.quantity,
-        this.price
+        this.price,
+        this.inCheckout
     )
 
-internal val Article.toCheckoutArticle: CheckoutArticle
-    get() = CheckoutArticle(
+internal fun Article.toRoomCheckoutArticle(inCheckout: Int): RoomCheckout {
+    return RoomCheckout(
         this.name,
         this.quantity,
-        this.price
+        this.price,
+        inCheckout
     )
-
-internal val Article.toRoomCheckoutArticle: RoomCheckout
-    get() = RoomCheckout(
-        this.name,
-        this.quantity,
-        this.price
-    )
+}
 
 internal val RoomCheckout.toCheckoutArticle: CheckoutArticle
     get() = CheckoutArticle(
         this.name,
         this.quantity,
-        this.price
+        this.price,
+        this.inCheckout
     )
 
 //Maps from lists of different Data Model types

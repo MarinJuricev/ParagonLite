@@ -27,6 +27,9 @@ class PrintCheckout {
         }
     }
 
+    // TODO save the printed checkout items and the sum into a new table for statistics down the road
+    // it should contain the receipt number so we can print the correct receipt number in the future
+    // for now it will be saved into saved prefs as a int...
     private suspend fun deleteCurrentCheckoutItems(
         checkoutRepository: ICheckoutRepository,
         dispatcherProvider: DispatcherProvider

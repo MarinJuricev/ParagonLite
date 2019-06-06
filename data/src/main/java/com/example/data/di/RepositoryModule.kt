@@ -10,6 +10,6 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     factory { ArticleRepositoryImpl(get(), get()) as IArticleRepository }
-    factory { CheckoutRepositoryImpl(get(), get()) as ICheckoutRepository}
+    factory { CheckoutRepositoryImpl(get(), get(), get()) as ICheckoutRepository}
     factory { BluetoothRepositoryImpl(get(), get()) as IBluetoothRepository}
 }
