@@ -260,10 +260,8 @@ class GeneratePrintData {
         }
 
     private fun generateCurrentDate(): String {
-        val date = Date()
-        val formatter = SimpleDateFormat("dd.mm.yy", Locale.ENGLISH)
-
-        return formatter.format(date)
+        val formatter = SimpleDateFormat("dd.MM.yy", Locale.ENGLISH)
+        return formatter.format(Date())
     }
 
     private fun generateCurrentTime(): String {
