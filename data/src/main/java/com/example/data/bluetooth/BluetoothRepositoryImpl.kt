@@ -16,19 +16,18 @@ import com.example.domain.error.ParagonError.BluetoothException
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
-
 import com.zebra.sdk.comm.BluetoothConnectionInsecure
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class BluetoothRepositoryImpl(
     private val context: Context,
     private val dispatcherProvider: DispatcherProvider
 ) : IBluetoothRepository {
 
-    lateinit var bluetoothReceiver: BroadcastReceiver
-    lateinit var bluetoothAdapter: BluetoothAdapter
+    private var bluetoothReceiver: BroadcastReceiver? = null
+    private var bluetoothAdapter: BluetoothAdapter? = null
 
     override suspend fun getNearbyBluetoothDevices(): Result<Exception, List<BluetoothEntry>> {
 
@@ -39,7 +38,7 @@ class BluetoothRepositoryImpl(
     }
 
     private suspend fun startDiscovery(): List<BluetoothEntry> {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             val bluetoothList = mutableListOf<BluetoothEntry>()
 
             bluetoothReceiver = object : BroadcastReceiver() {
@@ -51,7 +50,8 @@ class BluetoothRepositoryImpl(
                 }
 
                 private fun resumeExecution() {
-                    continuation.resume(bluetoothList)
+                    if (continuation.isActive)
+                        continuation.resume(bluetoothList)
                 }
             }
 
@@ -64,7 +64,7 @@ class BluetoothRepositoryImpl(
             context.registerReceiver(bluetoothReceiver, filter)
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
-            bluetoothAdapter.startDiscovery()
+            bluetoothAdapter!!.startDiscovery()
         }
     }
 
@@ -76,7 +76,7 @@ class BluetoothRepositoryImpl(
         val deviceName = device.name
         val deviceHardwareAddress = device.address
 
-        bluetoothAdapter.bondedDevices
+        bluetoothAdapter?.bondedDevices
 
         // No need for duplicate entries
         if (!bluetoothList.contains(BluetoothEntry(deviceName, deviceHardwareAddress)))
@@ -145,11 +145,20 @@ class BluetoothRepositoryImpl(
         return Result.build { Unit }
     }
 
+    //TODO refactor this mess
     override fun unRegisterReceiver(): Result<Exception, Unit> {
-        if (bluetoothAdapter.isDiscovering)
-            bluetoothAdapter.cancelDiscovery()
+        bluetoothAdapter?.let {
+            if (bluetoothAdapter!!.isDiscovering)
+                bluetoothAdapter!!.cancelDiscovery()
+        }
 
-        context.unregisterReceiver(bluetoothReceiver)
+        bluetoothReceiver?.let {
+            try {
+                context.unregisterReceiver(bluetoothReceiver)
+            } catch (exception: Exception) {
+                return Result.build { Unit }
+            }
+        }
 
         return Result.build { Unit }
     }

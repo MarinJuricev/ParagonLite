@@ -4,10 +4,10 @@ import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.repository.IArticleRepository
 
-class CreateArticle {
-
+class CreateArticle(
+    private val articleRepository: IArticleRepository
+) {
     suspend fun execute(
-        articleRepository: IArticleRepository,
         article: Article
     ): Result<Exception, Unit> = articleRepository.createArticle(article)
 }

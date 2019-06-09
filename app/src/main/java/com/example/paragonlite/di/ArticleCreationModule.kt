@@ -5,5 +5,5 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val articleCreationFeatureModule = module {
-    viewModel { ArticleCreationViewModel(get(), get()) }
+    viewModel { ArticleCreationViewModel(get()) }
 }

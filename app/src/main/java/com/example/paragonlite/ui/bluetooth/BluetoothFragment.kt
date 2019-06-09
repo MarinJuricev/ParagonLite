@@ -72,7 +72,7 @@ class BluetoothFragment : Fragment() {
     }
 
     private fun showMacAddressSavedSuccess() =
-        Snackbar.make(bluetoothRoot, getString(R.string.printer_saved), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(bluetoothRoot, getString(R.string.mac_address_saved), Snackbar.LENGTH_SHORT).show()
 
 
     private fun showMacAddressSavedFail() =

@@ -5,9 +5,9 @@ import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.repository.IArticleRepository
 
-class GetArticles {
-
+class GetArticles(
+    private val articleRepository: IArticleRepository
+) {
     suspend fun execute(
-        articleRepository: IArticleRepository
     ): Result<Exception, LiveData<List<Article>>> = articleRepository.getArticles()
 }

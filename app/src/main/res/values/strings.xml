@@ -19,7 +19,7 @@
     </string>
     <string name="printer_name">Printer name:</string>
     <string name="mac_address">MAC Adress</string>
-    <string name="printer_saved">Printer uspjesno spasen</string>
+    <string name="mac_address_saved">Adresa uspjesno spasena</string>
     <string name="printer_save_error">Doslo je do pogreske kod spremanja printera!</string>
     <string name="print">Print</string>
     <string name="print_checkout">Printaj racun?</string>

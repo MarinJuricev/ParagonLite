@@ -6,12 +6,13 @@ import com.example.domain.repository.IBluetoothRepository
 import com.example.domain.repository.ICheckoutRepository
 import kotlinx.coroutines.withContext
 
-class PrintCheckout {
+class PrintCheckout(
+    private val bluetoothRepository: IBluetoothRepository,
+    private val checkoutRepository: ICheckoutRepository,
+    private val dispatcherProvider: DispatcherProvider
+) {
 
     suspend fun execute(
-        bluetoothRepository: IBluetoothRepository,
-        checkoutRepository: ICheckoutRepository,
-        dispatcherProvider: DispatcherProvider,
         valuesToPrint: List<ByteArray>,
         savedMacAddress: String
     ): Result<Exception, Unit> {

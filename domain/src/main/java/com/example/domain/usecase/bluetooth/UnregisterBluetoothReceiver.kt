@@ -1,11 +1,10 @@
 package com.example.domain.usecase.bluetooth
 
-import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
 
-class GetNearbyBluetoothDevices(
+class UnregisterBluetoothReceiver(
     private val bluetoothRepository: IBluetoothRepository
 ) {
-    suspend fun execute(): Result<Exception, List<BluetoothEntry>> = bluetoothRepository.getNearbyBluetoothDevices()
+    fun execute(): Result<Exception, Unit> = bluetoothRepository.unRegisterReceiver()
 }

@@ -14,13 +14,13 @@ private const val SHENZEN_LINE_LENGHT_WIDTH_1 = 30 //24
 private const val SHENZEN_CENTER = 17 // 24
 
 
-class GeneratePrintData {
-
+class GeneratePrintData(
+    private val dispatcherProvider: DispatcherProvider
+) {
     suspend fun execute(
         valuesToPrint: List<CheckoutArticle>,
         checkoutSum: String,
-        receiptNumber: Int,
-        dispatcherProvider: DispatcherProvider
+        receiptNumber: Int
     ): Result<Exception, List<ByteArray>> =
         withContext(dispatcherProvider.provideComputationContext()) {
 

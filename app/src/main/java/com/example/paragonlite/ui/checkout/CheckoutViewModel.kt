@@ -3,11 +3,8 @@ package com.example.paragonlite.ui.checkout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
-import com.example.domain.repository.IBluetoothRepository
-import com.example.domain.repository.ICheckoutRepository
 import com.example.domain.usecase.bluetooth.GetBluetoothAddress
 import com.example.domain.usecase.checkout.CalculateCheckout
 import com.example.domain.usecase.checkout.DeleteCheckoutArticle
@@ -21,8 +18,6 @@ import kotlinx.coroutines.launch
 
 
 class CheckoutViewModel(
-    private val checkoutRepository: ICheckoutRepository,
-    private val bluetoothRepository: IBluetoothRepository,
     private val getArticlesInCheckout: GetArticlesInCheckout,
     private val deleteCheckoutArticle: DeleteCheckoutArticle,
     private val calculateCheckout: CalculateCheckout,
@@ -30,8 +25,7 @@ class CheckoutViewModel(
     private val generatePrintData: GeneratePrintData,
     private val printCheckout: PrintCheckout,
     private val getReceiptNumber: GetReceiptNumber,
-    private val saveReceiptNumber: SaveReceiptNumber,
-    private val dispatcherProvider: DispatcherProvider
+    private val saveReceiptNumber: SaveReceiptNumber
 ) : BaseViewModel() {
 
     init {
@@ -52,7 +46,7 @@ class CheckoutViewModel(
     val getBluetoothAddressError: LiveData<Boolean> get() = _getBluetoothAddressError
 
     private fun fetchCheckoutArticles() = launch {
-        when (val result = getArticlesInCheckout.execute(checkoutRepository)) {
+        when (val result = getArticlesInCheckout.execute()) {
             is Result.Value -> {
                 _checkoutArticles.addSource(
                     result.value
@@ -68,18 +62,18 @@ class CheckoutViewModel(
     private fun updateCheckoutAmount(newArticleList: List<CheckoutArticle>?) = launch {
         val list = newArticleList ?: listOf()
 
-        _checkoutValue.postValue(calculateCheckout.execute(dispatcherProvider, list))
+        _checkoutValue.postValue(calculateCheckout.execute(list))
     }
 
     fun deleteArticle(checkoutArticle: CheckoutArticle) = launch {
-        when (deleteCheckoutArticle.execute(checkoutRepository, checkoutArticle)) {
+        when (deleteCheckoutArticle.execute(checkoutArticle)) {
             is Result.Value -> _isArticleDeletionSuccess.postValue(true)
             is Result.Error -> _isArticleDeletionSuccess.postValue(false)
         }
     }
 
     fun printCheckout() = launch {
-        when (val result = getBluetoothMacAddress.execute(bluetoothRepository)) {
+        when (val result = getBluetoothMacAddress.execute()) {
             is Result.Value -> {
                 getReceiptNumber(result.value)
             }
@@ -88,7 +82,7 @@ class CheckoutViewModel(
     }
 
     private fun getReceiptNumber(bluetoothMacAddress: String) = launch {
-        when (val result = getReceiptNumber.execute(checkoutRepository)) {
+        when (val result = getReceiptNumber.execute()) {
             is Result.Value -> {
                 generateDataToPrint(bluetoothMacAddress, result.value)
             }
@@ -100,8 +94,7 @@ class CheckoutViewModel(
         when (val result = generatePrintData.execute(
             articleData.value!!,
             checkoutValue.value ?: "",
-            receiptNumber,
-            dispatcherProvider
+            receiptNumber
         )) {
             is Result.Value -> {
                 printGeneratedData(result.value, macAddress, receiptNumber)
@@ -116,15 +109,12 @@ class CheckoutViewModel(
         receiptNumber: Int
     ) {
         when (printCheckout.execute(
-            bluetoothRepository,
-            checkoutRepository,
-            dispatcherProvider,
             dataToPrint,
             macAddress
         )) {
             is Result.Value -> {
                 val incrementedReceiptNumber = receiptNumber + 1
-                saveReceiptNumber.execute(checkoutRepository, incrementedReceiptNumber)
+                saveReceiptNumber.execute(incrementedReceiptNumber)
             }
             is Result.Error -> TODO()
         }

@@ -4,10 +4,10 @@ import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.repository.IArticleRepository
 
-class DeleteArticle {
-
+class DeleteArticle(
+    private val articleRepository: IArticleRepository
+) {
     suspend fun execute(
-        articleRepository: IArticleRepository,
         article: Article
     ): Result<Exception, Unit> = articleRepository.deleteArticle(article)
 }

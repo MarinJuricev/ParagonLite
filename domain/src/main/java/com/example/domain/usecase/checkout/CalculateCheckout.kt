@@ -4,12 +4,12 @@ import com.example.domain.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import kotlinx.coroutines.withContext
 
-class CalculateCheckout {
-
+class CalculateCheckout(
+    private val dispatcherProvider: DispatcherProvider
+) {
     suspend fun execute(
-        dispatcherProvider: DispatcherProvider,
         checkoutList: List<CheckoutArticle>
-    ) = withContext(dispatcherProvider.provideComputationContext()){
+    ) = withContext(dispatcherProvider.provideComputationContext()) {
         var result = 0.0
 
         checkoutList.map {

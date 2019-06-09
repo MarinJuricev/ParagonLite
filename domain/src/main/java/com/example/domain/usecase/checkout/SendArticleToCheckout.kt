@@ -4,10 +4,10 @@ import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.repository.ICheckoutRepository
 
-class SendArticleToCheckout {
-
+class SendArticleToCheckout(
+    private val checkoutRepository: ICheckoutRepository
+) {
     suspend fun execute(
-        checkoutRepository: ICheckoutRepository,
         article: Article
     ): Result<Exception, Unit> = checkoutRepository.sendArticleToCheckout(article)
 }

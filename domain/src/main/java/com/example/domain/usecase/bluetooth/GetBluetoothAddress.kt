@@ -4,11 +4,10 @@ import com.example.domain.error.ParagonError
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
 
-class GetBluetoothAddress {
-
-    suspend fun execute(
-        bluetoothRepository: IBluetoothRepository
-    ): Result<Exception, String> {
+class GetBluetoothAddress(
+    private val bluetoothRepository: IBluetoothRepository
+) {
+    suspend fun execute(): Result<Exception, String> {
 
         val savedMacAddress = bluetoothRepository.getMacAddress()
 

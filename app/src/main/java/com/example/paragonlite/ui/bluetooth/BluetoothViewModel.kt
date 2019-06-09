@@ -5,14 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
-import com.example.domain.repository.IBluetoothRepository
 import com.example.domain.usecase.bluetooth.GetNearbyBluetoothDevices
 import com.example.domain.usecase.bluetooth.SaveBluetoothAddress
+import com.example.domain.usecase.bluetooth.UnregisterBluetoothReceiver
 import com.example.paragonlite.shared.BaseViewModel
 import kotlinx.coroutines.launch
 
 class BluetoothViewModel(
-    private val bluetoothRepository: IBluetoothRepository,
+    private val unregisterBluetoothReceiver: UnregisterBluetoothReceiver,
     private val getBluetoothDevices: GetNearbyBluetoothDevices,
     private val saveBluetoothAddress: SaveBluetoothAddress
 ) : BaseViewModel() {
@@ -47,7 +47,7 @@ class BluetoothViewModel(
     }
 
     fun getBluetoothDevices() = launch {
-        when (val result = getBluetoothDevices.execute(bluetoothRepository)) {
+        when (val result = getBluetoothDevices.execute()) {
             is Result.Value -> _bluetoothData.postValue(result.value)
             is Result.Error -> _bluetoothData.postValue(listOf())
         }
@@ -55,11 +55,11 @@ class BluetoothViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        bluetoothRepository.unRegisterReceiver()
+        unregisterBluetoothReceiver.execute()
     }
 
     fun saveMacAddress(macAddress: String) = launch {
-        when (saveBluetoothAddress.execute(bluetoothRepository, macAddress)) {
+        when (saveBluetoothAddress.execute(macAddress)) {
             is Result.Value -> _isMacAddressSaved.postValue(true)
             is Result.Error -> _isMacAddressSaved.postValue(false)
         }

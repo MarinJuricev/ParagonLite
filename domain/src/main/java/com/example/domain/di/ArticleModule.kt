@@ -6,7 +6,7 @@ import com.example.domain.usecase.article.GetArticles
 import org.koin.dsl.module
 
 val articleModule = module {
-    factory { CreateArticle() }
-    factory { GetArticles() }
-    factory { DeleteArticle() }
+    factory { CreateArticle(get()) }
+    factory { GetArticles(get()) }
+    factory { DeleteArticle(get()) }
 }
