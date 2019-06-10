@@ -22,7 +22,7 @@ class CheckoutRepositoryImpl(
     private val checkoutDao: CheckoutDao
 ) : ICheckoutRepository {
 
-    override suspend fun sendArticleToCheckout(article: Article): Result<Exception, Unit> =
+    override suspend fun sendArticleToCheckout(article: Article): Result<Exception, LiveData<Int>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
             val previousArticleCount = getPreviousCheckoutArticleNumberIfAvailable(article) ?: 0
@@ -30,8 +30,14 @@ class CheckoutRepositoryImpl(
 
             when (checkoutDao.upsert(article.toRoomCheckoutArticle(newArticleCountInCheckout))) {
                 0L -> Result.build { throw ParagonError.LocalIOException }
-                else -> Result.build { Unit }
+                else -> Result.build { getArticleInCheckoutSize() }
             }
+        }
+
+    // TODO OWN USE CASE IT WILL GET REPEATED TWICE
+    private suspend fun getArticleInCheckoutSize(): LiveData<Int> =
+        withContext(dispatcherProvider.provideIOContext()) {
+            checkoutDao.getCheckoutArticleCount()
         }
 
     // TODO REFACTOR INTO IT'S OWN USECASE!

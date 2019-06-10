@@ -21,16 +21,16 @@ class BluetoothViewModel(
         isBluetoothAvailable()
     }
 
-    private val _isBluetoothAvailable = MutableLiveData<Boolean>()
+    private val _isBluetoothAvailable by lazy { MutableLiveData<Boolean>() }
     val isBluetoothAvailable: LiveData<Boolean> get() = _isBluetoothAvailable
 
-    private val _isBluetoothEnabled = MutableLiveData<Boolean>()
+    private val _isBluetoothEnabled by lazy { MutableLiveData<Boolean>() }
     val isBluetoothEnabled: LiveData<Boolean> get() = _isBluetoothEnabled
 
-    private val _bluetoothData = MutableLiveData<List<BluetoothEntry>>()
+    private val _bluetoothData by lazy { MutableLiveData<List<BluetoothEntry>>() }
     val bluetoothData: LiveData<List<BluetoothEntry>> get() = _bluetoothData
 
-    private val _isMacAddressSaved = MutableLiveData<Boolean>()
+    private val _isMacAddressSaved by lazy { MutableLiveData<Boolean>() }
     val isMacAddressSaved: LiveData<Boolean> get() = _isMacAddressSaved
 
     // TODO Implement BLE ?

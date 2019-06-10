@@ -32,18 +32,21 @@ class CheckoutViewModel(
         fetchCheckoutArticles()
     }
 
-    private val _checkoutArticles = MediatorLiveData<List<CheckoutArticle>>()
+    private val _checkoutArticles by lazy { MediatorLiveData<List<CheckoutArticle>>() }
     val articleData: LiveData<List<CheckoutArticle>> get() = _checkoutArticles
 
-    private val _isArticleDeletionSuccess = MutableLiveData<Boolean>()
+    private val _isArticleDeletionSuccess by lazy { MutableLiveData<Boolean>() }
     //TODO Implement after crunch is over...
     val isArticleDeletionSuccess: LiveData<Boolean> get() = _isArticleDeletionSuccess
 
-    private val _checkoutValue = MutableLiveData<String>()
+    private val _checkoutValue by lazy { MutableLiveData<String>() }
     val checkoutValue: LiveData<String> get() = _checkoutValue
 
-    private val _getBluetoothAddressError = MutableLiveData<Boolean>()
+    private val _getBluetoothAddressError by lazy { MutableLiveData<Boolean>() }
     val getBluetoothAddressError: LiveData<Boolean> get() = _getBluetoothAddressError
+
+    private val _checkoutBadgeCount by lazy { MediatorLiveData<Int>() }
+    val checkoutBadgeCount: LiveData<Int> get() = _checkoutBadgeCount
 
     private fun fetchCheckoutArticles() = launch {
         when (val result = getArticlesInCheckout.execute()) {

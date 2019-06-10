@@ -21,11 +21,14 @@ class ArticlesListViewModel(
         fetchArticles()
     }
 
-    private val _articleData = MediatorLiveData<List<Article>>()
+    private val _articleData by lazy { MediatorLiveData<List<Article>>() }
     val articleData: LiveData<List<Article>> get() = _articleData
 
-    private val _isArticleDeletionSuccess = MutableLiveData<Boolean>()
+    private val _isArticleDeletionSuccess by lazy { MutableLiveData<Boolean>() }
     val isArticleDeletionSuccess: LiveData<Boolean> get() = _isArticleDeletionSuccess
+
+    private val _checkoutBadgeCount by lazy { MediatorLiveData<Int>() }
+    val checkoutBadgeCount: LiveData<Int> get() = _checkoutBadgeCount
 
     private fun fetchArticles() = launch {
         when (val result = getArticles.execute()) {
@@ -48,10 +51,15 @@ class ArticlesListViewModel(
     }
 
     fun sendArticleToCheckout(article: Article) = launch {
-        when (sendArticleToCheckout.execute(article)) {
-            //TODO IMPLEMENT ?
-//            is Result.Value ->
-//            is Result.Error ->
+        when (val result = sendArticleToCheckout.execute(article)) {
+            is Result.Value -> {
+                _checkoutBadgeCount.addSource(
+                    result.value
+                ) {
+                    _checkoutBadgeCount.value = it ?: 0
+                }
+            }
+            is Result.Error -> _checkoutBadgeCount.postValue(0)
         }
     }
 }

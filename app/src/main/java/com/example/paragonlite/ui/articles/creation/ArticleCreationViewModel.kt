@@ -12,7 +12,7 @@ class ArticleCreationViewModel(
     private val createArticle: CreateArticle
 ) : BaseViewModel() {
 
-    private val _isArticleCreationSuccess = MutableLiveData<Boolean>()
+    private val _isArticleCreationSuccess by lazy { MutableLiveData<Boolean>() }
     val isArticleCreationSuccess: LiveData<Boolean> get() = _isArticleCreationSuccess
 
     fun onSaveClick(article: Article) = launch {

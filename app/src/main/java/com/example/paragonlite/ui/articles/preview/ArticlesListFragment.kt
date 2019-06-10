@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,6 +12,7 @@ import com.example.domain.model.Article
 import com.example.paragonlite.R
 import com.example.paragonlite.databinding.ArticlesListFragmentBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.articles_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -58,7 +58,20 @@ class ArticlesListFragment : Fragment() {
             }
         })
 
+        articlesListViewModel.checkoutBadgeCount.observe(this@ArticlesListFragment, Observer {
+            when (it) {
+                0 -> hideCheckoutBadge()
+                else -> updateCheckoutBadgeCount(it)
+            }
+        })
+
         rvArticleList.adapter = articleAdapter
+    }
+
+    private fun hideCheckoutBadge() = activity?.bottom_nav?.removeBadge(R.id.navigation_checkout)
+
+    private fun updateCheckoutBadgeCount(badgeCount: Int) {
+        activity?.bottom_nav?.showBadge(R.id.navigation_checkout)?.number = badgeCount
     }
 
     private fun showArticleDeletionSuccess() =
@@ -68,7 +81,7 @@ class ArticlesListFragment : Fragment() {
         Snackbar.make(articleListRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG).show()
 
     private fun onArticleClick(article: Article) {
-        Toast.makeText(context, "Artikl: ${article.name} dodan", Toast.LENGTH_SHORT).show()
+        activity?.bottom_nav?.showBadge(R.id.navigation_checkout)
 
         articlesListViewModel.sendArticleToCheckout(article)
     }

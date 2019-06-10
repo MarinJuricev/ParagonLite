@@ -13,6 +13,9 @@ interface CheckoutDao {
     @Query("SELECT * FROM checkout_table WHERE name= :articleName")
     fun getArticle(articleName:  String): RoomCheckout
 
+    @Query("SELECT SUM(inCheckout) FROM checkout_table ")
+    fun getCheckoutArticleCount(): LiveData<Int>
+
     //if update successful, will return number of rows effected, which should be 1
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsert(article: RoomCheckout): Long

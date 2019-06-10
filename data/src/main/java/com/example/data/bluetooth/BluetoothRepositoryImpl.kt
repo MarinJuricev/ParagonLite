@@ -73,13 +73,19 @@ class BluetoothRepositoryImpl(
         intent: Intent
     ) {
         val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-        val deviceName = device.name
-        val deviceHardwareAddress = device.address
+        val deviceName = device.name ?: ""
+        val deviceHardwareAddress = device.address ?: ""
 
         bluetoothAdapter?.bondedDevices
 
         // No need for duplicate entries
-        if (!bluetoothList.contains(BluetoothEntry(deviceName, deviceHardwareAddress)))
+        if (deviceName != "" && deviceHardwareAddress != "" && !bluetoothList.contains(
+                BluetoothEntry(
+                    deviceName,
+                    deviceHardwareAddress
+                )
+            )
+        )
             bluetoothList.add(BluetoothEntry(deviceName, deviceHardwareAddress))
     }
 
