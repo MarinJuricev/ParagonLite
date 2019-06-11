@@ -9,13 +9,13 @@ class CalculateCheckout(
 ) {
     suspend fun execute(
         checkoutList: List<CheckoutArticle>
-    ) = withContext(dispatcherProvider.provideComputationContext()) {
-        var result = 0.0
+    ): String = withContext(dispatcherProvider.provideComputationContext()) {
+        var result = 0.00
 
         checkoutList.map {
             result += it.price * it.inCheckout
         }
 
-        return@withContext result.toString()
+        return@withContext "%.2f".format(result)
     }
 }

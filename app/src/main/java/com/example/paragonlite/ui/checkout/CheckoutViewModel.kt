@@ -9,6 +9,7 @@ import com.example.domain.usecase.bluetooth.GetBluetoothAddress
 import com.example.domain.usecase.checkout.CalculateCheckout
 import com.example.domain.usecase.checkout.DeleteCheckoutArticle
 import com.example.domain.usecase.checkout.GetArticlesInCheckout
+import com.example.domain.usecase.checkout.GetArticlesInCheckoutSize
 import com.example.domain.usecase.print.GeneratePrintData
 import com.example.domain.usecase.print.GetReceiptNumber
 import com.example.domain.usecase.print.PrintCheckout
@@ -25,11 +26,13 @@ class CheckoutViewModel(
     private val generatePrintData: GeneratePrintData,
     private val printCheckout: PrintCheckout,
     private val getReceiptNumber: GetReceiptNumber,
-    private val saveReceiptNumber: SaveReceiptNumber
+    private val saveReceiptNumber: SaveReceiptNumber,
+    private val getArticlesInCheckoutSize: GetArticlesInCheckoutSize
 ) : BaseViewModel() {
 
     init {
         fetchCheckoutArticles()
+        startObservingCheckoutSize()
     }
 
     private val _checkoutArticles by lazy { MediatorLiveData<List<CheckoutArticle>>() }
@@ -59,6 +62,14 @@ class CheckoutViewModel(
                 }
             }
             is Result.Error -> _checkoutArticles.value = listOf()
+        }
+    }
+
+    private fun startObservingCheckoutSize() = launch {
+        val result = getArticlesInCheckoutSize.execute()
+
+        _checkoutBadgeCount.addSource(result) {
+            _checkoutBadgeCount.value = it ?: 0
         }
     }
 

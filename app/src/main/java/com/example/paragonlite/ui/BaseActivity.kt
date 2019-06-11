@@ -1,8 +1,10 @@
 package com.example.paragonlite.ui
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -28,7 +30,13 @@ class BaseActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         setupNavController()
-        requestFineLocationPermission()
+
+        if(!isCoarseLocationPermissionGranted())
+            requestFineLocationPermission()
+    }
+
+    private fun isCoarseLocationPermissionGranted(): Boolean{
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestFineLocationPermission() {
@@ -50,8 +58,7 @@ class BaseActivity : AppCompatActivity() {
                 override fun onPermissionDenied(response: PermissionDeniedResponse?) {
                     Snackbar.make(root, getString(R.string.permission_denied), Snackbar.LENGTH_LONG).show()
                 }
-            })
-            .check()
+            }).check()
     }
 
     private fun setupNavController() {

@@ -13,6 +13,7 @@ import com.example.paragonlite.R
 import com.example.paragonlite.databinding.CheckoutFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.checkout_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -62,9 +63,22 @@ class CheckoutFragment : Fragment() {
                 showBluetoothMacAddressError()
         })
 
+        checkoutViewModel.checkoutBadgeCount.observe(this@CheckoutFragment, Observer {
+            when (it) {
+                0 -> hideCheckoutBadge()
+                else -> updateCheckoutBadgeCount(it)
+            }
+        })
+
         fabPrint.setOnClickListener {
             buildDialog()
         }
+    }
+
+    private fun hideCheckoutBadge() = activity?.bottom_nav?.removeBadge(R.id.navigation_checkout)
+
+    private fun updateCheckoutBadgeCount(badgeCount: Int) {
+        activity?.bottom_nav?.showBadge(R.id.navigation_checkout)?.number = badgeCount
     }
 
     private fun showBluetoothMacAddressError() {

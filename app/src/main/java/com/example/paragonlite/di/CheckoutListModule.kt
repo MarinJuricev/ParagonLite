@@ -8,7 +8,7 @@ val checkoutListModule = module {
     viewModel {
         CheckoutViewModel(
             get(), get(), get(), get(), get(), get(),
-            get(), get()
+            get(), get(), get()
         )
     }
 }
