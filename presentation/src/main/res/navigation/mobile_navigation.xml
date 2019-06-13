@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/mobile_navigation"
+            app:startDestination="@id/navigation_checkout">
+
+    <fragment
+            android:id="@+id/navigation_checkout"
+            android:name="com.example.presentation.ui.checkout.CheckoutFragment"
+            android:label="ParagonLite"
+            tools:layout="@layout/checkout_fragment"/>
+    <fragment
+            android:id="@+id/navigation_articles"
+            android:name="com.example.presentation.ui.articles.preview.ArticlesListFragment"
+            android:label="ParagonLite"
+            tools:layout="@layout/articles_list_fragment">
+        <action
+                android:id="@+id/action_navigation_articles_to_articleCreation"
+                app:destination="@id/articleCreation"/>
+    </fragment>
+    <fragment
+            android:id="@+id/navigation_bluetooth"
+            android:name="com.example.presentation.ui.bluetooth.BluetoothFragment"
+            android:label="ParagonLite"
+            tools:layout="@layout/bluetooth_fragment"/>
+    <fragment android:id="@+id/articleCreation"
+              android:name="com.example.presentation.ui.articles.creation.ArticleCreationFragment"
+              android:label="ParagonLite" tools:layout="@layout/article_creation_fragment"/>
+</navigation>

@@ -1,0 +1,83 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: "kotlin-kapt"
+
+apply plugin: 'androidx.navigation.safeargs'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation project(":domain")
+
+    implementation Dependencies.kotlinStandardLibrary
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    // Navigation
+    implementation Dependencies.navigationFragment
+    implementation Dependencies.navigationFragmentKtx
+    implementation Dependencies.navigationUi
+    implementation Dependencies.navigationUiKtx
+
+    // Kotlin Android Coroutines
+    implementation Dependencies.coroutinesCore
+    implementation Dependencies.coroutinesAndroid
+
+    // ViewModel
+    implementation Dependencies.lifecyleExtensions
+    implementation Dependencies.lifecycleViewModelKtx
+    kapt Dependencies.lifeCycleCompiler
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+
+    // Permissions
+    implementation 'com.karumi:dexter:5.0.0'
+
+    // Koin for Kotlin
+    implementation Dependencies.koinCore
+    // Koin extended & experimental features
+    implementation Dependencies.koinCoreExt
+    // Koin AndroidX Scope feature
+    implementation Dependencies.koinAndrodixScope
+    // Koin AndroidX ViewModel feature
+    implementation Dependencies.koinAndroidxViewModel
+    // Koin for Unit tests
+    testImplementation Dependencies.koinTest
+
+    testImplementation 'junit:junit:4.12'
+}
