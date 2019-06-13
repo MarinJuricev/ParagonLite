@@ -31,17 +31,20 @@
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
                     android:layout_marginBottom="8dp"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/fabPrint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:backgroundTint="@color/colorAccent"
+                    app:iconTint="#ffffff"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp"
                     android:visibility="gone"
                     android:layout_marginBottom="8dp"
                     android:elevation="4dp"
-                    android:src="@drawable/ic_print_24dp"
+                    android:text="@string/print"
+                    android:textColor="#ffffff"
+                    app:icon="@drawable/ic_print_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

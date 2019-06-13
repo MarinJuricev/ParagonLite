@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Article
 import com.example.presentation.R
 import com.example.presentation.databinding.ArticlesListFragmentBinding
@@ -65,7 +66,20 @@ class ArticlesListFragment : Fragment() {
             }
         })
 
+        listenToRecyclerScroll()
+
         rvArticleList.adapter = articleAdapter
+    }
+
+    private fun listenToRecyclerScroll() {
+        rvArticleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0)
+                    fabArticleCreation.hide(true)
+                else if (dy < 0)
+                    fabArticleCreation.show()
+            }
+        })
     }
 
     private fun hideCheckoutBadge() = activity?.bottom_nav?.removeBadge(R.id.navigation_checkout)

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.CheckoutArticle
 import com.example.presentation.R
 import com.example.presentation.databinding.CheckoutFragmentBinding
@@ -46,8 +47,6 @@ class CheckoutFragment : Fragment() {
             checkoutAdapter.submitList(it)
         })
 
-        rvCheckoutList.adapter = checkoutAdapter
-
         checkoutViewModel.checkoutValue.observe(this@CheckoutFragment, Observer {
             when (it) {
                 "0.0" -> hidePrintFab()
@@ -73,6 +72,21 @@ class CheckoutFragment : Fragment() {
         fabPrint.setOnClickListener {
             buildDialog()
         }
+
+        listenToRecyclerScroll()
+
+        rvCheckoutList.adapter = checkoutAdapter
+    }
+
+    private fun listenToRecyclerScroll() {
+        rvCheckoutList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0)
+                    fabPrint.hide(true)
+                else if (dy < 0)
+                    fabPrint.show()
+            }
+        })
     }
 
     private fun hideCheckoutBadge() = activity?.bottom_nav?.removeBadge(R.id.navigation_checkout)
