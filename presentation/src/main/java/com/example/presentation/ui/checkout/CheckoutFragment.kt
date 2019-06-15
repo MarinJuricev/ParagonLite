@@ -71,6 +71,8 @@ class CheckoutFragment : Fragment() {
 
         fabPrint.setOnClickListener {
             buildDialog()
+            shrinkFabIfNeeded()
+
         }
 
         listenToRecyclerScroll()
@@ -109,12 +111,25 @@ class CheckoutFragment : Fragment() {
             .setTitle(getString(R.string.printing))
             .setMessage(getString(R.string.print_checkout))
             .setPositiveButton("OK", DialogInterface.OnClickListener(positiveDialogClick))
+            .setOnDismissListener { extendFabIfNeeded() }
             .show()
     }
 
+    private fun shrinkFabIfNeeded() {
+        if (fabPrint.isExtended)
+            fabPrint.shrink()
+    }
+
     private val positiveDialogClick = { dialog: DialogInterface, _: Int ->
+        extendFabIfNeeded()
+
         checkoutViewModel.printCheckout()
         dialog.dismiss()
+    }
+
+    private fun extendFabIfNeeded() {
+        if (!fabPrint.isExtended)
+            fabPrint.extend()
     }
 
     private fun showPrintFab() = fabPrint.show()
