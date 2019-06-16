@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.CheckoutArticle
 import com.example.presentation.R
 import com.example.presentation.databinding.CheckoutFragmentBinding
+import com.example.presentation.ext.extendFabIfPossible
+import com.example.presentation.ext.shrinkFabIfPossible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,6 +46,12 @@ class CheckoutFragment : Fragment() {
         val checkoutAdapter = CheckoutAdapter { checkoutArticle: CheckoutArticle -> onDeleteClick(checkoutArticle) }
 
         checkoutViewModel.articleData.observe(this@CheckoutFragment, Observer {
+            // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
+            // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
+            // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
+            if(checkoutAdapter.currentList.isEmpty())
+                checkoutAdapter.notifyDataSetChanged()
+
             checkoutAdapter.submitList(it)
         })
 
@@ -71,7 +79,7 @@ class CheckoutFragment : Fragment() {
 
         fabPrint.setOnClickListener {
             buildDialog()
-            shrinkFabIfNeeded()
+            fabPrint.shrinkFabIfPossible()
 
         }
 
@@ -100,7 +108,7 @@ class CheckoutFragment : Fragment() {
     private fun showBluetoothMacAddressError() {
         val snack = Snackbar.make(
             checkoutRoot,
-            "Nismo nasli spremljenu bluetooth adresu, molimo spojite se na printer.",
+            getString(R.string.no_saved_bluetooth_address_warning),
             Snackbar.LENGTH_LONG
         )
         snack.show()
@@ -111,25 +119,15 @@ class CheckoutFragment : Fragment() {
             .setTitle(getString(R.string.printing))
             .setMessage(getString(R.string.print_checkout))
             .setPositiveButton("OK", DialogInterface.OnClickListener(positiveDialogClick))
-            .setOnDismissListener { extendFabIfNeeded() }
+            .setOnDismissListener { fabPrint.extendFabIfPossible() }
             .show()
     }
 
-    private fun shrinkFabIfNeeded() {
-        if (fabPrint.isExtended)
-            fabPrint.shrink()
-    }
-
     private val positiveDialogClick = { dialog: DialogInterface, _: Int ->
-        extendFabIfNeeded()
+        fabPrint.extendFabIfPossible()
 
         checkoutViewModel.printCheckout()
         dialog.dismiss()
-    }
-
-    private fun extendFabIfNeeded() {
-        if (!fabPrint.isExtended)
-            fabPrint.extend()
     }
 
     private fun showPrintFab() = fabPrint.show()

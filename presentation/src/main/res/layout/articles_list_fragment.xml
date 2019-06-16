@@ -27,7 +27,7 @@
                     app:iconTint="#ffffff"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/dodaj_artikl"
+                    android:text="@string/add_article"
                     android:textColor="#ffffff"
                     app:icon="@drawable/ic_add_white_24dp"
                     android:layout_marginBottom="8dp"

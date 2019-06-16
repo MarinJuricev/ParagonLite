@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.presentation.R
 import com.example.presentation.databinding.BluetoothFragmentBinding
+import com.example.presentation.ext.extendFabIfPossible
+import com.example.presentation.ext.shrinkFabIfPossible
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bluetooth_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +40,6 @@ class BluetoothFragment : Fragment() {
 
         bluetoothViewModel.isBluetoothAvailable.observe(this@BluetoothFragment, Observer {
             handleBluetoothAvailability(it)
-            bluetoothViewModel.getBluetoothDevices()
         })
 
         bluetoothViewModel.isBluetoothEnabled.observe(this@BluetoothFragment, Observer { isBluetoothEnabled ->
@@ -52,12 +53,18 @@ class BluetoothFragment : Fragment() {
     }
 
     private fun bindUI() {
-        pbBluetooth.show()
-
         val blueToothAdapter = BluetoothDeviceAdapter { macAddress -> saveBluetoothMACAddress(macAddress) }
 
         bluetoothViewModel.bluetoothData.observe(this@BluetoothFragment, Observer {
             pbBluetooth.hide()
+            fabActivateBluetoothSearch.extendFabIfPossible()
+
+            // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
+            // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
+            // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
+            if (blueToothAdapter.currentList.isEmpty())
+                blueToothAdapter.notifyDataSetChanged()
+
             blueToothAdapter.submitList(it)
         })
 
@@ -67,6 +74,13 @@ class BluetoothFragment : Fragment() {
                 false -> showMacAddressSavedFail()
             }
         })
+
+        fabActivateBluetoothSearch.setOnClickListener {
+            pbBluetooth.show()
+            fabActivateBluetoothSearch.shrinkFabIfPossible()
+
+            bluetoothViewModel.getBluetoothDevices()
+        }
 
         rvAvailableBluetoothDevices.adapter = blueToothAdapter
     }

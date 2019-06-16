@@ -33,7 +33,6 @@ class BluetoothViewModel(
     private val _isMacAddressSaved by lazy { MutableLiveData<Boolean>() }
     val isMacAddressSaved: LiveData<Boolean> get() = _isMacAddressSaved
 
-    // TODO Implement BLE ?
     fun isBluetoothAvailable() = launch {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 

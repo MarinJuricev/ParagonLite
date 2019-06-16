@@ -3,7 +3,7 @@
     <string name="kasa">Kasa</string>
     <string name="artikli">Artikli</string>
     <string name="spoji">Spoji</string>
-    <string name="dodaj_artikl">Dodaj Artikl</string>
+    <string name="add_article">Dodaj Artikl</string>
     <string name="nema_artikala_kreiraj_novi">Nema artikala,\nkreiraj novi</string>
     <string name="naziv_proizvoda">Naziv Proizvoda</string>
     <string name="cijena">Cijena</string>
@@ -25,6 +25,11 @@
     <string name="print_checkout">Printaj racun?</string>
     <string name="printing">PRINTANJE</string>
     <string name="article_name">Ime Artikla</string>
+    <string name="start_search">Pocni pretrazivanje</string>
+    <string name="no_saved_bluetooth_address_warning">Nismo nasli spremljenu bluetooth adresu, molimo spojite se na
+        printer.
+    </string>
+    <string name="add_bluetooth_devices">Dodaj Bluetooth Uredaje</string>
 
     <string-array name="array_kolicina">
         <item>Komad(kom)</item>
