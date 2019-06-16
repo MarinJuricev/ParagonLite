@@ -9,42 +9,51 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Article
 import com.example.presentation.R
+import com.example.presentation.shared.SimpleViewHolder
+import com.example.presentation.shared.inflateIntoSelf
+import com.example.presentation.ui.checkout.CheckoutAdapter
 import kotlinx.android.synthetic.main.item_article.view.*
+import kotlinx.android.synthetic.main.item_checkout.view.*
 
 class ArticleAdapter(
     private val onArticleClick: (Article) -> (Unit),
     private val onArticleLongClick: (Article) -> (Unit)
-) : ListAdapter<Article, ArticleAdapter.ArticleViewHolder>(ArticleDiffUtilCallback()) {
+) : ListAdapter<Article, SimpleViewHolder>(ArticleDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
+    private enum class ArticleViewType { CHECKOUT, NO_CONTENT }
 
-        return ArticleViewHolder(
-            inflater.inflate(R.layout.item_article, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleViewHolder {
+        return if (viewType == ArticleViewType.CHECKOUT.ordinal)
+            SimpleViewHolder(parent.inflateIntoSelf(R.layout.item_article))
+        else
+            SimpleViewHolder(parent.inflateIntoSelf(R.layout.no_articles_layout))
     }
 
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        getItem(position).let { article ->
-            with(holder) {
-                name.text = article.name
-                price.text = article.price.toString()
-                quantity.text = article.quantity
+    override fun getItemViewType(position: Int): Int {
+        return if (currentList.isEmpty()) ArticleViewType.NO_CONTENT.ordinal
+        else ArticleViewType.CHECKOUT.ordinal
+    }
 
-                root.setOnClickListener { onArticleClick(article) }
+    override fun getItemCount(): Int {
+        return if (currentList.isEmpty()) {
+            1
+        } else
+            currentList.size
+    }
 
-                root.setOnLongClickListener {
-                    onArticleLongClick(article)
-                    true
+    override fun onBindViewHolder(holder: SimpleViewHolder, position: Int) {
+        if (currentList.isNotEmpty()) {
+            getItem(position).let { article ->
+                holder.itemView.apply {
+                    tvArticleName.text = article.name
+                    tvArticlePrice.text = article.price.toString()
+                    tvArticleQuantity.text = article.quantity
+                    itemArticleRoot.setOnClickListener { onArticleClick(article) }
+                    itemArticleRoot.setOnLongClickListener {
+                        onArticleLongClick(article)
+                        true}
                 }
             }
         }
-    }
-
-    class ArticleViewHolder(root: View) : RecyclerView.ViewHolder(root) {
-        var name: AppCompatTextView = root.tvArticleName
-        var price: AppCompatTextView = root.tvArticlePrice
-        var quantity: AppCompatTextView = root.tvArticleQuantity
-        var root: ConstraintLayout = root.itemArticleRoot
     }
 }

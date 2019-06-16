@@ -17,7 +17,7 @@
             android:id="@+id/tvEmptyArticles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nema_artikala_kreiraj_novi"
+            android:text="@string/no_articles_create_new"
             android:lines="2"
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
