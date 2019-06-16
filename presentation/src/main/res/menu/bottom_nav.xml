@@ -16,4 +16,14 @@
             android:icon="@drawable/ic_bluetooth_24dp"
             android:title="@string/spoji"/>
 
+    <item
+            android:id="@+id/navigation_history"
+            android:icon="@drawable/ic_history_24dp"
+            android:title="@string/history"/>
+
+    <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/ic_settings_24dp"
+            android:title="@string/settings"/>
+
 </menu>

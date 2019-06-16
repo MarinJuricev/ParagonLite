@@ -27,4 +27,8 @@
     <fragment android:id="@+id/articleCreation"
               android:name="com.example.presentation.ui.articles.creation.ArticleCreationFragment"
               android:label="ParagonLite" tools:layout="@layout/article_creation_fragment"/>
+    <fragment android:id="@+id/navigation_history" android:name="com.example.presentation.ui.history.HistoryFragment"
+              android:label="ParagonLite"/>
+    <fragment android:id="@+id/navigation_settings" android:name="com.example.presentation.ui.settings.SettingsFragment"
+              android:label="ParagonLite"/>
 </navigation>
