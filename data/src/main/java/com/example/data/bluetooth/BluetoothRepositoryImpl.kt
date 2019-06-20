@@ -7,9 +7,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Looper
 import com.example.data.BLUETOOTH_MAC_ADDRESS_KEY
 import com.example.data.PACKAGE_NAME
+import com.example.data.toRoomBluetoothListList
 import com.example.domain.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.error.ParagonError.BluetoothException
@@ -17,13 +17,15 @@ import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
 import com.zebra.sdk.comm.BluetoothConnectionInsecure
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 
 class BluetoothRepositoryImpl(
     private val context: Context,
-    private val dispatcherProvider: DispatcherProvider
+    private val dispatcherProvider: DispatcherProvider,
+    private val bluetoothDao: BluetoothDao
 ) : IBluetoothRepository {
 
     private var bluetoothReceiver: BroadcastReceiver? = null
@@ -33,9 +35,17 @@ class BluetoothRepositoryImpl(
 
         return when (val result = startDiscovery()) {
             listOf<BluetoothEntry>() -> Result.build { throw BluetoothException }
-            else -> Result.build { result }
+            else -> Result.build {
+                saveBluetoothEntriesToLocalPersistence(result)
+                result
+            }
         }
     }
+
+    private suspend fun saveBluetoothEntriesToLocalPersistence(result: List<BluetoothEntry>) =
+        withContext(DispatcherProvider.provideIOContext()) {
+            bluetoothDao.insertAll(result.toRoomBluetoothListList())
+        }
 
     private suspend fun startDiscovery(): List<BluetoothEntry> {
         return suspendCancellableCoroutine { continuation ->
@@ -50,8 +60,9 @@ class BluetoothRepositoryImpl(
                 }
 
                 private fun resumeExecution() {
-                    if (continuation.isActive)
+                    if (continuation.isActive) {
                         continuation.resume(bluetoothList)
+                    }
                 }
             }
 
@@ -118,15 +129,11 @@ class BluetoothRepositoryImpl(
     override suspend fun connectAndSendDataOverBluetooth(
         savedMacAddress: String,
         dataToPrint: List<ByteArray>
-    ): Result<Exception, Unit> {
-
-        Thread(Runnable {
+    ): Result<Exception, Unit> =
+        withContext(dispatcherProvider.provideComputationContext()) {
             try {
                 // Instantiate insecure connection for given Bluetooth&reg; MAC Address.
                 val thePrinterConn = BluetoothConnectionInsecure(savedMacAddress)
-
-                // Initialize
-                Looper.prepare()
 
                 // Open the connection - physical connection is established here.
                 thePrinterConn.open()
@@ -136,20 +143,17 @@ class BluetoothRepositoryImpl(
                     thePrinterConn.write(data)
 
                 // Make sure the data got to the printer before closing the connection
-                Thread.sleep(500)
+                delay(500)
 
                 // Close the insecure connection to release resources.
                 thePrinterConn.close()
-
-                Looper.myLooper()!!.quit()
             } catch (e: Exception) {
                 // Handle communications error here.
                 e.printStackTrace()
+                Result.build { throw ParagonError.PrintException }
             }
-        }).start()
-        // TODO Error handling, make it a continuation coroutine ?
-        return Result.build { Unit }
-    }
+            Result.build { Unit }
+        }
 
     //TODO refactor this mess
     override fun unRegisterReceiver(): Result<Exception, Unit> {
@@ -162,7 +166,7 @@ class BluetoothRepositoryImpl(
             try {
                 context.unregisterReceiver(bluetoothReceiver)
             } catch (exception: Exception) {
-                return Result.build { Unit }
+                return Result.build { throw BluetoothException }
             }
         }
 

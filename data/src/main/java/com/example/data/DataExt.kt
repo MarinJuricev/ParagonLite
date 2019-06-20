@@ -1,9 +1,13 @@
 package com.example.data
 
 import com.example.data.model.RoomArticle
+import com.example.data.model.RoomBluetoothEntry
 import com.example.data.model.RoomCheckout
 import com.example.domain.model.Article
+import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.CheckoutArticle
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal val Article.toRoomArticle: RoomArticle
     get() = RoomArticle(
@@ -44,6 +48,21 @@ internal val RoomCheckout.toCheckoutArticle: CheckoutArticle
         this.inCheckout
     )
 
+internal fun BluetoothEntry.toRoomBluetooth(): RoomBluetoothEntry {
+    val currentTime = generateCurrentTime()
+
+    return RoomBluetoothEntry(
+        this.name,
+        this.macAddress,
+        currentTime
+    )
+}
+
+private fun generateCurrentTime(): String {
+    val formatter = SimpleDateFormat("dd.MM.yy hh:mm", Locale.ENGLISH)
+    return formatter.format(Date())
+}
+
 //Maps from lists of different Data Model types
 internal fun List<RoomArticle>.toArticleList(): List<Article> = this.flatMap {
     listOf(it.toArticle)
@@ -52,4 +71,9 @@ internal fun List<RoomArticle>.toArticleList(): List<Article> = this.flatMap {
 //Maps from lists of different Data Model types
 internal fun List<RoomCheckout>.toCheckoutList(): List<CheckoutArticle> = this.flatMap {
     listOf(it.toCheckoutArticle)
+}
+
+//Maps from lists of different Data Model types
+internal fun List<BluetoothEntry>.toRoomBluetoothListList(): List<RoomBluetoothEntry> = this.flatMap {
+    listOf(it.toRoomBluetooth())
 }

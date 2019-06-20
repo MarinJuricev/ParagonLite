@@ -1,6 +1,7 @@
 package com.example.data.di
 
 import com.example.data.article.ArticleDataBase
+import com.example.data.bluetooth.BluetoothDatabase
 import com.example.data.checkout.CheckoutDatabase
 import org.koin.dsl.module
 
@@ -10,5 +11,8 @@ val localPersistableModule = module {
 
     single { CheckoutDatabase.invoke(get()) }
     factory { (get() as CheckoutDatabase).checkoutDao() }
+
+    single { BluetoothDatabase.invoke(get()) }
+    factory { (get() as BluetoothDatabase).bluetoothDao() }
 
 }

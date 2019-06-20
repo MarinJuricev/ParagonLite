@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
-import com.example.domain.usecase.bluetooth.GetNearbyBluetoothDevices
+import com.example.domain.usecase.bluetooth.UpdateBluetoothData
 import com.example.domain.usecase.bluetooth.SaveBluetoothAddress
 import com.example.domain.usecase.bluetooth.UnregisterBluetoothReceiver
 import com.example.presentation.shared.BaseViewModel
@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 
 class BluetoothViewModel(
     private val unregisterBluetoothReceiver: UnregisterBluetoothReceiver,
-    private val getBluetoothDevices: GetNearbyBluetoothDevices,
-    private val saveBluetoothAddress: SaveBluetoothAddress
+    private val updateBluetoothData: UpdateBluetoothData,
+    private val saveBluetoothAddress: SaveBluetoothAddress,
+    private val getBluetoothData: GetBluetoothData
 ) : BaseViewModel() {
 
     init {
@@ -45,8 +46,14 @@ class BluetoothViewModel(
         _isBluetoothEnabled.postValue(bluetoothAdapter.isEnabled)
     }
 
-    fun getBluetoothDevices() = launch {
-        when (val result = getBluetoothDevices.execute()) {
+    fun getData() = launch {
+        when(val result = getBluetoothData.execute()){
+
+        }
+    }
+
+    fun updateBluetoothData() = launch {
+        when (val result = updateBluetoothData.execute()) {
             is Result.Value -> _bluetoothData.postValue(result.value)
             is Result.Error -> _bluetoothData.postValue(listOf())
         }

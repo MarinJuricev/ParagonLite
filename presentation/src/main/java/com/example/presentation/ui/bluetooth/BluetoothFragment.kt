@@ -62,8 +62,10 @@ class BluetoothFragment : Fragment() {
             // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
             // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
             // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
-            if (blueToothAdapter.currentList.isEmpty())
+            if (blueToothAdapter.currentList.isEmpty()){
+                blueToothAdapter.currentList.clear()
                 blueToothAdapter.notifyDataSetChanged()
+            }
 
             blueToothAdapter.submitList(it)
         })
@@ -79,7 +81,7 @@ class BluetoothFragment : Fragment() {
             pbBluetooth.show()
             fabActivateBluetoothSearch.shrinkFabIfPossible()
 
-            bluetoothViewModel.getBluetoothDevices()
+            bluetoothViewModel.updateBluetoothData()
         }
 
         rvAvailableBluetoothDevices.adapter = blueToothAdapter
