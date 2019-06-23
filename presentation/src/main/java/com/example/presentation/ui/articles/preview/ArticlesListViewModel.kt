@@ -35,8 +35,8 @@ class ArticlesListViewModel(
             is Result.Value -> {
                 _articleData.addSource(
                     result.value
-                ) { newArticleList ->
-                    _articleData.value = newArticleList
+                ) {
+                    _articleData.value = it
                 }
             }
             is Result.Error -> _articleData.postValue(null)

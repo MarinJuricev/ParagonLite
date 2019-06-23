@@ -58,7 +58,15 @@ internal fun BluetoothEntry.toRoomBluetooth(): RoomBluetoothEntry {
     )
 }
 
-private fun generateCurrentTime(): String {
+internal fun RoomBluetoothEntry.toBluetooth(): BluetoothEntry {
+    return BluetoothEntry(
+        this.name,
+        this.macAddress,
+        this.lastUpdated
+    )
+}
+
+internal fun generateCurrentTime(): String {
     val formatter = SimpleDateFormat("dd.MM.yy hh:mm", Locale.ENGLISH)
     return formatter.format(Date())
 }
@@ -74,6 +82,11 @@ internal fun List<RoomCheckout>.toCheckoutList(): List<CheckoutArticle> = this.f
 }
 
 //Maps from lists of different Data Model types
-internal fun List<BluetoothEntry>.toRoomBluetoothListList(): List<RoomBluetoothEntry> = this.flatMap {
+internal fun List<BluetoothEntry>.toRoomBluetoothList(): List<RoomBluetoothEntry> = this.flatMap {
     listOf(it.toRoomBluetooth())
+}
+
+//Maps from lists of different Data Model types
+internal fun List<RoomBluetoothEntry>.toBluetoothList(): List<BluetoothEntry> = this.flatMap {
+    listOf(it.toBluetooth())
 }

@@ -39,6 +39,7 @@ class BluetoothDeviceAdapter(
                 holder.itemView.apply {
                     tvBluetoothNameValue.text = device.name
                     tvBluetoothAdressValue.text = device.macAddress
+                    tvLastUpdatedValue.text = device.lastUpdated
                     bluetoothItemRoot.setOnClickListener { onBluetoothItemClick(device.macAddress) }
                 }
             }

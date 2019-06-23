@@ -1,9 +1,6 @@
 package com.example.domain.di
 
-import com.example.domain.usecase.bluetooth.GetBluetoothAddress
-import com.example.domain.usecase.bluetooth.UpdateBluetoothData
-import com.example.domain.usecase.bluetooth.SaveBluetoothAddress
-import com.example.domain.usecase.bluetooth.UnregisterBluetoothReceiver
+import com.example.domain.usecase.bluetooth.*
 import com.example.domain.usecase.print.GeneratePrintData
 import com.example.domain.usecase.print.GetReceiptNumber
 import com.example.domain.usecase.print.SaveReceiptNumber
@@ -17,4 +14,5 @@ val bluetoothDomainModel = module {
     factory { GetReceiptNumber(get()) }
     factory { SaveReceiptNumber(get()) }
     factory { UnregisterBluetoothReceiver(get()) }
+    factory { GetBluetoothData(get()) }
 }

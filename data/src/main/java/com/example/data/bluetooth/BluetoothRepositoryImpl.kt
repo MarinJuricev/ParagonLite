@@ -7,9 +7,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import com.example.data.BLUETOOTH_MAC_ADDRESS_KEY
-import com.example.data.PACKAGE_NAME
-import com.example.data.toRoomBluetoothListList
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.data.*
+import com.example.data.model.RoomBluetoothEntry
 import com.example.domain.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.error.ParagonError.BluetoothException
@@ -42,9 +43,23 @@ class BluetoothRepositoryImpl(
         }
     }
 
+    override suspend fun getBluetoothData(): Result<Exception, LiveData<List<BluetoothEntry>>> =
+        withContext(dispatcherProvider.provideIOContext()) {
+
+            when (val result = bluetoothDao.getBluetoothEntries()) {
+                listOf<RoomBluetoothEntry>() -> Result.build { throw ParagonError.LocalIOException }
+                else -> Result.build {
+                    Transformations.map(
+                        result,
+                        ::mapToBluetoothEntry
+                    )
+                }
+            }
+        }
+
     private suspend fun saveBluetoothEntriesToLocalPersistence(result: List<BluetoothEntry>) =
         withContext(DispatcherProvider.provideIOContext()) {
-            bluetoothDao.insertAll(result.toRoomBluetoothListList())
+            bluetoothDao.insertAll(result.toRoomBluetoothList())
         }
 
     private suspend fun startDiscovery(): List<BluetoothEntry> {
@@ -90,14 +105,8 @@ class BluetoothRepositoryImpl(
         bluetoothAdapter?.bondedDevices
 
         // No need for duplicate entries
-        if (deviceName != "" && deviceHardwareAddress != "" && !bluetoothList.contains(
-                BluetoothEntry(
-                    deviceName,
-                    deviceHardwareAddress
-                )
-            )
-        )
-            bluetoothList.add(BluetoothEntry(deviceName, deviceHardwareAddress))
+        if (deviceName != "" && deviceHardwareAddress != "" && !bluetoothList.any { it.name == deviceName })
+            bluetoothList.add(BluetoothEntry(deviceName, deviceHardwareAddress, generateCurrentTime()))
     }
 
     @SuppressLint("ApplySharedPref")
@@ -173,3 +182,5 @@ class BluetoothRepositoryImpl(
         return Result.build { Unit }
     }
 }
+
+private fun mapToBluetoothEntry(list: List<RoomBluetoothEntry>) = list.toBluetoothList()
