@@ -71,6 +71,9 @@ dependencies {
     // Permissions
     implementation 'com.karumi:dexter:5.0.0'
 
+    //Date Calendar Picker
+    implementation 'com.archit.calendar:awesome-calendar:1.1.4'
+
     // Koin for Kotlin
     implementation Dependencies.koinCore
     // Koin extended & experimental features

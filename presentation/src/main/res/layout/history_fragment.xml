@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent" android:layout_height="match_parent"
         tools:context=".ui.history.HistoryFragment">
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello"/>
+    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:disable_date_color="#ABABAB"
+            android:background="@color/colorPrimaryDark"
+            custom:range_date_color="@android:color/white"
+            custom:range_color="@color/colorPrimary"
+            custom:enable_past_date="true"
+            custom:selected_date_circle_color="@android:color/white"
+            custom:selected_date_color="@color/colorPrimary"
+            custom:title_color="@android:color/white"
+            custom:week_color="@android:color/white"
+            custom:default_date_color="@android:color/white">
+    </com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>
 
-</FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
