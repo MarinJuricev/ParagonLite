@@ -3,14 +3,8 @@ package com.example.paragonlite
 import android.app.Application
 import com.example.data.di.localPersistableModule
 import com.example.data.di.repositoryModule
-import com.example.domain.di.articleModule
-import com.example.domain.di.bluetoothDomainModel
-import com.example.domain.di.checkoutModule
-import com.example.domain.di.dispatcherModule
-import com.example.presentation.di.articleCreationFeatureModule
-import com.example.presentation.di.articleListModule
-import com.example.presentation.di.bluetoothModule
-import com.example.presentation.di.checkoutListModule
+import com.example.domain.di.*
+import com.example.presentation.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -30,7 +24,8 @@ class ParagonApplication : Application() {
                     dispatcherModule, articleCreationFeatureModule,
                     articleModule, localPersistableModule, repositoryModule,
                     articleListModule, checkoutModule, checkoutListModule,
-                    bluetoothModule, bluetoothDomainModel
+                    bluetoothModule, bluetoothDomainModel, historyModule,
+                    receiptModule
                 )
             )
         }

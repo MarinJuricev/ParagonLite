@@ -123,6 +123,7 @@ class CheckoutViewModel(
         receiptNumber: Int
     ) {
         when (printCheckout.execute(
+            articleData.value!!,
             dataToPrint,
             macAddress
         )) {

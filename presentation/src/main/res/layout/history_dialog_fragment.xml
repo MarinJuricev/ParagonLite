@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        custom:cardCornerRadius="12dp"
+        android:layout_height="wrap_content">
+
+    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            custom:disable_date_color="#ABABAB"
+            android:background="@color/colorPrimaryDark"
+            custom:range_date_color="@android:color/white"
+            custom:range_color="@color/colorPrimary"
+            custom:enable_past_date="true"
+            custom:selected_date_circle_color="@android:color/white"
+            custom:selected_date_color="@color/colorPrimary"
+            custom:title_color="@android:color/white"
+            custom:week_color="@android:color/white"
+            custom:default_date_color="@android:color/white">
+    </com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>
+
+</com.google.android.material.card.MaterialCardView>

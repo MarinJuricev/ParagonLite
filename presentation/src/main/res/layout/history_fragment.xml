@@ -1,26 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        tools:context=".ui.history.HistoryFragment">
-
-    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
-            android:id="@+id/calendar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            custom:disable_date_color="#ABABAB"
-            android:background="@color/colorPrimaryDark"
-            custom:range_date_color="@android:color/white"
-            custom:range_color="@color/colorPrimary"
-            custom:enable_past_date="true"
-            custom:selected_date_circle_color="@android:color/white"
-            custom:selected_date_color="@color/colorPrimary"
-            custom:title_color="@android:color/white"
-            custom:week_color="@android:color/white"
-            custom:default_date_color="@android:color/white">
-    </com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            tools:context=".ui.history.HistoryFragment">
+
+        <View
+                android:id="@+id/background"
+                android:background="@color/colorHeader"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvReceiptNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:textSize="16sp"
+                android:textColor="#FFFF"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/number"
+                app:layout_constraintStart_toStartOf="@+id/background"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/background" android:layout_marginBottom="4dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvReceiptDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:textSize="16sp"
+                android:textColor="#FFFF"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/date"
+                app:layout_constraintBottom_toBottomOf="@+id/background"
+                app:layout_constraintStart_toEndOf="@+id/tvReceiptNumber"
+                app:layout_constraintEnd_toStartOf="@+id/tvReceiptPrice" android:layout_marginBottom="4dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvReceiptPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:textSize="16sp"
+                android:textColor="#FFFF"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/amount"
+                app:layout_constraintBottom_toBottomOf="@+id/background"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/background" android:layout_marginBottom="4dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvReceiptList"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/background"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

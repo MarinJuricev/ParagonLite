@@ -2,13 +2,17 @@ package com.example.presentation.ui.history
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.example.presentation.R
+import com.example.presentation.databinding.HistoryFragmentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HistoryFragment : Fragment() {
+class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListener {
 
-    private lateinit var viewModel: HistoryViewModel
+    private val viewModel: HistoryViewModel by viewModel()
+    private lateinit var binding: HistoryFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,12 +23,15 @@ class HistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.history_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.history_fragment, container, false
+        )
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
 
         bindUI()
     }
@@ -35,7 +42,29 @@ class HistoryFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_history_calendar -> startCalendarDialogFragment()
+        }
+
+        return false
+    }
+
+    private fun startCalendarDialogFragment() {
+        val dialog = HistoryFragmentDialog(this)
+        val fragmentTransaction = fragmentManager?.beginTransaction()?.addToBackStack(null)
+        dialog.show(fragmentTransaction!!, null)
+    }
+
     private fun bindUI() {
     }
 
+    override fun onDateRangeSelected(startDate: String, endDate: String) {
+        Toast.makeText(
+            context,
+            "Start Date: $startDate End date: $endDate",
+            Toast.LENGTH_SHORT
+        ).show()
+
+    }
 }

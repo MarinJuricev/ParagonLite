@@ -1,7 +1,6 @@
 package com.example.presentation.ui.history
 
-import androidx.lifecycle.ViewModel;
+import com.example.presentation.shared.BaseViewModel
 
-class HistoryViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class HistoryViewModel : BaseViewModel() {
 }

@@ -3,9 +3,11 @@ package com.example.data
 import com.example.data.model.RoomArticle
 import com.example.data.model.RoomBluetoothEntry
 import com.example.data.model.RoomCheckout
+import com.example.data.model.RoomReceipt
 import com.example.domain.model.Article
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.CheckoutArticle
+import com.example.domain.model.Receipt
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,6 +50,28 @@ internal val RoomCheckout.toCheckoutArticle: CheckoutArticle
         this.inCheckout
     )
 
+internal val RoomReceipt.toReceipt: Receipt
+    get() = Receipt(
+        this.number,
+        this.date,
+        this.price
+    )
+
+internal val Receipt.toRoomReceipt: RoomReceipt
+    get() = RoomReceipt(
+        this.number,
+        this.date,
+        this.price
+    )
+
+internal fun CheckoutArticle.toReceipt(macAddress: String): Receipt {
+    return Receipt(
+        macAddress.toInt(),
+        generateCurrentTime(),
+        this.price
+    )
+}
+
 internal fun BluetoothEntry.toRoomBluetooth(): RoomBluetoothEntry {
     val currentTime = generateCurrentTime()
 
@@ -79,6 +103,11 @@ internal fun List<RoomArticle>.toArticleList(): List<Article> = this.flatMap {
 //Maps from lists of different Data Model types
 internal fun List<RoomCheckout>.toCheckoutList(): List<CheckoutArticle> = this.flatMap {
     listOf(it.toCheckoutArticle)
+}
+
+//Maps from lists of different Data Model types
+internal fun List<RoomReceipt>.toReceiptList(): List<Receipt> = this.flatMap {
+    listOf(it.toReceipt)
 }
 
 //Maps from lists of different Data Model types

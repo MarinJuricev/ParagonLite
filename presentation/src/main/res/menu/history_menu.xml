@@ -2,8 +2,8 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/action_bottom_fav"
+            android:id="@+id/action_history_calendar"
             android:icon="@drawable/ic_history_24dp"
-            android:title="Calendar"
+            android:title="@string/calendar"
             app:showAsAction="ifRoom" />
 </menu>
