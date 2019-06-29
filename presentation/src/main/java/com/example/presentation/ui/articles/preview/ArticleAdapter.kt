@@ -1,19 +1,12 @@
 package com.example.presentation.ui.articles.preview
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Article
 import com.example.presentation.R
 import com.example.presentation.shared.SimpleViewHolder
 import com.example.presentation.shared.inflateIntoSelf
-import com.example.presentation.ui.checkout.CheckoutAdapter
 import kotlinx.android.synthetic.main.item_article.view.*
-import kotlinx.android.synthetic.main.item_checkout.view.*
 
 class ArticleAdapter(
     private val onArticleClick: (Article) -> (Unit),

@@ -5,13 +5,15 @@ import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.example.presentation.R
 import com.example.presentation.databinding.HistoryFragmentBinding
+import kotlinx.android.synthetic.main.history_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListener {
 
-    private val viewModel: HistoryViewModel by viewModel()
+    private val receiptViewModel: HistoryViewModel by viewModel()
     private lateinit var binding: HistoryFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +59,21 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
     }
 
     private fun bindUI() {
+        val receiptAdapter = ReceiptAdapter()
+
+        receiptViewModel.receiptData.observe(this@HistoryFragment, Observer {
+            // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
+            // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
+            // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
+            if (receiptAdapter.currentList.isEmpty()){
+                receiptAdapter.currentList.clear()
+                receiptAdapter.notifyDataSetChanged()
+            }
+
+            receiptAdapter.submitList(it)
+        })
+
+        rvReceiptList.adapter = receiptAdapter
     }
 
     override fun onDateRangeSelected(startDate: String, endDate: String) {

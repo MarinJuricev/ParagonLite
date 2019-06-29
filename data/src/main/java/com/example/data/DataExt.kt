@@ -64,9 +64,9 @@ internal val Receipt.toRoomReceipt: RoomReceipt
         this.price
     )
 
-internal fun CheckoutArticle.toReceipt(macAddress: String): Receipt {
+internal fun CheckoutArticle.toReceipt(receiptNumber: String): Receipt {
     return Receipt(
-        macAddress.toInt(),
+        receiptNumber.toInt(),
         generateCurrentTime(),
         this.price
     )

@@ -31,7 +31,9 @@ class ReceiptRepositoryImpl(
             }
         }
 
-    override suspend fun addReceipt(receipt: Receipt): Result<Exception, Unit> =
+    override suspend fun addReceipt(
+        receipt: Receipt
+    ): Result<Exception, Unit> =
         withContext(dispatcherProvider.provideIOContext()) {
 
             when (receiptDao.upsert(receipt.toRoomReceipt)) {

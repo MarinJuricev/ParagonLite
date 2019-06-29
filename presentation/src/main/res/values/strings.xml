@@ -52,4 +52,5 @@
     <string name="number">Broj</string>
     <string name="date">Datum</string>
     <string name="amount">Iznos</string>
+    <string name="no_receipts">Nema racuna, odaberite datum</string>
 </resources>

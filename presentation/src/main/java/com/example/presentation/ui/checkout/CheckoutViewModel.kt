@@ -14,6 +14,7 @@ import com.example.domain.usecase.print.GeneratePrintData
 import com.example.domain.usecase.print.GetReceiptNumber
 import com.example.domain.usecase.print.PrintCheckout
 import com.example.domain.usecase.print.SaveReceiptNumber
+import com.example.domain.usecase.receipt.AddReceipt
 import com.example.presentation.shared.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,8 @@ class CheckoutViewModel(
     private val printCheckout: PrintCheckout,
     private val getReceiptNumber: GetReceiptNumber,
     private val saveReceiptNumber: SaveReceiptNumber,
-    private val getArticlesInCheckoutSize: GetArticlesInCheckoutSize
+    private val getArticlesInCheckoutSize: GetArticlesInCheckoutSize,
+    private val addReceipt: AddReceipt
 ) : BaseViewModel() {
 
     init {
@@ -104,7 +106,7 @@ class CheckoutViewModel(
         }
     }
 
-    private suspend fun generateDataToPrint(macAddress: String, receiptNumber: Int) {
+    private suspend fun generateDataToPrint(macAddress: String, receiptNumber: Int) = launch {
         when (val result = generatePrintData.execute(
             articleData.value!!,
             checkoutValue.value ?: "",
@@ -121,11 +123,13 @@ class CheckoutViewModel(
         dataToPrint: List<ByteArray>,
         macAddress: String,
         receiptNumber: Int
-    ) {
+    ) = launch {
         when (printCheckout.execute(
-            articleData.value!!,
             dataToPrint,
-            macAddress
+            macAddress,
+            getReceiptNumber,
+            checkoutValue.value!!,
+            addReceipt
         )) {
             is Result.Value -> {
                 val incrementedReceiptNumber = receiptNumber + 1

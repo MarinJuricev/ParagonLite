@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvReceiptNumber"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:textSize="16sp"
+            tools:text="Peka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvReceiptDate"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="16sp"
+            tools:text="25.04.2019"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toEndOf="@+id/tvReceiptNumber" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvReceiptAmount"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvReceiptAmount"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="16sp"
+            tools:text="450.00kn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+            android:id="@+id/receiptSeparator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/light_gray"
+            app:layout_constraintStart_toStartOf="@+id/tvReceiptNumber"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="4dp" android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tvReceiptAmount"
+            app:layout_constraintTop_toBottomOf="@+id/tvReceiptNumber"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
