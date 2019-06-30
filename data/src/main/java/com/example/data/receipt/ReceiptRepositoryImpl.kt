@@ -17,10 +17,13 @@ class ReceiptRepositoryImpl(
     private val receiptDao: ReceiptDao
 ) : IReceiptRepository {
 
-    override suspend fun getReceipts(): Result<Exception, LiveData<List<Receipt>>> =
+    override suspend fun getReceipts(
+        startDate: String,
+        endDate: String
+    ): Result<Exception, LiveData<List<Receipt>>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
-            when (val result = receiptDao.getReceipts()) {
+            when (val result = receiptDao.getReceipts(startDate, endDate)) {
                 listOf<RoomReceipt>() -> Result.build { throw ParagonError.LocalIOException }
                 else -> Result.build {
                     Transformations.map(

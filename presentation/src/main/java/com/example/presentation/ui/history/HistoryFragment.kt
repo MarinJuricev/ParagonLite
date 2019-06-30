@@ -1,19 +1,22 @@
 package com.example.presentation.ui.history
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.presentation.R
 import com.example.presentation.databinding.HistoryFragmentBinding
+import com.example.presentation.ext.extendFabIfPossible
+import com.example.presentation.ext.shrinkFabIfPossible
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.history_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListener {
 
-    private val receiptViewModel: HistoryViewModel by viewModel()
+    private val historyViewModel: HistoryViewModel by viewModel()
     private lateinit var binding: HistoryFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,27 +64,45 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
     private fun bindUI() {
         val receiptAdapter = ReceiptAdapter()
 
-        receiptViewModel.receiptData.observe(this@HistoryFragment, Observer {
+        historyViewModel.receiptData.observe(this@HistoryFragment, Observer {
             // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
             // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
             // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
-            if (receiptAdapter.currentList.isEmpty()){
-                receiptAdapter.currentList.clear()
+            if (receiptAdapter.currentList.isEmpty()) {
                 receiptAdapter.notifyDataSetChanged()
-            }
+                fabPrint.hide()
+            } else
+                fabPrint.show()
 
             receiptAdapter.submitList(it)
         })
 
+        fabPrint.setOnClickListener {
+            buildDialog()
+            fabPrint.shrinkFabIfPossible()
+
+        }
+
         rvReceiptList.adapter = receiptAdapter
     }
 
-    override fun onDateRangeSelected(startDate: String, endDate: String) {
-        Toast.makeText(
-            context,
-            "Start Date: $startDate End date: $endDate",
-            Toast.LENGTH_SHORT
-        ).show()
+    private fun buildDialog() {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(getString(R.string.printing))
+            .setMessage(getString(R.string.print_checkout))
+            .setPositiveButton("OK", DialogInterface.OnClickListener(positiveDialogClick))
+            .setOnDismissListener { fabPrint.extendFabIfPossible() }
+            .show()
+    }
 
+    private val positiveDialogClick = { dialog: DialogInterface, _: Int ->
+        fabPrint.extendFabIfPossible()
+
+        historyViewModel.prepareDataForPrint()
+        dialog.dismiss()
+    }
+
+    override fun onDateRangeSelected(startDate: String, endDate: String) {
+        historyViewModel.fetchReceiptsFromTheSelectedDateRange(startDate, endDate)
     }
 }

@@ -3,16 +3,14 @@ package com.example.domain.usecase.print
 import com.example.domain.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
+import com.example.domain.usecase.print.ESCPrinterCommand.SHENZEN_CENTER
+import com.example.domain.usecase.print.ESCPrinterCommand.SHENZEN_LINE
+import com.example.domain.usecase.print.ESCPrinterCommand.SHENZEN_LINE_LENGHT_WIDTH_0
+import com.example.domain.usecase.print.ESCPrinterCommand.alignCenter
+import com.example.domain.usecase.print.ESCPrinterCommand.alignRight
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
-
-
-private const val SHENZEN_LINE = "================================\n"
-private const val SHENZEN_LINE_LENGHT_WIDTH_0 = 30 //48
-private const val SHENZEN_LINE_LENGHT_WIDTH_1 = 30 //24
-private const val SHENZEN_CENTER = 17 // 24
-
 
 class GeneratePrintData(
     private val dispatcherProvider: DispatcherProvider
@@ -278,57 +276,4 @@ class GeneratePrintData(
 
     private fun validatePrintData(valuesToPrint: List<CheckoutArticle>?) =
         valuesToPrint?.isEmpty()
-}
-
-/**
- * Used in any other printer to help align text, in this case center the text
- *
- * @param stringToBeCentered the string that should be centered within a line
- * @param lineCenter         the center of the line, let's imagine that the max char length is 48, the
- * line center argument in this case should be 24
- * @return the output should be a text that's centered, EX: "            Random Text"
- */
-private fun alignCenter(stringToBeCentered: String, lineCenter: Int): String {
-    val stringToReturn = StringBuilder()
-
-    if (stringToBeCentered.length / 2 <= lineCenter) {
-        val startOfString = lineCenter - stringToBeCentered.length / 2
-
-        for (i in 0 until startOfString)
-            stringToReturn.append(" ")
-
-        return stringToReturn.append(stringToBeCentered).toString()
-    }
-
-    return stringToBeCentered
-}
-
-/**
- * Used in any other printer to help align text, in this case align the text to the right
- *
- * @param leftString    The string that should stay in the right EX: Stake:
- * @param rightString   The string that should be aligned right EX: 10,00
- * @param maxLineLength The maximum length of the printer line.
- * *
- * @return the second argument rightString, should be aligned to the right
- *
- *
- * EX Input("Stake", "10,00", 48)
- * EX Output Stake                       10,00
- *
- *
- * NOTE: This isn't the correct number of white space, i've just randomly added whitespace for the EX
- */
-private fun alignRight(leftString: String, rightString: String, maxLineLength: Int): String {
-    val stringToReturn = StringBuilder()
-
-    stringToReturn.append(leftString)
-
-    val paddingDifference = maxLineLength - rightString.length - leftString.length
-
-    for (i in 0 until paddingDifference) {
-        stringToReturn.append(" ")
-    }
-
-    return stringToReturn.append(rightString).toString()
 }

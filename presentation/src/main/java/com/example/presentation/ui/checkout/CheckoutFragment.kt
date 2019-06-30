@@ -49,7 +49,7 @@ class CheckoutFragment : Fragment() {
             // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
             // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
             // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
-            if(checkoutAdapter.currentList.isEmpty())
+            if (checkoutAdapter.currentList.isEmpty())
                 checkoutAdapter.notifyDataSetChanged()
 
             checkoutAdapter.submitList(it)
@@ -57,8 +57,8 @@ class CheckoutFragment : Fragment() {
 
         checkoutViewModel.checkoutValue.observe(this@CheckoutFragment, Observer {
             when (it) {
-                "0.0" -> hidePrintFab()
-                else -> showPrintFab()
+                "0.0" -> fabPrint.hide()
+                else -> fabPrint.show()
             }
 
             val stringToDisplay = "Ukupno: $it kn"
@@ -129,10 +129,6 @@ class CheckoutFragment : Fragment() {
         checkoutViewModel.printCheckout()
         dialog.dismiss()
     }
-
-    private fun showPrintFab() = fabPrint.show()
-
-    private fun hidePrintFab() = fabPrint.hide()
 
     private fun onDeleteClick(checkoutArticle: CheckoutArticle) = checkoutViewModel.deleteArticle(checkoutArticle)
 

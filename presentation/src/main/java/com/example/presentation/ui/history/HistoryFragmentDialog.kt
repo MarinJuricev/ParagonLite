@@ -46,6 +46,7 @@ class HistoryFragmentDialog(val listener: HistoryCalendarListener) : DialogFragm
 
             override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
                 listener.onDateRangeSelected(startDate.time.toString(), endDate.time.toString())
+                dialog?.dismiss()
             }
         })
     }
