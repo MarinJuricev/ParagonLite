@@ -74,6 +74,9 @@ dependencies {
     //Date Calendar Picker
     implementation 'com.archit.calendar:awesome-calendar:1.1.4'
 
+    // Preference
+    implementation "androidx.preference:preference:1.0.0"
+
     // Koin for Kotlin
     implementation Dependencies.koinCore
     // Koin extended & experimental features
