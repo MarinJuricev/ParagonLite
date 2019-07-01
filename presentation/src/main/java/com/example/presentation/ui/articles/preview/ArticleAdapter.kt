@@ -13,26 +13,11 @@ class ArticleAdapter(
     private val onArticleLongClick: (Article) -> (Unit)
 ) : ListAdapter<Article, SimpleViewHolder>(ArticleDiffUtilCallback()) {
 
-    private enum class ArticleViewType { CHECKOUT, NO_CONTENT }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleViewHolder {
-        return if (viewType == ArticleViewType.CHECKOUT.ordinal)
-            SimpleViewHolder(parent.inflateIntoSelf(R.layout.item_article))
-        else
-            SimpleViewHolder(parent.inflateIntoSelf(R.layout.no_articles_layout))
+        return SimpleViewHolder(parent.inflateIntoSelf(R.layout.item_article))
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (currentList.isEmpty()) ArticleViewType.NO_CONTENT.ordinal
-        else ArticleViewType.CHECKOUT.ordinal
-    }
-
-    override fun getItemCount(): Int {
-        return if (currentList.isEmpty()) {
-            1
-        } else
-            currentList.size
-    }
+    override fun getItemCount(): Int = currentList.size
 
     override fun onBindViewHolder(holder: SimpleViewHolder, position: Int) {
         if (currentList.isNotEmpty()) {
@@ -44,7 +29,8 @@ class ArticleAdapter(
                     itemArticleRoot.setOnClickListener { onArticleClick(article) }
                     itemArticleRoot.setOnLongClickListener {
                         onArticleLongClick(article)
-                        true}
+                        true
+                    }
                 }
             }
         }

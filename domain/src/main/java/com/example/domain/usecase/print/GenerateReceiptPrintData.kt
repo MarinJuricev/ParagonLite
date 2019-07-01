@@ -17,6 +17,7 @@ class GenerateReceiptPrintData(
         withContext(dispatcherProvider.provideComputationContext()) {
 
             val dataToReturn = mutableListOf<ByteArray>()
+            var receiptSum = 0.00
 
             dataToReturn.add(ESCPrinterCommand.POS_Set_Cut(1)!!)
             dataToReturn.add(ESCPrinterCommand.POS_Set_PrtInit())
@@ -50,14 +51,28 @@ class GenerateReceiptPrintData(
                         0, 0, 0, 0
                     )!!
                 )
+
+                receiptSum += it.price
             }
 
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
-                    SHENZEN_LINE,
+                    SHENZEN_LINE + "\n",
                     0, 0, 0, 0
                 )!!
             )
+
+            dataToReturn.add(
+                ESCPrinterCommand.POS_Set_Font_And_Print(
+                    alignRight(
+                        "UKUPNO:",
+                        receiptSum.toString(),
+                        SHENZEN_LINE_LENGHT_WIDTH_0
+                    ) + "\n\n\n",
+                    0, 0, 0, 0
+                )!!
+            )
+
 
             return@withContext Result.build { dataToReturn }
         }

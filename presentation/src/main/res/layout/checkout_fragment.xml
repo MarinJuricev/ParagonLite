@@ -48,6 +48,33 @@
                     app:icon="@drawable/ic_print_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
+            <androidx.constraintlayout.widget.Group
+                    android:id="@+id/noCheckoutGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="appLogo,tvEmptyArticles"
+                    android:visibility="visible"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/appLogo"
+                    android:layout_width="wrap_content"
+                    app:srcCompat="@drawable/ic_logo"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEmptyArticles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_article"
+                    style="@style/EmptyScreenText" app:layout_constraintTop_toBottomOf="@+id/appLogo"
+                    app:layout_constraintEnd_toEndOf="@+id/appLogo" app:layout_constraintStart_toStartOf="@+id/appLogo"
+                    android:layout_marginTop="8dp"/>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

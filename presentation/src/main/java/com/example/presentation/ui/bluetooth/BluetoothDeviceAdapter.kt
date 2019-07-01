@@ -12,26 +12,11 @@ class BluetoothDeviceAdapter(
     private val onBluetoothItemClick: (String) -> (Unit)
 ) : ListAdapter<BluetoothEntry, SimpleViewHolder>(BluetoothDiffUtilCallback()) {
 
-    private enum class BluetoothViewType { CONTENT, NO_CONTENT }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleViewHolder {
-        return if (viewType == BluetoothViewType.CONTENT.ordinal)
-            SimpleViewHolder(parent.inflateIntoSelf(R.layout.item_bluetooth))
-        else
-            SimpleViewHolder(parent.inflateIntoSelf(R.layout.no_bluetooth_devices_layout))
+        return SimpleViewHolder(parent.inflateIntoSelf(R.layout.item_bluetooth))
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (currentList.isEmpty()) BluetoothViewType.NO_CONTENT.ordinal
-        else BluetoothViewType.CONTENT.ordinal
-    }
-
-    override fun getItemCount(): Int {
-        return if (currentList.isEmpty()) {
-            1
-        } else
-            currentList.size
-    }
+    override fun getItemCount(): Int = currentList.size
 
     override fun onBindViewHolder(holder: SimpleViewHolder, position: Int) {
         if (currentList.isNotEmpty()) {

@@ -15,26 +15,11 @@ class CheckoutAdapter(
         CheckoutDiffUtilCallback()
     ) {
 
-    private enum class CheckoutViewType { CHECKOUT, NO_CONTENT }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleViewHolder {
-        return if (viewType == CheckoutViewType.CHECKOUT.ordinal)
-            SimpleViewHolder(parent.inflateIntoSelf(R.layout.item_checkout))
-        else
-            SimpleViewHolder(parent.inflateIntoSelf(R.layout.no_checkout_layout))
+        return SimpleViewHolder(parent.inflateIntoSelf(R.layout.item_checkout))
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (currentList.isEmpty()) CheckoutViewType.NO_CONTENT.ordinal
-        else CheckoutViewType.CHECKOUT.ordinal
-    }
-
-    override fun getItemCount(): Int {
-        return if (currentList.isEmpty()) {
-            1
-        } else
-            currentList.size
-    }
+    override fun getItemCount() = currentList.size
 
     override fun onBindViewHolder(holder: SimpleViewHolder, position: Int) {
         if (currentList.isNotEmpty()) {

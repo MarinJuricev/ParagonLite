@@ -46,11 +46,10 @@ class CheckoutFragment : Fragment() {
         val checkoutAdapter = CheckoutAdapter { checkoutArticle: CheckoutArticle -> onDeleteClick(checkoutArticle) }
 
         checkoutViewModel.articleData.observe(this@CheckoutFragment, Observer {
-            // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
-            // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
-            // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
-            if (checkoutAdapter.currentList.isEmpty())
-                checkoutAdapter.notifyDataSetChanged()
+            if (it.isEmpty())
+                showEmptyScreenFields()
+            else
+                hideEmptyScreensFields()
 
             checkoutAdapter.submitList(it)
         })
@@ -86,6 +85,14 @@ class CheckoutFragment : Fragment() {
         listenToRecyclerScroll()
 
         rvCheckoutList.adapter = checkoutAdapter
+    }
+
+    private fun showEmptyScreenFields() {
+        noCheckoutGroup.visibility = View.VISIBLE
+    }
+
+    private fun hideEmptyScreensFields() {
+        noCheckoutGroup.visibility = View.GONE
     }
 
     private fun listenToRecyclerScroll() {

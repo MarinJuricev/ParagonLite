@@ -49,11 +49,10 @@ class ArticlesListFragment : Fragment() {
             ({ article: Article -> onArticleLongClick(article) })
         )
         articlesListViewModel.articleData.observe(this@ArticlesListFragment, Observer {
-            // if the previous list is empty and we don't clear it we'd receive a fatal error from rv saying
-            // "view-inconsistency-detected", and we'd crash. To prevent that on update we check if the list is empty
-            // and invalidate the data since a new type of viewholder will get inflated if the list is not empty.
-            if (articleAdapter.currentList.isEmpty())
-                articleAdapter.notifyDataSetChanged()
+            if (it.isEmpty())
+                showEmptyScreenFields()
+            else
+                hideEmptyScreensFields()
 
             articleAdapter.submitList(it)
         })
@@ -75,6 +74,14 @@ class ArticlesListFragment : Fragment() {
         listenToRecyclerScroll()
 
         rvArticleList.adapter = articleAdapter
+    }
+
+    private fun showEmptyScreenFields() {
+        noArticleGroup.visibility = View.VISIBLE
+    }
+
+    private fun hideEmptyScreensFields() {
+        noArticleGroup.visibility = View.GONE
     }
 
     private fun listenToRecyclerScroll() {

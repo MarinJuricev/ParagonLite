@@ -84,5 +84,35 @@
                 app:icon="@drawable/ic_print_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <androidx.constraintlayout.widget.Group
+                android:id="@+id/noReceiptGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="appLogo,tvEmptyReceipts"
+                android:visibility="visible"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/appLogo"
+                android:layout_width="wrap_content"
+                app:srcCompat="@drawable/ic_logo"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEmptyReceipts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_receipts"
+                android:lines="2"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                style="@style/EmptyScreenText"
+                app:layout_constraintTop_toBottomOf="@+id/appLogo"
+                app:layout_constraintEnd_toEndOf="@+id/appLogo" app:layout_constraintStart_toStartOf="@+id/appLogo"
+                android:layout_marginTop="8dp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
