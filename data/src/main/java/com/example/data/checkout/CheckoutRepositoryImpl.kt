@@ -82,7 +82,7 @@ class CheckoutRepositoryImpl(
             val preferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
 
             val editor = preferences.edit()
-            editor.putInt(RECEIPT_KEY, receiptNumber)
+            editor.putString(RECEIPT_KEY, receiptNumber.toString())
 
             when (editor.commit()) {
                 true -> Result.build { Unit }
@@ -95,7 +95,7 @@ class CheckoutRepositoryImpl(
 
             val preferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
 
-            when (val result = preferences.getInt(RECEIPT_KEY, 1)) {
+            when (val result = preferences.getString(RECEIPT_KEY, "1")!!.toInt()) {
                 // TODO It'll never be 0... add better error handling
                 0 -> Result.build { throw ParagonError.ReceiptException }
                 else -> Result.build { result }

@@ -8,7 +8,8 @@
                 android:key="BLUETOOTH_MAC_ADDRESS_KEY"
                 android:title="MAC Address"
                 android:summary="Currently saved mac address if any"
-                android:editable="false"/>
+                android:editable="false"
+                android:focusable="false"/>
 
         <EditTextPreference
                 android:key="RECEIPT_KEY"
