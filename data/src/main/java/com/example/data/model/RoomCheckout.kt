@@ -10,6 +10,6 @@ data class RoomCheckout(
     val name: String,
     val quantity: String,
     val price: Double,
-    val inCheckout: Int
+    val inCheckout: Double
 )
 

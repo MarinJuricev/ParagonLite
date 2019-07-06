@@ -27,8 +27,8 @@ class CheckoutRepositoryImpl(
     ): Result<Exception, LiveData<Int>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
-            val previousArticleCount = getPreviousCheckoutArticleNumberIfAvailable(article) ?: 0
-            val newArticleCountInCheckout = previousArticleCount + 1
+            val previousArticleCount = getPreviousCheckoutArticleNumberIfAvailable(article) ?: 0.00
+            val newArticleCountInCheckout = previousArticleCount + 1.00
 
             when (checkoutDao.upsert(article.toRoomCheckoutArticle(newArticleCountInCheckout))) {
                 0L -> Result.build { throw ParagonError.LocalIOException }
@@ -42,7 +42,7 @@ class CheckoutRepositoryImpl(
         }
 
     // TODO REFACTOR INTO IT'S OWN USECASE!
-    private suspend fun getPreviousCheckoutArticleNumberIfAvailable(article: Article): Int? =
+    private suspend fun getPreviousCheckoutArticleNumberIfAvailable(article: Article): Double? =
         withContext(dispatcherProvider.provideIOContext()) {
             when (val result = checkoutDao.getArticle(article.name)) {
                 null -> null
@@ -99,6 +99,14 @@ class CheckoutRepositoryImpl(
                 // TODO It'll never be 0... add better error handling
                 0 -> Result.build { throw ParagonError.ReceiptException }
                 else -> Result.build { result }
+            }
+        }
+
+    override suspend fun updateArticle(checkoutArticle: CheckoutArticle): Result<Exception, Unit> =
+        withContext(dispatcherProvider.provideIOContext()) {
+            when (checkoutDao.upsert(checkoutArticle.toRoomCheckout)) {
+                0L -> Result.build { throw ParagonError.LocalIOException }
+                else -> Result.build { Unit }
             }
         }
 }

@@ -11,4 +11,5 @@ val checkoutModule = module {
     factory { CalculateCheckout(get()) }
     factory { PrintCheckout(get(), get()) }
     factory { GetArticlesInCheckoutSize(get()) }
+    factory { UpdateCheckoutArticle(get()) }
 }

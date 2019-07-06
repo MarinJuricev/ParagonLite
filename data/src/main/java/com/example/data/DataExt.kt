@@ -33,7 +33,7 @@ internal val CheckoutArticle.toRoomCheckout: RoomCheckout
         this.inCheckout
     )
 
-internal fun Article.toRoomCheckoutArticle(inCheckout: Int): RoomCheckout {
+internal fun Article.toRoomCheckoutArticle(inCheckout: Double): RoomCheckout {
     return RoomCheckout(
         this.name,
         this.quantity,

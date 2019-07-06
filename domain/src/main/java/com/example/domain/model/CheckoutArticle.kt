@@ -4,5 +4,5 @@ data class CheckoutArticle(
     val name: String,
     val quantity: String,
     val price: Double,
-    var inCheckout: Int = 1
+    var inCheckout: Double = 1.00
 )

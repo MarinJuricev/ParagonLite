@@ -43,7 +43,10 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun bindUI() {
-        val checkoutAdapter = CheckoutAdapter { checkoutArticle: CheckoutArticle -> onDeleteClick(checkoutArticle) }
+        val checkoutAdapter = CheckoutAdapter(
+            { checkoutArticle: CheckoutArticle -> onDeleteClick(checkoutArticle) },
+            { checkoutArticle: CheckoutArticle -> updateQuantityCount(checkoutArticle) }
+        )
 
         checkoutViewModel.articleData.observe(this@CheckoutFragment, Observer {
             if (it.isEmpty())
@@ -138,5 +141,9 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun onDeleteClick(checkoutArticle: CheckoutArticle) = checkoutViewModel.deleteArticle(checkoutArticle)
+
+    private fun updateQuantityCount(checkoutArticle: CheckoutArticle) {
+        checkoutViewModel.updateArticle(checkoutArticle)
+    }
 
 }

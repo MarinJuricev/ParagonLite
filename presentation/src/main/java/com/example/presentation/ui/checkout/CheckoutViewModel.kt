@@ -6,10 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
 import com.example.domain.usecase.bluetooth.GetBluetoothAddress
-import com.example.domain.usecase.checkout.CalculateCheckout
-import com.example.domain.usecase.checkout.DeleteCheckoutArticle
-import com.example.domain.usecase.checkout.GetArticlesInCheckout
-import com.example.domain.usecase.checkout.GetArticlesInCheckoutSize
+import com.example.domain.usecase.checkout.*
 import com.example.domain.usecase.print.GeneratePrintData
 import com.example.domain.usecase.print.GetReceiptNumber
 import com.example.domain.usecase.print.PrintCheckout
@@ -29,6 +26,7 @@ class CheckoutViewModel(
     private val getReceiptNumber: GetReceiptNumber,
     private val saveReceiptNumber: SaveReceiptNumber,
     private val getArticlesInCheckoutSize: GetArticlesInCheckoutSize,
+    private val updateCheckoutArticle: UpdateCheckoutArticle,
     private val addReceipt: AddReceipt
 ) : BaseViewModel() {
 
@@ -137,5 +135,9 @@ class CheckoutViewModel(
             }
             is Result.Error -> TODO()
         }
+    }
+
+    fun updateArticle(checkoutArticle: CheckoutArticle) = launch {
+        updateCheckoutArticle.execute(checkoutArticle)
     }
 }
