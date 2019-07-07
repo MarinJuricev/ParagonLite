@@ -69,7 +69,7 @@ class CheckoutFragment : Fragment() {
 
         checkoutViewModel.getBluetoothAddressError.observe(this@CheckoutFragment, Observer {
             if (it)
-                showBluetoothMacAddressError()
+                showSnackBar(getString(R.string.no_saved_bluetooth_address_warning))
         })
 
         checkoutViewModel.checkoutBadgeCount.observe(this@CheckoutFragment, Observer {
@@ -78,6 +78,15 @@ class CheckoutFragment : Fragment() {
                 else -> updateCheckoutBadgeCount(it)
             }
         })
+
+        checkoutViewModel.articleUpdate.observe(this@CheckoutFragment, Observer {
+            when (it) {
+                true -> showSnackBar(getString(R.string.article_saved_successfully))
+                else -> showSnackBar(getString(R.string.article_save_error))
+            }
+        })
+
+
 
         fabPrint.setOnClickListener {
             buildDialog()
@@ -115,10 +124,10 @@ class CheckoutFragment : Fragment() {
         activity?.bottom_nav?.showBadge(R.id.navigation_checkout)?.number = badgeCount
     }
 
-    private fun showBluetoothMacAddressError() {
+    private fun showSnackBar(messageToShow: String) {
         val snack = Snackbar.make(
             checkoutRoot,
-            getString(R.string.no_saved_bluetooth_address_warning),
+            messageToShow,
             Snackbar.LENGTH_LONG
         )
         snack.show()

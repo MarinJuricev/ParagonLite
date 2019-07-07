@@ -18,7 +18,7 @@
         granting this permission
     </string>
     <string name="printer_name">Printer name:</string>
-    <string name="mac_address">MAC Adress</string>
+    <string name="mac_address">MAC Address</string>
     <string name="mac_address_saved">Adresa uspjesno spasena</string>
     <string name="printer_save_error">Doslo je do pogreske kod spremanja printera!</string>
     <string name="print">Print</string>
@@ -53,4 +53,6 @@
     <string name="date">Datum</string>
     <string name="amount">Iznos</string>
     <string name="no_receipts">Nema racuna, odaberite datum</string>
+    <string name="article_saved_successfully">Artikl uspjesno spremljen</string>
+    <string name="article_save_error">Doslo je do pogreske kod spremanja artikla!</string>
 </resources>

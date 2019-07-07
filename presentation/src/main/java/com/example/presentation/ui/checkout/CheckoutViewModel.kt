@@ -51,6 +51,9 @@ class CheckoutViewModel(
     private val _checkoutBadgeCount by lazy { MediatorLiveData<Int>() }
     val checkoutBadgeCount: LiveData<Int> get() = _checkoutBadgeCount
 
+    private val _articleUpdate by lazy { MutableLiveData<Boolean>() }
+    val articleUpdate: LiveData<Boolean> get() = _articleUpdate
+
     private fun fetchCheckoutArticles() = launch {
         when (val result = getArticlesInCheckout.execute()) {
             is Result.Value -> {
@@ -138,6 +141,9 @@ class CheckoutViewModel(
     }
 
     fun updateArticle(checkoutArticle: CheckoutArticle) = launch {
-        updateCheckoutArticle.execute(checkoutArticle)
+        when (updateCheckoutArticle.execute(checkoutArticle)) {
+            is Result.Value -> _articleUpdate.postValue(true)
+            is Result.Error -> _articleUpdate.postValue(false)
+        }
     }
 }

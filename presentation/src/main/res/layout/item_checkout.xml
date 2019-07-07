@@ -46,7 +46,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tiCheckoutQuantity"
-                android:layout_width="50dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
@@ -57,7 +57,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etCheckoutQuantity"
                     android:layout_width="match_parent"
-                    android:cursorVisible="false"
+                    android:imeOptions="actionDone"
                     tools:text="1"
                     android:textAlignment="center"
                     android:inputType="numberDecimal"

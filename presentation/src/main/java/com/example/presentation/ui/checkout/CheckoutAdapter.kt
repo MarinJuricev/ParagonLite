@@ -1,10 +1,11 @@
 package com.example.presentation.ui.checkout
 
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.ListAdapter
 import com.example.domain.model.CheckoutArticle
 import com.example.presentation.R
-import com.example.presentation.ext.afterTextChanged
+import com.example.presentation.ext.hideKeyboard
 import com.example.presentation.shared.SimpleViewHolder
 import com.example.presentation.shared.inflateIntoSelf
 import kotlinx.android.synthetic.main.item_checkout.view.*
@@ -29,16 +30,22 @@ class CheckoutAdapter(
                 holder.itemView.apply {
                     etCheckoutQuantity.setText(checkoutItem.inCheckout.toString())
 
-                    etCheckoutQuantity.afterTextChanged {
-                        val newCheckoutValue = it.toDoubleOrNull() ?: 1.00
+                    etCheckoutQuantity.setOnEditorActionListener { v, actionId, event ->
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            val newCheckoutValue = etCheckoutQuantity.text.toString().toDoubleOrNull() ?: 1.00
 
-                        val newItem = CheckoutArticle(
-                            checkoutItem.name,
-                            checkoutItem.quantity,
-                            checkoutItem.price,
-                            newCheckoutValue
-                        )
-                        updateQuantityCount(newItem)
+                            val newItem = CheckoutArticle(
+                                checkoutItem.name,
+                                checkoutItem.quantity,
+                                checkoutItem.price,
+                                newCheckoutValue
+                            )
+                            updateQuantityCount(newItem)
+
+                            etCheckoutQuantity.clearFocus()
+                            context.hideKeyboard(etCheckoutQuantity)
+                        }
+                        true
                     }
 
                     tvCheckoutArticleName.text = checkoutItem.name
