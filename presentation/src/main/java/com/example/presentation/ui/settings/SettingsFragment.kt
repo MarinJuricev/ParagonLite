@@ -4,15 +4,21 @@ package com.example.presentation.ui.settings
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.presentation.R
+import com.example.presentation.ui.BaseActivity
 
 const val BLUETOOTH_MAC_ADDRESS_KEY = "BLUETOOTH_MAC_ADDRESS_KEY"
 const val RECEIPT_KEY = "RECEIPT_KEY"
 const val PACKAGE_NAME = "\"com.example.data\""
+const val APP_MODE = "APP_MODE"
+const val LIGHT = "LIGHT"
+const val DARK = "DARK"
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +37,30 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        val preference = findPreference(key)
-        if (preference is EditTextPreference) {
-            when (preference.key) {
-                RECEIPT_KEY -> updateReceiptNumber(sharedPreferences.getString(RECEIPT_KEY, "1"))
-                BLUETOOTH_MAC_ADDRESS_KEY ->
-                    updateBluetoothAddress(
-                        sharedPreferences.getString(BLUETOOTH_MAC_ADDRESS_KEY, "Empty")
-                    )
-            }
+        when (key) {
+            RECEIPT_KEY -> updateReceiptNumber(sharedPreferences.getString(RECEIPT_KEY, "1"))
+            BLUETOOTH_MAC_ADDRESS_KEY ->
+                updateBluetoothAddress(
+                    sharedPreferences.getString(BLUETOOTH_MAC_ADDRESS_KEY, "Empty")
+                )
+            APP_MODE -> updateAppTheme(sharedPreferences.getString(APP_MODE, "LIGHT"))
         }
     }
+
+    private fun updateAppTheme(theme: String?) {
+        val newTheme = theme ?: LIGHT
+        activity?.let {
+            val baseActivity = it as BaseActivity
+
+            if (newTheme == DARK)
+                baseActivity.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+            else
+                baseActivity.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+
+            baseActivity.recreate()
+        }
+    }
+
 
     private fun updateReceiptNumber(receiptNumber: String?) {
         val preferences = context?.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)

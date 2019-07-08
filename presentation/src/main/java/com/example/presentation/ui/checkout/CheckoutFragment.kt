@@ -128,7 +128,8 @@ class CheckoutFragment : Fragment() {
         val snack = Snackbar.make(
             checkoutRoot,
             messageToShow,
-            Snackbar.LENGTH_LONG
+            Snackbar.LENGTH_SHORT
+
         )
         snack.show()
     }

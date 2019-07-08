@@ -4,13 +4,11 @@
     <string-array name="appModeValues">
         <item>DARK</item>
         <item>LIGHT</item>
-        <item>AUTO</item>
     </string-array>
 
     <string-array name="appModeEntries">
         <item>Dark</item>
         <item>Light</item>
-        <item>Auto</item>
     </string-array>
 
 </resources>

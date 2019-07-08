@@ -30,7 +30,7 @@ class CheckoutAdapter(
                 holder.itemView.apply {
                     etCheckoutQuantity.setText(checkoutItem.inCheckout.toString())
 
-                    etCheckoutQuantity.setOnEditorActionListener { v, actionId, event ->
+                    etCheckoutQuantity.setOnEditorActionListener { _, actionId, _ ->
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
                             val newCheckoutValue = etCheckoutQuantity.text.toString().toDoubleOrNull() ?: 1.00
 
