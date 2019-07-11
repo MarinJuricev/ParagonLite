@@ -28,6 +28,7 @@ class ArticleCreationFragment : Fragment() {
             inflater, R.layout.article_creation_fragment, container, false
         )
         binding.articleCreationFragment = this
+        binding.articleCreationViewModel = articleCreationViewModel
 
         return binding.root
     }
@@ -55,7 +56,6 @@ class ArticleCreationFragment : Fragment() {
     }
 
     fun onSaveClick() {
-        // TODO Add validation for these fields...
         val article = Article(
             etArticleName.text.toString(),
             spinnerQuantity.selectedItem.toString(),

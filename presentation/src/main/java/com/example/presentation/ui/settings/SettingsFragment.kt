@@ -43,7 +43,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 updateBluetoothAddress(
                     sharedPreferences.getString(BLUETOOTH_MAC_ADDRESS_KEY, "Empty")
                 )
-            APP_MODE -> updateAppTheme(sharedPreferences.getString(APP_MODE, "LIGHT"))
+            APP_MODE -> updateAppTheme(sharedPreferences.getString(APP_MODE, LIGHT))
         }
     }
 
@@ -57,8 +57,19 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             else
                 baseActivity.delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
 
+            updatePreferenceAppTheme(newTheme)
+
             baseActivity.recreate()
         }
+    }
+
+    private fun updatePreferenceAppTheme(newTheme: String) {
+        val preferences = context?.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
+
+        preferences?.edit()?.putString(
+            APP_MODE,
+            newTheme
+        )?.apply()
     }
 
 

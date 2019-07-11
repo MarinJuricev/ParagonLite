@@ -5,6 +5,9 @@
         <variable
                 name="articleCreationFragment"
                 type="com.example.presentation.ui.articles.creation.ArticleCreationFragment"/>
+        <variable
+                name="articleCreationViewModel"
+                type="com.example.presentation.ui.articles.creation.ArticleCreationViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -71,6 +74,7 @@
                         android:layout_width="match_parent"
                         android:inputType="number"
                         android:hint="@string/cijena"
+                        android:onTextChanged="@{articleCreationViewModel::onPriceChanged}"
                         android:layout_height="wrap_content"/>
 
             </com.google.android.material.textfield.TextInputLayout>

@@ -1,6 +1,7 @@
 package com.example.presentation.ui
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.presentation.R
+import com.example.presentation.ui.settings.APP_MODE
+import com.example.presentation.ui.settings.DARK
+import com.example.presentation.ui.settings.LIGHT
+import com.example.presentation.ui.settings.PACKAGE_NAME
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -27,6 +32,8 @@ class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkAppTheme()
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -34,6 +41,16 @@ class BaseActivity : AppCompatActivity() {
 
         if (!isCoarseLocationPermissionGranted())
             requestFineLocationPermission()
+    }
+
+    private fun checkAppTheme() {
+        val preferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
+        val currentTheme = preferences.getString(APP_MODE, LIGHT)
+
+        if (currentTheme == DARK)
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+        else
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
     }
 
     private fun isCoarseLocationPermissionGranted(): Boolean {
