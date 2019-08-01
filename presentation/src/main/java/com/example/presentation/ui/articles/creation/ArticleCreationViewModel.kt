@@ -13,14 +13,16 @@ class ArticleCreationViewModel(
     private val createArticle: CreateArticle
 ) : BaseViewModel() {
 
-    private val _isArticleCreationSuccess by lazy { MutableLiveData<Boolean>() }
-    val isArticleCreationSuccess: LiveData<Boolean> get() = _isArticleCreationSuccess
+    private val currentPrice by lazy { MutableLiveData<String>() }
+    private val articleName by lazy { MutableLiveData<String>() }
 
     private val _shouldSaveButtonBeEnabled by lazy { MutableLiveData<Boolean>() }
     val shouldSaveButtonBeEnabled: LiveData<Boolean> get() = _shouldSaveButtonBeEnabled
 
-    fun onSaveClick(article: Article) = launch {
+    private val _isArticleCreationSuccess by lazy { MutableLiveData<Boolean>() }
+    val isArticleCreationSuccess: LiveData<Boolean> get() = _isArticleCreationSuccess
 
+    fun onSaveClick(article: Article) = launch {
         when (createArticle.execute(article)) {
             is Result.Value -> _isArticleCreationSuccess.postValue(true)
             is Result.Error -> _isArticleCreationSuccess.postValue(false)
@@ -28,8 +30,21 @@ class ArticleCreationViewModel(
     }
 
     @SuppressWarnings
-    fun onPriceChanged(text: CharSequence, start: Int, before: Int, count: Int) {
-        Log.d("PRICE", text.toString())
+    private fun onPriceChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+        currentPrice.postValue(text.toString())
+        validateArticleData()
     }
 
+    @SuppressWarnings
+    private fun onArticleNameChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+        articleName.postValue(text.toString())
+        validateArticleData()
+    }
+
+    private fun validateArticleData() {
+        if(!currentPrice.value.isNullOrEmpty() && !articleName.value.isNullOrEmpty())
+            _shouldSaveButtonBeEnabled.postValue(true)
+        else
+            _shouldSaveButtonBeEnabled.postValue(false)
+    }
 }

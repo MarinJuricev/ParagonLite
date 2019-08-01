@@ -36,14 +36,30 @@ class ArticleCreationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        articleCreationViewModel.isArticleCreationSuccess.observe(this@ArticleCreationFragment, Observer {
+        articleCreationViewModel.isArticleCreationSuccess.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> showArticleCreationSuccess()
                 false -> showArticleCreationFail()
             }
         })
+
+        articleCreationViewModel.shouldSaveButtonBeEnabled.observe(viewLifecycleOwner, Observer {
+            when(it){
+                true -> enableSaveButton()
+                false -> disableSaveButton()
+            }
+        })
     }
 
+    private fun enableSaveButton() {
+        btnSave.isClickable = true
+        btnSave.isEnabled = true
+    }
+
+    private fun disableSaveButton() {
+        btnSave.isClickable = false
+        btnSave.isEnabled = false
+    }
 
     private fun showArticleCreationFail() {
         val snack = Snackbar.make(articleCreationRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG)
@@ -53,6 +69,11 @@ class ArticleCreationFragment : Fragment() {
     private fun showArticleCreationSuccess() {
         val snack = Snackbar.make(articleCreationRoot, "Artikl Uspjesno Kreiran", Snackbar.LENGTH_LONG)
         snack.show()
+    }
+
+    fun onCancelClick() {
+        etArticlePrice.editableText.clear()
+        etArticleName.editableText.clear()
     }
 
     fun onSaveClick() {
