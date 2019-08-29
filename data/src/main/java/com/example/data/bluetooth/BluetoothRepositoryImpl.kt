@@ -11,7 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.data.*
 import com.example.data.model.RoomBluetoothEntry
-import com.example.domain.DispatcherProvider
+import com.example.domain.shared.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.error.ParagonError.BluetoothException
 import com.example.domain.model.BluetoothEntry

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,7 +43,7 @@ class ArticleCreationFragment : Fragment() {
         })
 
         articleCreationViewModel.shouldSaveButtonBeEnabled.observe(viewLifecycleOwner, Observer {
-            when(it){
+            when (it) {
                 true -> enableSaveButton()
                 false -> disableSaveButton()
             }
@@ -62,12 +61,14 @@ class ArticleCreationFragment : Fragment() {
     }
 
     private fun showArticleCreationFail() {
-        val snack = Snackbar.make(articleCreationRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG)
+        val snack =
+            Snackbar.make(articleCreationRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG)
         snack.show()
     }
 
     private fun showArticleCreationSuccess() {
-        val snack = Snackbar.make(articleCreationRoot, "Artikl Uspjesno Kreiran", Snackbar.LENGTH_LONG)
+        val snack =
+            Snackbar.make(articleCreationRoot, "Artikl Uspjesno Kreiran", Snackbar.LENGTH_LONG)
         snack.show()
     }
 

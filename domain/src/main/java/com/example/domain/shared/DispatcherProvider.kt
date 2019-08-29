@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.shared
 
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext

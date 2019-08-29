@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations
 import com.example.data.model.RoomArticle
 import com.example.data.toArticleList
 import com.example.data.toRoomArticle
-import com.example.domain.DispatcherProvider
+import com.example.domain.shared.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Article
 import com.example.domain.model.Result

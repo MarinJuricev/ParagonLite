@@ -1,6 +1,6 @@
 package com.example.domain.usecase.checkout
 
-import com.example.domain.DispatcherProvider
+import com.example.domain.shared.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import kotlinx.coroutines.withContext
 

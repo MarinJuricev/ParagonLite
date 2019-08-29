@@ -1,6 +1,6 @@
 package com.example.domain.usecase.print
 
-import com.example.domain.DispatcherProvider
+import com.example.domain.shared.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
 import com.example.domain.usecase.print.ESCPrinterCommand.SHENZEN_CENTER

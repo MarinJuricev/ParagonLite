@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations
 import com.example.data.model.RoomReceipt
 import com.example.data.toReceiptList
 import com.example.data.toRoomReceipt
-import com.example.domain.DispatcherProvider
+import com.example.domain.shared.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Receipt
 import com.example.domain.model.Result
