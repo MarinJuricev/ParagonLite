@@ -2,6 +2,7 @@ package com.example.paragonlite
 
 import android.app.Application
 import com.example.data.di.localPersistableModule
+import com.example.data.di.prefsModule
 import com.example.data.di.repositoryModule
 import com.example.domain.di.*
 import com.example.presentation.di.*
@@ -25,7 +26,7 @@ class ParagonApplication : Application() {
                     articleModule, localPersistableModule, repositoryModule,
                     articleListModule, checkoutModule, checkoutListModule,
                     bluetoothModule, bluetoothDomainModel, historyModule,
-                    receiptModule
+                    receiptModule, prefsModule
                 )
             )
         }
