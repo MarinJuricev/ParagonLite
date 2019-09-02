@@ -17,7 +17,6 @@ import kotlinx.coroutines.withContext
 // there isn't a article present in the checkout table
 @Suppress("SENSELESS_NULL_IN_WHEN")
 class CheckoutRepositoryImpl(
-    private val context: Context,
     private val dispatcherProvider: DispatcherProvider,
     private val checkoutDao: CheckoutDao
 ) : ICheckoutRepository {
@@ -75,31 +74,6 @@ class CheckoutRepositoryImpl(
     override suspend fun deleteAllArticles() =
         withContext(dispatcherProvider.provideIOContext()) {
             checkoutDao.deleteAll()
-        }
-
-    override suspend fun saveReceiptNumber(receiptNumber: Int): Result<Exception, Unit> =
-        withContext(dispatcherProvider.provideIOContext()) {
-            val preferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
-
-            val editor = preferences.edit()
-            editor.putString(RECEIPT_KEY, receiptNumber.toString())
-
-            when (editor.commit()) {
-                true -> Result.build { Unit }
-                else -> Result.build { throw ParagonError.ReceiptException }
-            }
-        }
-
-    override suspend fun getReceiptNumber(): Result<Exception, Int> =
-        withContext(dispatcherProvider.provideIOContext()) {
-
-            val preferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
-
-            when (val result = preferences.getString(RECEIPT_KEY, "1")!!.toInt()) {
-                // TODO It'll never be 0... add better error handling
-                0 -> Result.build { throw ParagonError.ReceiptException }
-                else -> Result.build { result }
-            }
         }
 
     override suspend fun updateArticle(checkoutArticle: CheckoutArticle): Result<Exception, Unit> =

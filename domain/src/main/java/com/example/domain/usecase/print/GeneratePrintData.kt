@@ -22,6 +22,7 @@ class GeneratePrintData(
     ): Result<Exception, List<ByteArray>> =
         withContext(dispatcherProvider.provideComputationContext()) {
 
+            //TODO actually validate
             //            if(validatePrintData(valuesToPrint))
 //                return@withContext Result.build { ParagonError.PrintException }
 

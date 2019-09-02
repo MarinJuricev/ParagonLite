@@ -12,8 +12,6 @@ interface ICheckoutRepository {
     suspend fun getArticlesInCheckoutSize(): LiveData<Int>
     suspend fun deleteArticle(checkoutArticle: CheckoutArticle): Result<Exception, Unit>
     suspend fun deleteAllArticles()
-    suspend fun saveReceiptNumber(receiptNumber: Int): Result<Exception, Unit>
-    suspend fun getReceiptNumber(): Result<Exception, Int>
     suspend fun updateArticle(checkoutArticle: CheckoutArticle): Result<Exception, Unit>
 
 }

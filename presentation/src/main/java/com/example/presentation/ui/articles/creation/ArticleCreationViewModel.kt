@@ -29,19 +29,19 @@ class ArticleCreationViewModel(
     }
 
     @SuppressWarnings
-    private fun onPriceChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+    fun onPriceChanged(text: CharSequence, start: Int, before: Int, count: Int) {
         currentPrice.postValue(text.toString())
         validateArticleData()
     }
 
     @SuppressWarnings
-    private fun onArticleNameChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+    fun onArticleNameChanged(text: CharSequence, start: Int, before: Int, count: Int) {
         articleName.postValue(text.toString())
         validateArticleData()
     }
 
     private fun validateArticleData() {
-        if(!currentPrice.value.isNullOrEmpty() && !articleName.value.isNullOrEmpty())
+        if (!currentPrice.value.isNullOrEmpty() && !articleName.value.isNullOrEmpty())
             _shouldSaveButtonBeEnabled.postValue(true)
         else
             _shouldSaveButtonBeEnabled.postValue(false)

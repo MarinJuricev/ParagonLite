@@ -5,16 +5,16 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
+import com.example.domain.shared.ISharedPrefsService
+import com.example.domain.shared.RECEIPT_DEFAULT_VALUE
+import com.example.domain.shared.RECEIPT_KEY
 import com.example.domain.usecase.bluetooth.GetBluetoothAddress
 import com.example.domain.usecase.checkout.*
 import com.example.domain.usecase.print.GeneratePrintData
-import com.example.domain.usecase.print.GetReceiptNumber
 import com.example.domain.usecase.print.PrintCheckout
-import com.example.domain.usecase.print.SaveReceiptNumber
 import com.example.domain.usecase.receipt.AddReceipt
 import com.example.presentation.shared.BaseViewModel
 import kotlinx.coroutines.launch
-
 
 class CheckoutViewModel(
     private val getArticlesInCheckout: GetArticlesInCheckout,
@@ -23,11 +23,10 @@ class CheckoutViewModel(
     private val getBluetoothMacAddress: GetBluetoothAddress,
     private val generatePrintData: GeneratePrintData,
     private val printCheckout: PrintCheckout,
-    private val getReceiptNumber: GetReceiptNumber,
-    private val saveReceiptNumber: SaveReceiptNumber,
     private val getArticlesInCheckoutSize: GetArticlesInCheckoutSize,
     private val updateCheckoutArticle: UpdateCheckoutArticle,
-    private val addReceipt: AddReceipt
+    private val addReceipt: AddReceipt,
+    private val sharedPrefsService: ISharedPrefsService
 ) : BaseViewModel() {
 
     init {
@@ -92,16 +91,10 @@ class CheckoutViewModel(
     fun printCheckout() = launch {
         when (val result = getBluetoothMacAddress.execute()) {
             is Result.Value -> {
-                getReceiptNumber(result.value)
-            }
-            is Result.Error -> _getBluetoothAddressError.postValue(true)
-        }
-    }
-
-    private fun getReceiptNumber(bluetoothMacAddress: String) = launch {
-        when (val result = getReceiptNumber.execute()) {
-            is Result.Value -> {
-                generateDataToPrint(bluetoothMacAddress, result.value)
+                generateDataToPrint(
+                    result.value,
+                    sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as Int
+                )
             }
             is Result.Error -> _getBluetoothAddressError.postValue(true)
         }
@@ -128,13 +121,13 @@ class CheckoutViewModel(
         when (printCheckout.execute(
             dataToPrint,
             macAddress,
-            getReceiptNumber,
             checkoutValue.value!!,
+            sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as Int,
             addReceipt
         )) {
             is Result.Value -> {
                 val incrementedReceiptNumber = receiptNumber + 1
-                saveReceiptNumber.execute(incrementedReceiptNumber)
+                sharedPrefsService.saveValue(RECEIPT_KEY, incrementedReceiptNumber)
             }
             is Result.Error -> TODO()
         }
