@@ -11,11 +11,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.example.domain.shared.APP_MODE
+import com.example.domain.shared.DARK
+import com.example.domain.shared.LIGHT
+import com.example.domain.shared.PACKAGE_NAME
 import com.example.presentation.R
-import com.example.presentation.ui.settings.APP_MODE
-import com.example.presentation.ui.settings.DARK
-import com.example.presentation.ui.settings.LIGHT
-import com.example.presentation.ui.settings.PACKAGE_NAME
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -66,7 +66,11 @@ class BaseActivity : AppCompatActivity() {
             .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                    Snackbar.make(root, getString(R.string.permission_granted), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        root,
+                        getString(R.string.permission_granted),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
@@ -77,7 +81,8 @@ class BaseActivity : AppCompatActivity() {
                 }
 
                 override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-                    Snackbar.make(root, getString(R.string.permission_denied), Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(root, getString(R.string.permission_denied), Snackbar.LENGTH_LONG)
+                        .show()
                 }
             }).check()
     }

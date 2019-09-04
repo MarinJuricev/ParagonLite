@@ -7,17 +7,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
+import com.example.domain.shared.*
 import com.example.presentation.R
 import com.example.presentation.ui.BaseActivity
 
-const val BLUETOOTH_MAC_ADDRESS_KEY = "BLUETOOTH_MAC_ADDRESS_KEY"
-const val RECEIPT_KEY = "RECEIPT_KEY"
-const val PACKAGE_NAME = "\"com.example.data\""
-const val APP_MODE = "APP_MODE"
-const val LIGHT = "LIGHT"
-const val DARK = "DARK"
-
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +33,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
-            RECEIPT_KEY -> updateReceiptNumber(sharedPreferences.getString(RECEIPT_KEY, "1"))
+            RECEIPT_KEY -> updateReceiptNumber(sharedPreferences.getInt(RECEIPT_KEY, 1))
             BLUETOOTH_MAC_ADDRESS_KEY ->
                 updateBluetoothAddress(
                     sharedPreferences.getString(BLUETOOTH_MAC_ADDRESS_KEY, "Empty")
@@ -73,12 +68,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
 
-    private fun updateReceiptNumber(receiptNumber: String?) {
+    private fun updateReceiptNumber(receiptNumber: Int?) {
         val preferences = context?.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
 
-        preferences?.edit()?.putString(
+        preferences?.edit()?.putInt(
             RECEIPT_KEY,
-            receiptNumber ?: "1"
+            receiptNumber ?: 1
         )?.apply()
     }
 

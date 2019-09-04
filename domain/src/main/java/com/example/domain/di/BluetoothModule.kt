@@ -6,8 +6,6 @@ import org.koin.dsl.module
 
 val bluetoothDomainModel = module {
     factory { UpdateBluetoothData(get()) }
-    factory { SaveBluetoothAddress(get()) }
-    factory { GetBluetoothAddress(get()) }
     factory { GeneratePrintData(get()) }
     factory { UnregisterBluetoothReceiver(get()) }
     factory { GetBluetoothData(get()) }

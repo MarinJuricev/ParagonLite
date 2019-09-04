@@ -1,6 +1,5 @@
 package com.example.data.bluetooth
 
-import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
@@ -9,14 +8,16 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.example.data.*
+import com.example.data.generateCurrentTime
 import com.example.data.model.RoomBluetoothEntry
-import com.example.domain.shared.DispatcherProvider
+import com.example.data.toBluetoothList
+import com.example.data.toRoomBluetoothList
 import com.example.domain.error.ParagonError
 import com.example.domain.error.ParagonError.BluetoothException
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
+import com.example.domain.shared.DispatcherProvider
 import com.zebra.sdk.comm.BluetoothConnectionInsecure
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -106,34 +107,14 @@ class BluetoothRepositoryImpl(
 
         // No need for duplicate entries
         if (deviceName != "" && deviceHardwareAddress != "" && !bluetoothList.any { it.name == deviceName })
-            bluetoothList.add(BluetoothEntry(deviceName, deviceHardwareAddress, generateCurrentTime()))
+            bluetoothList.add(
+                BluetoothEntry(
+                    deviceName,
+                    deviceHardwareAddress,
+                    generateCurrentTime()
+                )
+            )
     }
-
-    @SuppressLint("ApplySharedPref")
-    override suspend fun saveMacAddress(macAddress: String): Result<Exception, Unit> =
-        withContext(dispatcherProvider.provideIOContext()) {
-            val preferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
-
-            val editor = preferences.edit()
-            editor.putString(BLUETOOTH_MAC_ADDRESS_KEY, macAddress)
-
-            when (editor.commit()) {
-                true -> Result.build { Unit }
-                else -> Result.build { throw ParagonError.LocalIOException }
-            }
-        }
-
-    override suspend fun getMacAddress(): Result<Exception, String> =
-        withContext(dispatcherProvider.provideIOContext()) {
-
-            val preferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
-
-            when (val result = preferences.getString(BLUETOOTH_MAC_ADDRESS_KEY, "")) {
-                "" -> Result.build { throw BluetoothException }
-                else -> Result.build { result }
-            }
-        }
-
 
     override suspend fun connectAndSendDataOverBluetooth(
         savedMacAddress: String,

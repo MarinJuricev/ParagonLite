@@ -5,7 +5,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.Receipt
 import com.example.domain.model.Result
-import com.example.domain.usecase.bluetooth.GetBluetoothAddress
+import com.example.domain.shared.BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+import com.example.domain.shared.BLUETOOTH_MAC_ADDRESS_KEY
+import com.example.domain.shared.ISharedPrefsService
 import com.example.domain.usecase.print.GenerateReceiptPrintData
 import com.example.domain.usecase.print.PrintHistory
 import com.example.domain.usecase.receipt.GetReceipts
@@ -15,8 +17,8 @@ import kotlinx.coroutines.launch
 class HistoryViewModel(
     private val getReceipts: GetReceipts,
     private val generateReceiptPrintData: GenerateReceiptPrintData,
-    private val getBluetoothAddress: GetBluetoothAddress,
-    private val printHistory: PrintHistory
+    private val printHistory: PrintHistory,
+    private val sharedPrefsService: ISharedPrefsService
 ) : BaseViewModel() {
 
     private val _receiptData by lazy { MediatorLiveData<List<Receipt>>() }
@@ -40,11 +42,14 @@ class HistoryViewModel(
     }
 
     fun prepareDataForPrint() = launch {
-        when (val result = getBluetoothAddress.execute()) {
-            is Result.Value -> {
-                generatePrintData(result.value)
+        when (val result = sharedPrefsService.getValue(
+            BLUETOOTH_MAC_ADDRESS_KEY,
+            BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+        ) as String) {
+            "" -> _getBluetoothAddressError.postValue(true)
+            else -> {
+                generatePrintData(result)
             }
-            is Result.Error -> _getBluetoothAddressError.postValue(true)
         }
     }
 

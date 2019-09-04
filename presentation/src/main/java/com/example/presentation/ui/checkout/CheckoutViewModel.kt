@@ -5,10 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
-import com.example.domain.shared.ISharedPrefsService
-import com.example.domain.shared.RECEIPT_DEFAULT_VALUE
-import com.example.domain.shared.RECEIPT_KEY
-import com.example.domain.usecase.bluetooth.GetBluetoothAddress
+import com.example.domain.shared.*
 import com.example.domain.usecase.checkout.*
 import com.example.domain.usecase.print.GeneratePrintData
 import com.example.domain.usecase.print.PrintCheckout
@@ -20,7 +17,6 @@ class CheckoutViewModel(
     private val getArticlesInCheckout: GetArticlesInCheckout,
     private val deleteCheckoutArticle: DeleteCheckoutArticle,
     private val calculateCheckout: CalculateCheckout,
-    private val getBluetoothMacAddress: GetBluetoothAddress,
     private val generatePrintData: GeneratePrintData,
     private val printCheckout: PrintCheckout,
     private val getArticlesInCheckoutSize: GetArticlesInCheckoutSize,
@@ -89,14 +85,17 @@ class CheckoutViewModel(
     }
 
     fun printCheckout() = launch {
-        when (val result = getBluetoothMacAddress.execute()) {
-            is Result.Value -> {
+        when (val result = sharedPrefsService.getValue(
+            BLUETOOTH_MAC_ADDRESS_KEY,
+            BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+        ) as String) {
+            "" -> _getBluetoothAddressError.postValue(true)
+            else -> {
                 generateDataToPrint(
-                    result.value,
+                    result,
                     sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as Int
                 )
             }
-            is Result.Error -> _getBluetoothAddressError.postValue(true)
         }
     }
 
