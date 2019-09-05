@@ -1,7 +1,6 @@
 package com.example.presentation.ui
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +12,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.domain.shared.APP_MODE
 import com.example.domain.shared.DARK
+import com.example.domain.shared.ISharedPrefsService
 import com.example.domain.shared.LIGHT
-import com.example.domain.shared.PACKAGE_NAME
 import com.example.presentation.R
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
@@ -24,11 +23,13 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 
 
 class BaseActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
+    private val sharedPrefsService: ISharedPrefsService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +45,7 @@ class BaseActivity : AppCompatActivity() {
     }
 
     private fun checkAppTheme() {
-        val preferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE)
-        val currentTheme = preferences.getString(APP_MODE, LIGHT)
+        val currentTheme = sharedPrefsService.getValue(APP_MODE, LIGHT) as String
 
         if (currentTheme == DARK)
             delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
