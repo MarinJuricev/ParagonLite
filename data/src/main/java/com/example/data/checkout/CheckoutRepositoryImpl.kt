@@ -1,21 +1,19 @@
 package com.example.data.checkout
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.example.data.*
 import com.example.data.model.RoomCheckout
-import com.example.domain.shared.DispatcherProvider
+import com.example.data.toCheckoutList
+import com.example.data.toRoomCheckout
+import com.example.data.toRoomCheckoutArticle
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Article
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
 import com.example.domain.repository.ICheckoutRepository
+import com.example.domain.shared.DispatcherProvider
 import kotlinx.coroutines.withContext
 
-//when (val result = checkoutDao.getArticle(article.name)) can throw a NPE if
-// there isn't a article present in the checkout table
-@Suppress("SENSELESS_NULL_IN_WHEN")
 class CheckoutRepositoryImpl(
     private val dispatcherProvider: DispatcherProvider,
     private val checkoutDao: CheckoutDao
@@ -40,7 +38,6 @@ class CheckoutRepositoryImpl(
             checkoutDao.getCheckoutArticleCount()
         }
 
-    // TODO REFACTOR INTO IT'S OWN USECASE!
     private suspend fun getPreviousCheckoutArticleNumberIfAvailable(article: Article): Double? =
         withContext(dispatcherProvider.provideIOContext()) {
             when (val result = checkoutDao.getArticle(article.name)) {
@@ -52,7 +49,7 @@ class CheckoutRepositoryImpl(
     override suspend fun getArticlesInCheckout(): Result<Exception, LiveData<List<CheckoutArticle>>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
-            when (val result = checkoutDao.getArticles()) {
+            when (val result= checkoutDao.getArticles()) {
                 listOf<RoomCheckout>() -> Result.build { throw ParagonError.LocalIOException }
                 else -> Result.build {
                     Transformations.map(

@@ -11,7 +11,7 @@ interface CheckoutDao {
     fun getArticles(): LiveData<List<RoomCheckout>>
 
     @Query("SELECT * FROM checkout_table WHERE name= :articleName")
-    fun getArticle(articleName:  String): RoomCheckout
+    fun getArticle(articleName:  String): RoomCheckout?
 
     @Query("SELECT SUM(inCheckout) FROM checkout_table ")
     fun getCheckoutArticleCount(): LiveData<Int>

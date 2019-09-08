@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: "kotlin-kapt"
 
+apply plugin: "de.mannodermaus.android-junit5"
+
 android {
     compileSdkVersion 28
 
@@ -29,6 +31,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -56,11 +62,14 @@ dependencies {
 
     implementation Dependencies.lifecyleExtensions
 
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    // Test
+    testImplementation Dependencies.mockK
+    testImplementation Dependencies.coroutinesCore
+    implementation Dependencies.coroutinesAndroid
+
+    testImplementation Dependencies.junitApi
+    testRuntimeOnly Dependencies.junitEngine
 
     implementation files('libs/ZSDK_ANDROID_API.jar')
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }

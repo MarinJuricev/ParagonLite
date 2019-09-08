@@ -5,6 +5,10 @@ object Versions {
     const val lifecycle = "2.0.0"
     const val koin = "2.0.0-GA6"
     const val room = "2.1.0-beta01"
+    const val mockK = "1.9.3"
+    const val junitApi = "5.4.2"
+    const val junitEngine = "5.4.2"
+    const val junitParams = "5.4.2"
 }
 
 object Dependencies {
@@ -30,4 +34,11 @@ object Dependencies {
 
     val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+
+    //testing libraries
+    val mockK = "io.mockk:mockk:${Versions.mockK}"
+
+    // (Required) Writing and executing Unit Tests on the JUnit Platform
+    val junitApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitApi}"
+    val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitEngine}"
 }

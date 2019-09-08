@@ -1,8 +1,8 @@
 package com.example.domain.usecase.print
 
-import com.example.domain.shared.DispatcherProvider
 import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
+import com.example.domain.shared.DispatcherProvider
 import com.example.domain.usecase.print.ESCPrinterCommand.SHENZEN_CENTER
 import com.example.domain.usecase.print.ESCPrinterCommand.SHENZEN_LINE
 import com.example.domain.usecase.print.ESCPrinterCommand.SHENZEN_LINE_LENGHT_WIDTH_0
@@ -30,58 +30,6 @@ class GeneratePrintData(
 
             dataToReturn.add(ESCPrinterCommand.POS_Set_Cut(1)!!)
             dataToReturn.add(ESCPrinterCommand.POS_Set_PrtInit())
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    alignCenter("OPG Oaza Jelinjak", SHENZEN_CENTER) + "\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    alignCenter("Vlake /bb", SHENZEN_CENTER) + "\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    alignCenter("22202, Primosten Burnji", SHENZEN_CENTER) + "\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    alignCenter("Sjediste:", SHENZEN_CENTER) + "\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    alignCenter("Primosten, Vlake /bb", SHENZEN_CENTER) + "\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    alignCenter("OIB 93020714603", SHENZEN_CENTER) + "\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    alignCenter(
-                        "vl. Zdravko Cobanov",
-                        SHENZEN_CENTER
-                    ) + "\n\n",
-                    0, 0, 0, 0
-                )!!
-            )
 
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
@@ -227,22 +175,6 @@ class GeneratePrintData(
 
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
-                    "Zastitni kod: ${generateRandomCharacters(36)}\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
-                    "JIR: ${generateRandomCharacters(8)}-${generateRandomCharacters(4)}-" +
-                            "${generateRandomCharacters(4)}-${generateRandomCharacters(4)}-" +
-                            "${generateRandomCharacters(12)}\n\n",
-                    0, 0, 0, 0
-                )!!
-            )
-
-            dataToReturn.add(
-                ESCPrinterCommand.POS_Set_Font_And_Print(
                     alignCenter("HVALA", SHENZEN_CENTER) + "\n",
                     0, 0, 0, 0
                 )!!
@@ -268,12 +200,6 @@ class GeneratePrintData(
         return sdf.format(Date())
     }
 
-    private fun generateRandomCharacters(length: Int): String {
-        val allowedChars = "abcdefghiklmnopqrstuvwxyz1234567890"
-        return (1..length)
-            .map { allowedChars.random() }
-            .joinToString("")
-    }
 
     private fun validatePrintData(valuesToPrint: List<CheckoutArticle>?) =
         valuesToPrint?.isEmpty()
