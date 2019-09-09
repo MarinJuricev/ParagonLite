@@ -65,10 +65,15 @@ dependencies {
     // Test
     testImplementation Dependencies.mockK
     testImplementation Dependencies.coroutinesCore
-    implementation Dependencies.coroutinesAndroid
-
     testImplementation Dependencies.junitApi
+
+    androidTestImplementation Dependencies.mockK
+    androidTestImplementation Dependencies.coroutinesCore
+    androidTestImplementation Dependencies.junitApi
+
     testRuntimeOnly Dependencies.junitEngine
+
+    implementation Dependencies.coroutinesAndroid
 
     implementation files('libs/ZSDK_ANDROID_API.jar')
 
