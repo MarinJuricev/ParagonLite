@@ -145,11 +145,10 @@ class BluetoothRepositoryImpl(
             Result.build { Unit }
         }
 
-    //TODO refactor this mess
     override fun unRegisterReceiver(): Result<Exception, Unit> {
         bluetoothAdapter?.let {
-            if (bluetoothAdapter!!.isDiscovering)
-                bluetoothAdapter!!.cancelDiscovery()
+            if (it.isDiscovering)
+                it.cancelDiscovery()
         }
 
         bluetoothReceiver?.let {

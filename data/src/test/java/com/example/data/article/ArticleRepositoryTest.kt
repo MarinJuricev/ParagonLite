@@ -1,6 +1,8 @@
 package com.example.data.article
 
+import androidx.lifecycle.MutableLiveData
 import com.example.data.checkout.articleTestData
+import com.example.data.model.RoomArticle
 import com.example.data.toRoomArticle
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Result
@@ -57,6 +59,47 @@ internal class ArticleRepositoryTest {
 
         val actualResult = articleRepository.createArticle(articleTestData)
         val expectedResult = Result.build { throw ParagonError.LocalIOException }
+
+        assertEquals(expectedResult, actualResult)
+    }
+
+    @Test
+    fun `get articles success`() = runBlocking {
+        val articlesTestData = MutableLiveData<List<RoomArticle>>()
+
+        coEvery {
+            articleDao.getArticles()
+        } coAnswers { articlesTestData }
+
+        val actualResult = articleRepository.getArticles()
+        val expectedResult = Result.build { articlesTestData }
+
+        assertEquals(
+            expectedResult is Result.Value<*>,
+            actualResult is Result.Value<*>
+        )
+    }
+
+    @Test
+    fun `delete article fail`() = runBlocking {
+        coEvery {
+            articleDao.deleteArticle(articleTestData.toRoomArticle)
+        } coAnswers { 0 }
+
+        val actualResult = articleRepository.deleteArticle(articleTestData)
+        val expectedResult = Result.build { throw ParagonError.LocalIOException }
+
+        assertEquals(expectedResult, actualResult)
+    }
+
+    @Test
+    fun `delete article success`() = runBlocking {
+        coEvery {
+            articleDao.deleteArticle(articleTestData.toRoomArticle)
+        } coAnswers { 1 }
+
+        val actualResult = articleRepository.deleteArticle(articleTestData)
+        val expectedResult = Result.build { Unit }
 
         assertEquals(expectedResult, actualResult)
     }
