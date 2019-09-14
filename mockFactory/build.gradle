@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
 android {
     compileSdkVersion 28
 
@@ -28,25 +27,12 @@ android {
 }
 
 dependencies {
-    testImplementation project(":mockFactory")
+    implementation project(":domain")
+    implementation project(":data")
 
     implementation Dependencies.kotlinStandardLibrary
-
-    // Kotlin Coroutines
-    implementation Dependencies.coroutinesCore
-
-    // Koin for Kotlin
-    implementation Dependencies.koinCore
-    // Koin extended & experimental features
-    implementation Dependencies.koinCoreExt
-    // Koin AndroidX Scope feature
-    implementation Dependencies.koinAndrodixScope
-    // Koin for Unit tests
-    testImplementation Dependencies.koinTest
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01'
-
-    // Test
-    testImplementation Dependencies.mockK
-    testImplementation Dependencies.coroutinesCore
-    testImplementation Dependencies.junitApi
 }
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+

@@ -41,6 +41,8 @@ android {
 dependencies {
     implementation project(":domain")
 
+    testImplementation project(":mockFactory")
+
     implementation Dependencies.kotlinStandardLibrary
 
     // Kotlin Android Coroutines

@@ -1,12 +1,12 @@
 package com.example.data.article
 
 import androidx.lifecycle.MutableLiveData
-import com.example.data.checkout.articleTestData
 import com.example.data.model.RoomArticle
 import com.example.data.toRoomArticle
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Result
 import com.example.domain.shared.DispatcherProvider
+import com.example.mockfactory.articleTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every

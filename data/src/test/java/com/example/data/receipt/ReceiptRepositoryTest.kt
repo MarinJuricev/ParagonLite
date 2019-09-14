@@ -1,8 +1,6 @@
 package com.example.data.receipt
 
 import androidx.lifecycle.MutableLiveData
-import com.example.data.checkout.endDateTestData
-import com.example.data.checkout.startDateTestData
 import com.example.data.model.RoomReceipt
 import com.example.domain.repository.IReceiptRepository
 import com.example.domain.shared.DispatcherProvider
@@ -15,6 +13,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import com.example.domain.model.Result
+import com.example.mockfactory.endDateTestData
+import com.example.mockfactory.startDateTestData
 import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
 

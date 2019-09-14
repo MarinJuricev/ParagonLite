@@ -1,13 +1,15 @@
 package com.example.data.checkout
 
 import androidx.lifecycle.MutableLiveData
+import com.example.data.*
 import com.example.data.model.RoomCheckout
-import com.example.data.toRoomCheckout
-import com.example.data.toRoomCheckoutArticle
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Result
 import com.example.domain.repository.ICheckoutRepository
 import com.example.domain.shared.DispatcherProvider
+import com.example.mockfactory.articleTestData
+import com.example.mockfactory.checkoutArticleTestData
+import com.example.mockfactory.roomCheckoutTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every

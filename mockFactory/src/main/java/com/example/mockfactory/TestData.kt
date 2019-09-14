@@ -1,4 +1,4 @@
-package com.example.data.checkout
+package com.example.mockfactory
 
 import com.example.data.model.RoomCheckout
 import com.example.data.model.RoomReceipt
@@ -31,5 +31,5 @@ val roomReceiptTestData = RoomReceipt(
     price = 10.00
 )
 
-val startDateTestData = "14.07.2019"
-val endDateTestData = "20.07.2019"
+const val startDateTestData = "14.07.2019"
+const val endDateTestData = "20.07.2019"
