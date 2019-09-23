@@ -37,16 +37,17 @@ internal class UnregisterBluetoothReceiverTest {
         }
 
     @Test
-    fun `unregisterBluetooth receiver is bluetooth repository triggered with error response`() = runBlocking {
+    fun `unregisterBluetooth receiver is bluetooth repository triggered with error response`() =
         runBlocking {
-            coEvery {
-                bluetoothRepository.unRegisterReceiver()
-            } coAnswers { Result.build { throw Exception() } }
+            runBlocking {
+                coEvery {
+                    bluetoothRepository.unRegisterReceiver()
+                } coAnswers { Result.build { throw Exception() } }
 
-            unregisterBluetoothReceiver.execute()
+                unregisterBluetoothReceiver.execute()
 
-            coVerify { unregisterBluetoothReceiver.execute() }
-            coVerify { bluetoothRepository.unRegisterReceiver() }
+                coVerify { unregisterBluetoothReceiver.execute() }
+                coVerify { bluetoothRepository.unRegisterReceiver() }
+            }
         }
-    }
 }
