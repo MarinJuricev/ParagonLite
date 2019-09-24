@@ -31,5 +31,8 @@ val roomReceiptTestData = RoomReceipt(
     price = 10.00
 )
 
+val valuesToPrintTestData = listOf<ByteArray>()
+
 const val startDateTestData = "14.07.2019"
 const val endDateTestData = "20.07.2019"
+const val macAddressTestData = "192.168.1.1"
