@@ -22,7 +22,7 @@ class PrintCheckout(
             valuesToPrint
         )) {
             is Result.Value -> {
-                deleteCurrentCheckoutItems(checkoutRepository)
+                deleteCurrentCheckoutItems()
                 addToReceiptRepo(addReceipt, currentCheckout, receiptNumber)
                 result
             }
@@ -42,7 +42,6 @@ class PrintCheckout(
     }
 
     private suspend fun deleteCurrentCheckoutItems(
-        checkoutRepository: ICheckoutRepository
     ) = checkoutRepository.deleteAllArticles()
 
 }

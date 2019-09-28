@@ -9,7 +9,6 @@ import java.util.*
 class AddReceipt(
     private val receiptRepository: IReceiptRepository
 ) {
-
     suspend fun execute(receiptNumber: Int, currentCheckout: String): Result<Exception, Unit> {
         val receipt = Receipt(
             receiptNumber,
