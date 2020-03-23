@@ -1,23 +1,21 @@
 object Versions {
-    const val kotlin = "1.3.31"
-    const val navigation = "1.0.0"
-    const val coroutines = "1.1.1"
+    const val kotlin = "1.3.70"
+    const val navigation = "2.3.0-alpha04"
+    const val coroutines = "1.3.5"
     const val lifecycle = "2.2.0"
-    const val koin = "2.0.0-GA6"
-    const val room = "2.1.0-beta01"
+    const val koin = "2.1.4"
+    const val room = "2.2.5"
     const val mockK = "1.9.3"
     const val junitApi = "5.4.2"
-    const val junitEngine = "5.4.2"
-    const val junitParams = "5.4.2"
 
     const val appCompat = "1.2.0-alpha03"
     const val androidCore = "1.2.0"
     const val material = "1.2.0-alpha05"
-    const val constraintLayout = "1.1.3"
+    const val constraintLayout = "2.0.0-beta4"
     const val fragment = "1.3.0-alpha02"
     const val legacySupport = "1.0.0"
     const val glide = "4.9.0"
-    const val dexter = "5.0.0"
+    const val dexter = "6.0.2"
     const val materialCalendar = "1.1.4"
     const val preferences = "1.1.0"
     const val livedata = "2.3.0-alpha01"
@@ -27,11 +25,11 @@ object Dependencies {
     val androidSdkVersion = 29
 
     val kotlinStandardLibrary = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
-    val navigationFragment = "android.arch.navigation:navigation-fragment:${Versions.navigation}"
-    val navigationFragmentKtx = "android.arch.navigation:navigation-fragment-ktx:${Versions.navigation}"
-    val navigationUi = "android.arch.navigation:navigation-ui:${Versions.navigation}"
-    val navigationUiKtx = "android.arch.navigation:navigation-ui-ktx:${Versions.navigation}"
+    val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
+    val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+    val navigationSafeArgsGradlePlugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
 
     val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
@@ -68,5 +66,5 @@ object Dependencies {
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
     val junitApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitApi}"
-    val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitEngine}"
+    val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitApi}"
 }

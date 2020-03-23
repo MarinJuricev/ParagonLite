@@ -48,9 +48,7 @@ dependencies {
     implementation Dependencies.fragment
 
     // Navigation
-    implementation Dependencies.navigationFragment
     implementation Dependencies.navigationFragmentKtx
-    implementation Dependencies.navigationUi
     implementation Dependencies.navigationUiKtx
 
     // Kotlin Android Coroutines
