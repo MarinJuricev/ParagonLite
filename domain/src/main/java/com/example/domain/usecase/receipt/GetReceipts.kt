@@ -27,6 +27,4 @@ class GetReceipts(
 
         return targetFormat.format(date)
     }
-
-
 }

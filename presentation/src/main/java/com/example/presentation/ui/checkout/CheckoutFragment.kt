@@ -48,7 +48,7 @@ class CheckoutFragment : Fragment() {
             { checkoutArticle: CheckoutArticle -> updateQuantityCount(checkoutArticle) }
         )
 
-        checkoutViewModel.articleData.observe(this@CheckoutFragment, Observer {
+        checkoutViewModel.articleData.observe(viewLifecycleOwner, Observer {
             if (it.isEmpty())
                 showEmptyScreenFields()
             else
@@ -57,7 +57,7 @@ class CheckoutFragment : Fragment() {
             checkoutAdapter.submitList(it)
         })
 
-        checkoutViewModel.checkoutValue.observe(this@CheckoutFragment, Observer {
+        checkoutViewModel.checkoutValue.observe(viewLifecycleOwner, Observer {
             when (it) {
                 "0.0" -> fabPrint.hide()
                 else -> fabPrint.show()
@@ -67,19 +67,19 @@ class CheckoutFragment : Fragment() {
             tvCheckoutPrice.text = stringToDisplay
         })
 
-        checkoutViewModel.getBluetoothAddressError.observe(this@CheckoutFragment, Observer {
+        checkoutViewModel.getBluetoothAddressError.observe(viewLifecycleOwner, Observer {
             if (it)
                 showSnackBar(getString(R.string.no_saved_bluetooth_address_warning))
         })
 
-        checkoutViewModel.checkoutBadgeCount.observe(this@CheckoutFragment, Observer {
+        checkoutViewModel.checkoutBadgeCount.observe(viewLifecycleOwner, Observer {
             when (it) {
                 0 -> hideCheckoutBadge()
                 else -> updateCheckoutBadgeCount(it)
             }
         })
 
-        checkoutViewModel.articleUpdate.observe(this@CheckoutFragment, Observer {
+        checkoutViewModel.articleUpdate.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> showSnackBar(getString(R.string.article_saved_successfully))
                 else -> showSnackBar(getString(R.string.article_save_error))
@@ -111,7 +111,7 @@ class CheckoutFragment : Fragment() {
         rvCheckoutList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0)
-                    fabPrint.hide(true)
+                    fabPrint.hide()
                 else if (dy < 0)
                     fabPrint.show()
             }
@@ -121,7 +121,7 @@ class CheckoutFragment : Fragment() {
     private fun hideCheckoutBadge() = activity?.bottom_nav?.removeBadge(R.id.navigation_checkout)
 
     private fun updateCheckoutBadgeCount(badgeCount: Int) {
-        activity?.bottom_nav?.showBadge(R.id.navigation_checkout)?.number = badgeCount
+        activity?.bottom_nav?.getOrCreateBadge(R.id.navigation_checkout)?.number = badgeCount
     }
 
     private fun showSnackBar(messageToShow: String) {

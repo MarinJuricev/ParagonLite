@@ -48,7 +48,7 @@ class ArticlesListFragment : Fragment() {
             ({ article: Article -> onArticleClick(article) }),
             ({ article: Article -> onArticleLongClick(article) })
         )
-        articlesListViewModel.articleData.observe(this@ArticlesListFragment, Observer {
+        articlesListViewModel.articleData.observe(viewLifecycleOwner, Observer {
             if (it.isEmpty())
                 showEmptyScreenFields()
             else
@@ -57,14 +57,14 @@ class ArticlesListFragment : Fragment() {
             articleAdapter.submitList(it)
         })
 
-        articlesListViewModel.isArticleDeletionSuccess.observe(this@ArticlesListFragment, Observer {
+        articlesListViewModel.isArticleDeletionSuccess.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> showArticleDeletionSuccess()
                 false -> showArticleDeletionFail()
             }
         })
 
-        articlesListViewModel.checkoutBadgeCount.observe(this@ArticlesListFragment, Observer {
+        articlesListViewModel.checkoutBadgeCount.observe(viewLifecycleOwner, Observer {
             when (it) {
                 0 -> hideCheckoutBadge()
                 else -> updateCheckoutBadgeCount(it)
@@ -88,7 +88,7 @@ class ArticlesListFragment : Fragment() {
         rvArticleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0)
-                    fabArticleCreation.hide(true)
+                    fabArticleCreation.hide()
                 else if (dy < 0)
                     fabArticleCreation.show()
             }
@@ -98,7 +98,7 @@ class ArticlesListFragment : Fragment() {
     private fun hideCheckoutBadge() = activity?.bottom_nav?.removeBadge(R.id.navigation_checkout)
 
     private fun updateCheckoutBadgeCount(badgeCount: Int) {
-        activity?.bottom_nav?.showBadge(R.id.navigation_checkout)?.number = badgeCount
+        activity?.bottom_nav?.getOrCreateBadge(R.id.navigation_checkout)?.number = badgeCount
     }
 
     private fun showArticleDeletionSuccess() =
@@ -108,8 +108,7 @@ class ArticlesListFragment : Fragment() {
         Snackbar.make(articleListRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG).show()
 
     private fun onArticleClick(article: Article) {
-        activity?.bottom_nav?.showBadge(R.id.navigation_checkout)
-
+        activity?.bottom_nav?.getOrCreateBadge(R.id.navigation_checkout)
         articlesListViewModel.sendArticleToCheckout(article)
     }
 

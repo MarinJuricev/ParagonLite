@@ -19,11 +19,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val receiptPref = findPreference(RECEIPT_KEY) as EditTextPreference
-        receiptPref.text = sharedPrefsService.getValue(RECEIPT_KEY, "1") as String
+        val receiptPref = findPreference(RECEIPT_KEY) as? EditTextPreference
+        receiptPref?.text = sharedPrefsService.getValue(RECEIPT_KEY, "1") as String
 
-        val macAddressPref = findPreference(BLUETOOTH_MAC_ADDRESS_KEY) as EditTextPreference
-        macAddressPref.text = sharedPrefsService.getValue(BLUETOOTH_MAC_ADDRESS_KEY, "") as String
+        val macAddressPref = findPreference(BLUETOOTH_MAC_ADDRESS_KEY) as? EditTextPreference
+        macAddressPref?.text = sharedPrefsService.getValue(BLUETOOTH_MAC_ADDRESS_KEY, "") as String
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

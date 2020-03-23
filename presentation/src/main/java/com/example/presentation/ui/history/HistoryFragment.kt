@@ -98,7 +98,7 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
         rvReceiptList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0)
-                    fabPrint.hide(true)
+                    fabPrint.hide()
                 else if (dy < 0)
                     fabPrint.show()
             }

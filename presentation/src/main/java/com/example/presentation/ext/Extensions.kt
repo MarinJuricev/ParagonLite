@@ -22,7 +22,7 @@ internal fun Fragment.hideKeyboard() {
 }
 
 internal fun Activity.hideKeyboard() {
-    hideKeyboard(if (currentFocus == null) View(this) else currentFocus)
+    if (currentFocus == null) View(this) else currentFocus?.let { hideKeyboard(it) }
 }
 
 internal fun Context.hideKeyboard(view: View) {

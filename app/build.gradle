@@ -7,11 +7,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "kotlin-kapt"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion Dependencies.androidSdkVersion
     defaultConfig {
         applicationId "com.example.paragonlite"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion Dependencies.androidSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

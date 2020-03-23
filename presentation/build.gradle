@@ -9,11 +9,11 @@ apply plugin: "kotlin-kapt"
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion Dependencies.androidSdkVersion
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion Dependencies.androidSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -41,10 +41,11 @@ dependencies {
 
     implementation Dependencies.kotlinStandardLibrary
 
-    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
-    implementation 'androidx.core:core-ktx:1.0.2'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation Dependencies.appCompat
+    implementation Dependencies.androidCore
+    implementation Dependencies.material
+    implementation Dependencies.constraintLayout
+    implementation Dependencies.fragment
 
     // Navigation
     implementation Dependencies.navigationFragment
@@ -56,26 +57,27 @@ dependencies {
     implementation Dependencies.coroutinesCore
     implementation Dependencies.coroutinesAndroid
 
+//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     // ViewModel
     implementation Dependencies.lifecyleExtensions
     implementation Dependencies.lifecycleViewModelKtx
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+    implementation Dependencies.legacySupport
+
     kapt Dependencies.lifeCycleCompiler
 
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation Dependencies.glide
+    kapt Dependencies.glideCompiler
 
     // Permissions
-    implementation 'com.karumi:dexter:5.0.0'
+    implementation Dependencies.dexter
 
     //Date Calendar Picker
-    implementation 'com.archit.calendar:awesome-calendar:1.1.4'
+    implementation Dependencies.materialCalendar
 
     // Preference
-    implementation "androidx.preference:preference:1.0.0"
+    implementation Dependencies.preferences
 
     // Koin for Kotlin
     implementation Dependencies.koinCore
@@ -87,6 +89,6 @@ dependencies {
     implementation Dependencies.koinAndroidxViewModel
     // Koin for Unit tests
     testImplementation Dependencies.koinTest
-
-    testImplementation 'junit:junit:4.12'
+//TODO do we really need this ??
+//    testImplementation 'junit:junit:4.12'
 }

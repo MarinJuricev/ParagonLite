@@ -2,16 +2,30 @@ object Versions {
     const val kotlin = "1.3.31"
     const val navigation = "1.0.0"
     const val coroutines = "1.1.1"
-    const val lifecycle = "2.0.0"
+    const val lifecycle = "2.2.0"
     const val koin = "2.0.0-GA6"
     const val room = "2.1.0-beta01"
     const val mockK = "1.9.3"
     const val junitApi = "5.4.2"
     const val junitEngine = "5.4.2"
     const val junitParams = "5.4.2"
+
+    const val appCompat = "1.2.0-alpha03"
+    const val androidCore = "1.2.0"
+    const val material = "1.2.0-alpha05"
+    const val constraintLayout = "1.1.3"
+    const val fragment = "1.3.0-alpha02"
+    const val legacySupport = "1.0.0"
+    const val glide = "4.9.0"
+    const val dexter = "5.0.0"
+    const val materialCalendar = "1.1.4"
+    const val preferences = "1.1.0"
+    const val livedata = "2.3.0-alpha01"
 }
 
 object Dependencies {
+    val androidSdkVersion = 29
+
     val kotlinStandardLibrary = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
     val navigationFragment = "android.arch.navigation:navigation-fragment:${Versions.navigation}"
@@ -25,6 +39,7 @@ object Dependencies {
     val lifecyleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     val lifeCycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
+    val lifeCycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.livedata}"
 
     val koinCore = "org.koin:koin-core:${Versions.koin}"
     val koinCoreExt = "org.koin:koin-core-ext:${Versions.koin}"
@@ -34,6 +49,19 @@ object Dependencies {
 
     val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+
+    // Presentation module dependencies
+    val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+    val androidCore = "androidx.core:core-ktx:${Versions.androidCore}"
+    val material = "com.google.android.material:material:${Versions.material}"
+    val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    val fragment = "androidx.fragment:fragment:${Versions.fragment}"
+    val legacySupport = "androidx.legacy:legacy-support-v4:${Versions.legacySupport}"
+    val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+    val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
+    val dexter = "com.karumi:dexter:${Versions.dexter}"
+    val materialCalendar = "com.archit.calendar:awesome-calendar:${Versions.materialCalendar}"
+    val preferences = "androidx.preference:preference:${Versions.preferences}"
 
     //testing libraries
     val mockK = "io.mockk:mockk:${Versions.mockK}"
