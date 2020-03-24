@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.checkout_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+const val CHECKOUT_VALUE_INITIAL_VALUE = "0.0"
+
 class CheckoutFragment : Fragment() {
 
     private val checkoutViewModel: CheckoutViewModel by viewModel()
@@ -36,10 +38,11 @@ class CheckoutFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         bindUI()
+
     }
 
     private fun bindUI() {
@@ -59,11 +62,11 @@ class CheckoutFragment : Fragment() {
 
         checkoutViewModel.checkoutValue.observe(viewLifecycleOwner, Observer {
             when (it) {
-                "0.0" -> fabPrint.hide()
+                CHECKOUT_VALUE_INITIAL_VALUE -> fabPrint.hide()
                 else -> fabPrint.show()
             }
 
-            val stringToDisplay = "Ukupno: $it kn"
+            val stringToDisplay = getString(R.string.total_amount, it)
             tvCheckoutPrice.text = stringToDisplay
         })
 
@@ -155,5 +158,4 @@ class CheckoutFragment : Fragment() {
     private fun updateQuantityCount(checkoutArticle: CheckoutArticle) {
         checkoutViewModel.updateArticle(checkoutArticle)
     }
-
 }

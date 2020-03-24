@@ -32,8 +32,8 @@ class ArticleCreationFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         articleCreationViewModel.isArticleCreationSuccess.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -62,13 +62,13 @@ class ArticleCreationFragment : Fragment() {
 
     private fun showArticleCreationFail() {
         val snack =
-            Snackbar.make(articleCreationRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG)
+            Snackbar.make(articleCreationRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG)
         snack.show()
     }
 
     private fun showArticleCreationSuccess() {
         val snack =
-            Snackbar.make(articleCreationRoot, "Artikl Uspjesno Kreiran", Snackbar.LENGTH_LONG)
+            Snackbar.make(articleCreationRoot, getString(R.string.article_successfully_created), Snackbar.LENGTH_LONG)
         snack.show()
     }
 

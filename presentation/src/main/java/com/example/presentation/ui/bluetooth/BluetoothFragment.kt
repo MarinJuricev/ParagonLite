@@ -35,14 +35,14 @@ class BluetoothFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        bluetoothViewModel.isBluetoothAvailable.observe(this@BluetoothFragment, Observer {
+        bluetoothViewModel.isBluetoothAvailable.observe(viewLifecycleOwner, Observer {
             handleBluetoothAvailability(it)
         })
 
-        bluetoothViewModel.isBluetoothEnabled.observe(this@BluetoothFragment, Observer { isBluetoothEnabled ->
+        bluetoothViewModel.isBluetoothEnabled.observe(viewLifecycleOwner, Observer { isBluetoothEnabled ->
             when (isBluetoothEnabled) {
                 true -> {
                     swBluetoothEnabled.isChecked = true
@@ -58,7 +58,7 @@ class BluetoothFragment : Fragment() {
     private fun bindUI() {
         val blueToothAdapter = BluetoothDeviceAdapter { macAddress -> saveBluetoothMACAddress(macAddress) }
 
-        bluetoothViewModel.bluetoothData.observe(this@BluetoothFragment, Observer {
+        bluetoothViewModel.bluetoothData.observe(viewLifecycleOwner, Observer {
             pbBluetooth.hide()
             fabActivateBluetoothSearch.extendFabIfPossible()
 
@@ -70,7 +70,7 @@ class BluetoothFragment : Fragment() {
             blueToothAdapter.submitList(it)
         })
 
-        bluetoothViewModel.isMacAddressSaved.observe(this@BluetoothFragment, Observer {
+        bluetoothViewModel.isMacAddressSaved.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> showMacAddressSavedSuccess()
                 false -> showMacAddressSavedFail()

@@ -41,9 +41,9 @@ class ArticleCreationViewModel(
     }
 
     private fun validateArticleData() {
-        if (!currentPrice.value.isNullOrEmpty() && !articleName.value.isNullOrEmpty())
-            _shouldSaveButtonBeEnabled.postValue(true)
-        else
-            _shouldSaveButtonBeEnabled.postValue(false)
+        _shouldSaveButtonBeEnabled.postValue(
+            !currentPrice.value.isNullOrEmpty() &&
+                    !articleName.value.isNullOrEmpty()
+        )
     }
 }

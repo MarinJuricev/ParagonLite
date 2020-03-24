@@ -37,12 +37,11 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         bindUI()
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.history_menu, menu)
@@ -59,14 +58,18 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
 
     private fun startCalendarDialogFragment() {
         val dialog = HistoryFragmentDialog(this)
-        val fragmentTransaction = fragmentManager?.beginTransaction()?.addToBackStack(null)
-        dialog.show(fragmentTransaction!!, null)
+        val fragmentTransaction = requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+
+        dialog.show(fragmentTransaction, null)
     }
 
     private fun bindUI() {
         val receiptAdapter = ReceiptAdapter()
 
-        historyViewModel.receiptData.observe(this@HistoryFragment, Observer {
+        historyViewModel.receiptData.observe(viewLifecycleOwner, Observer {
             if (it.isEmpty())
                 showEmptyScreenFields()
             else
@@ -116,7 +119,7 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
         MaterialAlertDialogBuilder(context)
             .setTitle(getString(R.string.printing))
             .setMessage(getString(R.string.print_checkout))
-            .setPositiveButton("OK", DialogInterface.OnClickListener(positiveDialogClick))
+            .setPositiveButton(getString(R.string.ok), DialogInterface.OnClickListener(positiveDialogClick))
             .setOnDismissListener { fabPrint.extendFabIfPossible() }
             .show()
     }

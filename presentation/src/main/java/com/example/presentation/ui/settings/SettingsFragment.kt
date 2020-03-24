@@ -11,6 +11,9 @@ import com.example.presentation.R
 import com.example.presentation.ui.BaseActivity
 import org.koin.android.ext.android.inject
 
+const val RECEIPT_KEY_DEFAULT_VALUE = "1"
+const val BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE = "Empty"
+
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -20,10 +23,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
         super.onCreate(savedInstanceState)
 
         val receiptPref = findPreference(RECEIPT_KEY) as? EditTextPreference
-        receiptPref?.text = sharedPrefsService.getValue(RECEIPT_KEY, "1") as String
+        receiptPref?.text =
+            sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_KEY_DEFAULT_VALUE) as String
 
         val macAddressPref = findPreference(BLUETOOTH_MAC_ADDRESS_KEY) as? EditTextPreference
-        macAddressPref?.text = sharedPrefsService.getValue(BLUETOOTH_MAC_ADDRESS_KEY, "") as String
+        macAddressPref?.text = sharedPrefsService.getValue(
+            BLUETOOTH_MAC_ADDRESS_KEY,
+            BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+        ) as String
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -32,10 +39,18 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
-            RECEIPT_KEY -> updateReceiptNumber(sharedPrefsService.getValue(RECEIPT_KEY, 1) as Int)
+            RECEIPT_KEY -> updateReceiptNumber(
+                sharedPrefsService.getValue(
+                    RECEIPT_KEY,
+                    RECEIPT_KEY_DEFAULT_VALUE // TODO CRASH ?
+                ) as Int
+            )
             BLUETOOTH_MAC_ADDRESS_KEY ->
                 updateBluetoothAddress(
-                    sharedPrefsService.getValue(BLUETOOTH_MAC_ADDRESS_KEY, "Empty") as String
+                    sharedPrefsService.getValue(
+                        BLUETOOTH_MAC_ADDRESS_KEY,
+                        BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+                    ) as String
                 )
             APP_MODE -> updateAppTheme(sharedPrefsService.getValue(APP_MODE, LIGHT) as String)
         }
@@ -64,7 +79,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
         sharedPrefsService.saveValue(RECEIPT_KEY, receiptNumber ?: 1)
 
     private fun updateBluetoothAddress(newMacAddress: String?) =
-        sharedPrefsService.saveValue(BLUETOOTH_MAC_ADDRESS_KEY, newMacAddress ?: "Empty")
+        sharedPrefsService.saveValue(
+            BLUETOOTH_MAC_ADDRESS_KEY,
+            newMacAddress ?: BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+        )
 
     override fun onResume() {
         super.onResume()

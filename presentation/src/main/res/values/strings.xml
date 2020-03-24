@@ -31,7 +31,7 @@
     </string>
     <string name="add_bluetooth_devices">Dodaj Bluetooth Uredaje</string>
 
-    <string-array name="array_kolicina">
+    <string-array name="quantity_array">
         <item>Komad(kom)</item>
         <item>Litra(l)</item>
         <item>200g</item>
@@ -40,11 +40,10 @@
         <item>0.75l</item>
         <item>1dcl</item>
         <item>2dcl</item>
-
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">BLANK FRAGMENT</string>
+
     <string name="history">Povijest</string>
     <string name="settings">Postavke</string>
     <string name="last_updated">Last Updated</string>
@@ -55,4 +54,10 @@
     <string name="no_receipts">Nema racuna, odaberite datum</string>
     <string name="article_saved_successfully">Artikl uspjesno spremljen</string>
     <string name="article_save_error">Doslo je do pogreske kod spremanja artikla!</string>
+    <string name="error_occurred">Doslo je do pogreske!</string>
+    <string name="article_successfully_created">Artikl Uspjesno Kreiran</string>
+    <string name="article_successfully_deleted">Artikl uspjesno pobrisan!</string>
+    <string name="total_amount">Total: %1$s</string>
+    <string name="ok">OK</string>
+
 </resources>

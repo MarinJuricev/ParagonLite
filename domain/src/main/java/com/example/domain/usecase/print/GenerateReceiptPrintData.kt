@@ -32,8 +32,8 @@ class GenerateReceiptPrintData(
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
                     alignRight(
-                        "Broj",
-                        "Datum       Iznos",
+                        "NUMBER",
+                        "DATE       TOTAL",
                         SHENZEN_LINE_LENGHT_WIDTH_0
                     ) + "\n",
                     0, 0, 0, 0
@@ -65,7 +65,7 @@ class GenerateReceiptPrintData(
             dataToReturn.add(
                 ESCPrinterCommand.POS_Set_Font_And_Print(
                     alignRight(
-                        "UKUPNO:",
+                        "TOTAL:",
                         receiptSum.toString(),
                         SHENZEN_LINE_LENGHT_WIDTH_0
                     ) + "\n\n\n",

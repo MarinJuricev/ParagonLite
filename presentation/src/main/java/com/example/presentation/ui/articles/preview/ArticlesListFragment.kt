@@ -33,8 +33,8 @@ class ArticlesListFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         bindUI()
     }
@@ -102,10 +102,10 @@ class ArticlesListFragment : Fragment() {
     }
 
     private fun showArticleDeletionSuccess() =
-        Snackbar.make(articleListRoot, "Artikl uspjesno pobrisan!", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(articleListRoot, getString(R.string.article_successfully_deleted), Snackbar.LENGTH_LONG).show()
 
     private fun showArticleDeletionFail() =
-        Snackbar.make(articleListRoot, "Doslo je do pogreske!", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(articleListRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG).show()
 
     private fun onArticleClick(article: Article) {
         activity?.bottom_nav?.getOrCreateBadge(R.id.navigation_checkout)
