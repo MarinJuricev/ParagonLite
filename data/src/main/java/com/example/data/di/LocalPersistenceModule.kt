@@ -1,21 +1,13 @@
 package com.example.data.di
 
-import com.example.data.article.ArticleDataBase
-import com.example.data.bluetooth.BluetoothDatabase
-import com.example.data.checkout.CheckoutDatabase
-import com.example.data.receipt.ReceiptDatabase
+import com.example.data.local.ParagonDatabase
 import org.koin.dsl.module
 
 val localPersistableModule = module {
-    single { ArticleDataBase.invoke(get()) }
-    factory { (get() as ArticleDataBase).articleDao() }
+    single { ParagonDatabase.invoke(get()) }
 
-    single { CheckoutDatabase.invoke(get()) }
-    factory { (get() as CheckoutDatabase).checkoutDao() }
-
-    single { BluetoothDatabase.invoke(get()) }
-    factory { (get() as BluetoothDatabase).bluetoothDao() }
-
-    single { ReceiptDatabase.invoke(get()) }
-    factory { (get() as ReceiptDatabase).receiptDao() }
+    factory { (get() as ParagonDatabase).articleDao() }
+    factory { (get() as ParagonDatabase).checkoutDao() }
+    factory { (get() as ParagonDatabase).bluetoothDao() }
+    factory { (get() as ParagonDatabase).receiptDao() }
 }

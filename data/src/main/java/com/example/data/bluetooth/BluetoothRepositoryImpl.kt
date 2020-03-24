@@ -91,7 +91,7 @@ class BluetoothRepositoryImpl(
             context.registerReceiver(bluetoothReceiver, filter)
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
-            bluetoothAdapter!!.startDiscovery()
+            bluetoothAdapter?.startDiscovery()
         }
     }
 
