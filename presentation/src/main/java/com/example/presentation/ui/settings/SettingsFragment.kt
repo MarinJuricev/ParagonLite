@@ -11,7 +11,6 @@ import com.example.presentation.R
 import com.example.presentation.ui.BaseActivity
 import org.koin.android.ext.android.inject
 
-const val RECEIPT_KEY_DEFAULT_VALUE = "1"
 const val BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE = "Empty"
 
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -24,7 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         val receiptPref = findPreference(RECEIPT_KEY) as? EditTextPreference
         receiptPref?.text =
-            sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_KEY_DEFAULT_VALUE) as String
+            sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as String
 
         val macAddressPref = findPreference(BLUETOOTH_MAC_ADDRESS_KEY) as? EditTextPreference
         macAddressPref?.text = sharedPrefsService.getValue(
@@ -42,7 +41,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             RECEIPT_KEY -> updateReceiptNumber(
                 sharedPrefsService.getValue(
                     RECEIPT_KEY,
-                    RECEIPT_KEY_DEFAULT_VALUE // TODO CRASH ?
+                    RECEIPT_DEFAULT_VALUE
                 ) as Int
             )
             BLUETOOTH_MAC_ADDRESS_KEY ->

@@ -93,7 +93,7 @@ class CheckoutViewModel(
             else -> {
                 generateDataToPrint(
                     result,
-                    sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as Int
+                    Integer.parseInt(sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as String)
                 )
             }
         }

@@ -14,6 +14,9 @@ import com.example.domain.usecase.bluetooth.UpdateBluetoothData
 import com.example.presentation.shared.BaseViewModel
 import kotlinx.coroutines.launch
 
+const val BLUETOOTH_REQUEST_ACCEPTED = -1
+const val BLUETOOTH_REQUEST_DISMISSED = 0
+
 class BluetoothViewModel(
     private val unregisterBluetoothReceiver: UnregisterBluetoothReceiver,
     private val updateBluetoothData: UpdateBluetoothData,
@@ -28,8 +31,8 @@ class BluetoothViewModel(
     private val _isBluetoothAvailable by lazy { MutableLiveData<Boolean>() }
     val isBluetoothAvailable: LiveData<Boolean> get() = _isBluetoothAvailable
 
-    private val _isBluetoothEnabled by lazy { MutableLiveData<Boolean>() }
-    val isBluetoothEnabled: LiveData<Boolean> get() = _isBluetoothEnabled
+    private val _isBluetoothEnabled by lazy { MutableLiveData<BluetoothStatus>() }
+    val isBluetoothEnabled: LiveData<BluetoothStatus> get() = _isBluetoothEnabled
 
     private val _bluetoothData by lazy { MediatorLiveData<List<BluetoothEntry>>() }
     val bluetoothData: LiveData<List<BluetoothEntry>> get() = _bluetoothData
@@ -46,7 +49,19 @@ class BluetoothViewModel(
         }
         _isBluetoothAvailable.postValue(true)
 
-        _isBluetoothEnabled.postValue(bluetoothAdapter.isEnabled)
+        val bluetoothStatus = if(bluetoothAdapter.isEnabled)
+            BluetoothStatus.Enabled
+        else
+            BluetoothStatus.Disabled
+
+        _isBluetoothEnabled.postValue(bluetoothStatus)
+    }
+
+    fun handleBluetoothRequest(resultCode: Int){
+        when(resultCode){
+            BLUETOOTH_REQUEST_ACCEPTED -> _isBluetoothEnabled.postValue(BluetoothStatus.Enabled)
+            BLUETOOTH_REQUEST_DISMISSED -> _isBluetoothEnabled.postValue(BluetoothStatus.Dismissed)
+        }
     }
 
     fun getData() = launch {

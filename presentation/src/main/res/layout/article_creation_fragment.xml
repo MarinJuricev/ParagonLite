@@ -33,7 +33,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etArticleName"
                         android:layout_width="match_parent"
-                        android:hint="@string/naziv_proizvoda"
+                        android:hint="@string/name_of_article"
                         android:onTextChanged="@{articleCreationViewModel::onArticleNameChanged}"
                         android:layout_height="wrap_content"/>
 
@@ -74,7 +74,7 @@
                         android:id="@+id/etArticlePrice"
                         android:layout_width="match_parent"
                         android:inputType="number"
-                        android:hint="@string/cijena"
+                        android:hint="@string/price"
                         android:onTextChanged="@{articleCreationViewModel::onPriceChanged}"
                         android:layout_height="wrap_content"/>
 
@@ -82,7 +82,7 @@
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancel"
-                    android:text="@string/otkazi"
+                    android:text="@string/cancel"
                     android:textAllCaps="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSave"
                     android:enabled="false"
-                    android:text="@string/spremi"
+                    android:text="@string/save"
                     android:layout_width="wrap_content"
                     android:onClick="@{view -> articleCreationFragment.onSaveClick()}"
                     android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"

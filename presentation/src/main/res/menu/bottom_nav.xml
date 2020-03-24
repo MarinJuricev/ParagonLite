@@ -4,17 +4,17 @@
     <item
             android:id="@+id/navigation_checkout"
             android:icon="@drawable/ic_home_24dp"
-            android:title="@string/kasa"/>
+            android:title="@string/checkout"/>
 
     <item
             android:id="@+id/navigation_articles"
             android:icon="@drawable/ic_dashboard_24dp"
-            android:title="@string/artikli"/>
+            android:title="@string/articles"/>
 
     <item
             android:id="@+id/navigation_bluetooth"
             android:icon="@drawable/ic_bluetooth_24dp"
-            android:title="@string/spoji"/>
+            android:title="@string/connect"/>
 
     <item
             android:id="@+id/navigation_history"

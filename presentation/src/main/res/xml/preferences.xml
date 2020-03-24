@@ -8,7 +8,6 @@
                 android:key="BLUETOOTH_MAC_ADDRESS_KEY"
                 android:title="MAC Address"
                 android:summary="Currently saved mac address if any"
-                android:editable="false"
                 android:focusable="false"/>
 
         <EditTextPreference
@@ -18,7 +17,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Stlyez">
+            android:title="Style">
 
         <ListPreference
                 android:key="APP_MODE"

@@ -44,11 +44,21 @@ class BluetoothFragment : Fragment() {
 
         bluetoothViewModel.isBluetoothEnabled.observe(viewLifecycleOwner, Observer { isBluetoothEnabled ->
             when (isBluetoothEnabled) {
-                true -> {
+                BluetoothStatus.Enabled -> {
+                    tvEmptyBluetoothDevices.text = getString(R.string.add_bluetooth_devices)
+                    btnEnableBluetooth.visibility = View.GONE
+                    fabActivateBluetoothSearch.show()
+
                     swBluetoothEnabled.isChecked = true
+
                     bluetoothViewModel.getData()
                 }
-                false -> enableBluetooth()
+                BluetoothStatus.Disabled -> enableBluetooth()
+                BluetoothStatus.Dismissed -> {
+                    fabActivateBluetoothSearch.hide()
+                    tvEmptyBluetoothDevices.text = getString(R.string.bluetooth_canceled)
+                    showEmptyScreenFields()
+                }
             }
         })
 
@@ -82,6 +92,10 @@ class BluetoothFragment : Fragment() {
             fabActivateBluetoothSearch.shrinkFabIfPossible()
 
             bluetoothViewModel.updateBluetoothData()
+        }
+
+        btnEnableBluetooth.setOnClickListener {
+            enableBluetooth()
         }
 
         rvAvailableBluetoothDevices.adapter = blueToothAdapter
@@ -122,6 +136,6 @@ class BluetoothFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_ENABLE_BT)
-            bluetoothViewModel.isBluetoothAvailable()
+            bluetoothViewModel.handleBluetoothRequest(resultCode)
     }
 }

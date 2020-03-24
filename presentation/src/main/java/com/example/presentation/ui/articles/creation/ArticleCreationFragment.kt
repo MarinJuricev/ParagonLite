@@ -60,17 +60,16 @@ class ArticleCreationFragment : Fragment() {
         btnSave.isEnabled = false
     }
 
-    private fun showArticleCreationFail() {
-        val snack =
-            Snackbar.make(articleCreationRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG)
-        snack.show()
-    }
+    private fun showArticleCreationFail() =
+        Snackbar.make(articleCreationRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG)
+            .show()
 
-    private fun showArticleCreationSuccess() {
-        val snack =
-            Snackbar.make(articleCreationRoot, getString(R.string.article_successfully_created), Snackbar.LENGTH_LONG)
-        snack.show()
-    }
+    private fun showArticleCreationSuccess() =
+        Snackbar.make(
+            articleCreationRoot,
+            getString(R.string.article_successfully_created),
+            Snackbar.LENGTH_LONG
+        ).show()
 
     fun onCancelClick() {
         etArticlePrice.editableText.clear()
