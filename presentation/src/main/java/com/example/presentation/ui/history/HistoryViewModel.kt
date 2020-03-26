@@ -25,10 +25,9 @@ class HistoryViewModel(
     val receiptData: LiveData<List<Receipt>> get() = _receiptData
 
     private val _getBluetoothAddressError by lazy { MutableLiveData<Boolean>() }
-    //TODO CONSUME AS SNACKBAR IN FRAGMENT
     val getBluetoothAddressError: LiveData<Boolean> get() = _getBluetoothAddressError
 
-    fun fetchReceiptsFromTheSelectedDateRange(startDate: String, endDate: String) = launch {
+    fun fetchReceiptsFromTheSelectedDateRange(startDate: Long, endDate: Long) = launch {
         when (val result = getReceipts.execute(startDate, endDate)) {
             is Result.Value -> {
                 _receiptData.addSource(
@@ -46,7 +45,7 @@ class HistoryViewModel(
             BLUETOOTH_MAC_ADDRESS_KEY,
             BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
         ) as String) {
-            "" -> _getBluetoothAddressError.postValue(true)
+            BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE -> _getBluetoothAddressError.postValue(true)
             else -> {
                 generatePrintData(result)
             }
@@ -58,11 +57,10 @@ class HistoryViewModel(
             receiptData.value!!
         )) {
             is Result.Value -> printHistory(savedMacAddress, result.value)
-            is Result.Error -> TODO()
+            is Result.Error -> _getBluetoothAddressError.postValue(true)
         }
     }
 
-    private suspend fun printHistory(savedMacAddress: String, printData: List<ByteArray>) {
+    private suspend fun printHistory(savedMacAddress: String, printData: List<ByteArray>) =
         printHistory.execute(savedMacAddress, printData)
-    }
 }

@@ -49,4 +49,5 @@ dependencies {
     testImplementation Dependencies.mockK
     testImplementation Dependencies.coroutinesCore
     testImplementation Dependencies.junitApi
+    testImplementation Dependencies.liveDataTest
 }

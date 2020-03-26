@@ -87,6 +87,4 @@ dependencies {
     implementation Dependencies.koinAndroidxViewModel
     // Koin for Unit tests
     testImplementation Dependencies.koinTest
-//TODO do we really need this ??
-//    testImplementation 'junit:junit:4.12'
 }

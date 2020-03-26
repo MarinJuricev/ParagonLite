@@ -18,7 +18,7 @@ import java.util.*
 class HistoryFragmentDialog(val listener: HistoryCalendarListener) : DialogFragment() {
 
     interface HistoryCalendarListener {
-        fun onDateRangeSelected(startDate: String, endDate: String)
+        fun onDateRangeSelected(startDate: Long, endDate: Long)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -45,7 +45,7 @@ class HistoryFragmentDialog(val listener: HistoryCalendarListener) : DialogFragm
             override fun onFirstDateSelected(startDate: Calendar) {}
 
             override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                listener.onDateRangeSelected(startDate.time.toString(), endDate.time.toString())
+                listener.onDateRangeSelected(startDate.timeInMillis, endDate.timeInMillis)
                 dialog?.dismiss()
             }
         })

@@ -1,118 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            tools:context=".ui.history.HistoryFragment">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/historyRoot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <View
-                android:id="@+id/background"
-                android:background="@color/colorHeader"
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_height="match_parent"
+                tools:context=".ui.history.HistoryFragment">
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvReceiptNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:textSize="16sp"
-                android:textColor="#FFFF"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/number"
-                app:layout_constraintStart_toStartOf="@+id/background"
-                android:layout_marginStart="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/background" android:layout_marginBottom="4dp"/>
+            <View
+                    android:id="@+id/background"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:background="@color/colorHeader"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvReceiptDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:textSize="16sp"
-                android:textColor="#FFFF"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/date"
-                app:layout_constraintBottom_toBottomOf="@+id/background"
-                app:layout_constraintStart_toEndOf="@+id/tvReceiptNumber"
-                app:layout_constraintEnd_toStartOf="@+id/tvReceiptPrice" android:layout_marginBottom="4dp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvReceiptNumber"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/number"
+                    android:textColor="#FFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/background"
+                    app:layout_constraintStart_toStartOf="@+id/background" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvReceiptPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:textSize="16sp"
-                android:textColor="#FFFF"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/amount"
-                app:layout_constraintBottom_toBottomOf="@+id/background"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/background" android:layout_marginBottom="4dp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvReceiptDate"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/date"
+                    android:textColor="#FFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/background"
+                    app:layout_constraintEnd_toStartOf="@+id/tvReceiptPrice"
+                    app:layout_constraintStart_toEndOf="@+id/tvReceiptNumber" />
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvReceiptList"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/background"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvReceiptPrice"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/amount"
+                    android:textColor="#FFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/background"
+                    app:layout_constraintEnd_toEndOf="@+id/background" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/fabPrint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:backgroundTint="@color/colorAccent"
-                app:iconTint="#ffffff"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp"
-                app:rippleColor="@android:color/transparent"
-                android:visibility="gone"
-                android:layout_marginBottom="8dp"
-                android:elevation="4dp"
-                android:text="@string/print"
-                android:textColor="#ffffff"
-                app:icon="@drawable/ic_print_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvReceiptList"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/background" />
 
-        <androidx.constraintlayout.widget.Group
-                android:id="@+id/noReceiptGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="appLogo,tvEmptyReceipts"
-                android:visibility="visible"/>
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/fabPrint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
+                    android:text="@string/print"
+                    android:textColor="#ffffff"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/colorAccent"
+                    app:icon="@drawable/ic_print_24dp"
+                    app:iconTint="#ffffff"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:rippleColor="@android:color/transparent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/appLogo"
-                android:layout_width="wrap_content"
-                app:srcCompat="@drawable/ic_logo"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+            <androidx.constraintlayout.widget.Group
+                    android:id="@+id/noReceiptGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="appLogo,tvEmptyReceipts" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvEmptyReceipts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_receipts"
-                android:lines="2"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center_horizontal"
-                style="@style/EmptyScreenText"
-                app:layout_constraintTop_toBottomOf="@+id/appLogo"
-                app:layout_constraintEnd_toEndOf="@+id/appLogo" app:layout_constraintStart_toStartOf="@+id/appLogo"
-                android:layout_marginTop="8dp"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/appLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_logo" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEmptyReceipts"
+                    style="@style/EmptyScreenText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:lines="2"
+                    android:text="@string/no_receipts"
+                    app:layout_constraintEnd_toEndOf="@+id/appLogo"
+                    app:layout_constraintStart_toStartOf="@+id/appLogo"
+                    app:layout_constraintTop_toBottomOf="@+id/appLogo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

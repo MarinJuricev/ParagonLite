@@ -34,8 +34,6 @@ class CheckoutViewModel(
     val articleData: LiveData<List<CheckoutArticle>> get() = _checkoutArticles
 
     private val _isArticleDeletionSuccess by lazy { MutableLiveData<Boolean>() }
-    //TODO Implement after crunch is over...
-    val isArticleDeletionSuccess: LiveData<Boolean> get() = _isArticleDeletionSuccess
 
     private val _checkoutValue by lazy { MutableLiveData<String>() }
     val checkoutValue: LiveData<String> get() = _checkoutValue
@@ -108,7 +106,6 @@ class CheckoutViewModel(
             is Result.Value -> {
                 printGeneratedData(result.value, macAddress, receiptNumber)
             }
-            is Result.Error -> TODO()
         }
     }
 
@@ -121,14 +118,13 @@ class CheckoutViewModel(
             dataToPrint,
             macAddress,
             checkoutValue.value!!,
-            sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as Int,
+            Integer.parseInt(sharedPrefsService.getValue(RECEIPT_KEY, RECEIPT_DEFAULT_VALUE) as String),
             addReceipt
         )) {
             is Result.Value -> {
                 val incrementedReceiptNumber = receiptNumber + 1
-                sharedPrefsService.saveValue(RECEIPT_KEY, incrementedReceiptNumber)
+                sharedPrefsService.saveValue(RECEIPT_KEY, incrementedReceiptNumber.toString())
             }
-            is Result.Error -> TODO()
         }
     }
 

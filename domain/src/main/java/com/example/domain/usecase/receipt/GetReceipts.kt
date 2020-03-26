@@ -11,20 +11,19 @@ class GetReceipts(
     private val receiptRepository: IReceiptRepository
 ) {
 
-    suspend fun execute(startDate: String, endDate: String)
+    suspend fun execute(startDate: Long, endDate: Long)
             : Result<Exception, LiveData<List<Receipt>>> {
-
         val startDateInCorrectDateFormat = formatDate(startDate)
         val endDateInCorrectDateFormat = formatDate(endDate)
 
         return receiptRepository.getReceipts(startDateInCorrectDateFormat, endDateInCorrectDateFormat)
     }
 
-    private fun formatDate(dateToBeConverted: String): String {
-        val originalFormat = SimpleDateFormat("E MMM dd HH:mm:ss 'GMT+02:00' yyyy", Locale.ENGLISH)
+    private fun formatDate(dateToBeConverted: Long): String {
         val targetFormat = SimpleDateFormat("dd.MM.yy", Locale.ENGLISH)
-        val date = originalFormat.parse(dateToBeConverted)
 
-        return targetFormat.format(date)
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = dateToBeConverted
+        return targetFormat.format(calendar.time)
     }
 }

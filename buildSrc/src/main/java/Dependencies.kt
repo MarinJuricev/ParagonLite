@@ -19,6 +19,7 @@ object Versions {
     const val materialCalendar = "1.1.4"
     const val preferences = "1.1.0"
     const val livedata = "2.3.0-alpha01"
+    const val archVersion = "2.1.0"
 }
 
 object Dependencies {
@@ -67,4 +68,7 @@ object Dependencies {
     // (Required) Writing and executing Unit Tests on the JUnit Platform
     val junitApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitApi}"
     val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitApi}"
+
+    val liveDataTest = "androidx.arch.core:core-testing:${Versions.archVersion}"
+
 }

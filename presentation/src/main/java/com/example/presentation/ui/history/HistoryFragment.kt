@@ -13,6 +13,7 @@ import com.example.presentation.databinding.HistoryFragmentBinding
 import com.example.presentation.ext.extendFabIfPossible
 import com.example.presentation.ext.shrinkFabIfPossible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.history_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -79,6 +80,13 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
             handleFabVisibility(it)
         })
 
+        historyViewModel.getBluetoothAddressError.observe(
+            viewLifecycleOwner,
+            Observer { errorOccurred ->
+                if (errorOccurred)
+                    showSnackBar(getString(R.string.no_saved_bluetooth_address_warning))
+            })
+
         fabPrint.setOnClickListener {
             buildDialog()
             fabPrint.shrinkFabIfPossible()
@@ -88,6 +96,13 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
 
         rvReceiptList.adapter = receiptAdapter
     }
+
+    private fun showSnackBar(messageToShow: String) =
+        Snackbar.make(
+            historyRoot,
+            messageToShow,
+            Snackbar.LENGTH_SHORT
+        ).show()
 
     private fun showEmptyScreenFields() {
         noReceiptGroup.visibility = View.VISIBLE
@@ -119,7 +134,10 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
         MaterialAlertDialogBuilder(context)
             .setTitle(getString(R.string.printing))
             .setMessage(getString(R.string.print_checkout))
-            .setPositiveButton(getString(R.string.ok), DialogInterface.OnClickListener(positiveDialogClick))
+            .setPositiveButton(
+                getString(R.string.ok),
+                DialogInterface.OnClickListener(positiveDialogClick)
+            )
             .setOnDismissListener { fabPrint.extendFabIfPossible() }
             .show()
     }
@@ -131,7 +149,7 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
         dialog.dismiss()
     }
 
-    override fun onDateRangeSelected(startDate: String, endDate: String) {
+    override fun onDateRangeSelected(startDate: Long, endDate: Long) {
         historyViewModel.fetchReceiptsFromTheSelectedDateRange(startDate, endDate)
     }
 }

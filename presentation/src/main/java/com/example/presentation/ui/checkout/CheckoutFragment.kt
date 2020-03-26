@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -67,7 +68,8 @@ class CheckoutFragment : Fragment() {
             }
 
             val stringToDisplay = getString(R.string.total_amount, it)
-            tvCheckoutPrice.text = stringToDisplay
+
+            animateCheckoutPriceChange(stringToDisplay)
         })
 
         checkoutViewModel.getBluetoothAddressError.observe(viewLifecycleOwner, Observer {
@@ -102,6 +104,19 @@ class CheckoutFragment : Fragment() {
         rvCheckoutList.adapter = checkoutAdapter
     }
 
+    private fun animateCheckoutPriceChange(stringToDisplay: String) {
+        val inAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_up)
+        inAnimation.duration = 450
+        tvCheckoutPrice.inAnimation = inAnimation
+
+
+        val outAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_out_up)
+        outAnimation.duration = 450
+        tvCheckoutPrice.outAnimation = outAnimation
+
+        tvCheckoutPrice.setText(stringToDisplay)
+    }
+
     private fun showEmptyScreenFields() {
         noCheckoutGroup.visibility = View.VISIBLE
     }
@@ -127,15 +142,12 @@ class CheckoutFragment : Fragment() {
         activity?.bottom_nav?.getOrCreateBadge(R.id.navigation_checkout)?.number = badgeCount
     }
 
-    private fun showSnackBar(messageToShow: String) {
-        val snack = Snackbar.make(
+    private fun showSnackBar(messageToShow: String) =
+        Snackbar.make(
             checkoutRoot,
             messageToShow,
             Snackbar.LENGTH_SHORT
-
-        )
-        snack.show()
-    }
+        ).show()
 
     private fun buildDialog() {
         MaterialAlertDialogBuilder(context)
@@ -153,7 +165,8 @@ class CheckoutFragment : Fragment() {
         dialog.dismiss()
     }
 
-    private fun onDeleteClick(checkoutArticle: CheckoutArticle) = checkoutViewModel.deleteArticle(checkoutArticle)
+    private fun onDeleteClick(checkoutArticle: CheckoutArticle) =
+        checkoutViewModel.deleteArticle(checkoutArticle)
 
     private fun updateQuantityCount(checkoutArticle: CheckoutArticle) {
         checkoutViewModel.updateArticle(checkoutArticle)

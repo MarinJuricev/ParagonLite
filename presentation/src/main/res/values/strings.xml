@@ -48,7 +48,7 @@
     <string name="number">Number</string>
     <string name="date">Date</string>
     <string name="amount">Amount</string>
-    <string name="no_receipts">No receipts, select a date</string>
+    <string name="no_receipts">No receipts, select another date</string>
     <string name="article_saved_successfully">Article saved successfully</string>
     <string name="article_save_error">An error occurred while saving the article!</string>
     <string name="error_occurred">Unknown error occurred, please try again later!</string>

@@ -11,8 +11,6 @@ import com.example.presentation.R
 import com.example.presentation.ui.BaseActivity
 import org.koin.android.ext.android.inject
 
-const val BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE = "Empty"
-
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -75,7 +73,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         sharedPrefsService.saveValue(APP_MODE, newTheme)
 
     private fun updateReceiptNumber(receiptNumber: Int?) =
-        sharedPrefsService.saveValue(RECEIPT_KEY, receiptNumber ?: 1)
+        sharedPrefsService.saveValue(RECEIPT_KEY, receiptNumber ?: RECEIPT_DEFAULT_VALUE)
 
     private fun updateBluetoothAddress(newMacAddress: String?) =
         sharedPrefsService.saveValue(
