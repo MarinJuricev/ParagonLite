@@ -7,16 +7,16 @@ object LocalData {
     fun getInitialArticles(): Array<RoomArticle> {
         return arrayOf(
             RoomArticle(
-                "Chesse", "200g", 120.00
+                "Cheese", "200g", 120.00
             ),
             RoomArticle(
-                "Pizza", "Kom", 150.00
+                "Pizza", "Piece", 150.00
             ),
             RoomArticle(
-                "Meal for two", "Kom", 320.00
+                "Meal for two", "Piece", 320.00
             ),
             RoomArticle(
-                "Cake", "Kom", 30.00
+                "Cake", "Piece", 30.00
             ),
             RoomArticle(
                 "Babic Vine 1l", "1l", 180.00
