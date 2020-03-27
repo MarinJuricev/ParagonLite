@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.CheckoutArticle
+import com.example.domain.shared.CHECKOUT_VALUE_INITIAL_VALUE
 import com.example.presentation.R
 import com.example.presentation.databinding.CheckoutFragmentBinding
 import com.example.presentation.ext.extendFabIfPossible
@@ -21,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.checkout_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-const val CHECKOUT_VALUE_INITIAL_VALUE = "0.0"
 
 class CheckoutFragment : Fragment() {
 
@@ -41,9 +41,7 @@ class CheckoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         bindUI()
-
     }
 
     private fun bindUI() {
@@ -153,7 +151,10 @@ class CheckoutFragment : Fragment() {
         MaterialAlertDialogBuilder(context)
             .setTitle(getString(R.string.printing))
             .setMessage(getString(R.string.print_checkout))
-            .setPositiveButton("OK", DialogInterface.OnClickListener(positiveDialogClick))
+            .setPositiveButton(
+                getString(R.string.ok),
+                DialogInterface.OnClickListener(positiveDialogClick)
+            )
             .setOnDismissListener { fabPrint.extendFabIfPossible() }
             .show()
     }

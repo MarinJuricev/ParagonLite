@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.Article
 import com.example.domain.model.Result
+import com.example.domain.shared.CHECKOUT_BADGE_INITIAL_VALUE
 import com.example.domain.usecase.article.DeleteArticle
 import com.example.domain.usecase.article.GetArticles
 import com.example.domain.usecase.checkout.SendArticleToCheckout
@@ -56,10 +57,10 @@ class ArticlesListViewModel(
                 _checkoutBadgeCount.addSource(
                     result.value
                 ) {
-                    _checkoutBadgeCount.value = it ?: 0
+                    _checkoutBadgeCount.value = it ?: CHECKOUT_BADGE_INITIAL_VALUE
                 }
             }
-            is Result.Error -> _checkoutBadgeCount.postValue(0)
+            is Result.Error -> _checkoutBadgeCount.postValue(CHECKOUT_BADGE_INITIAL_VALUE)
         }
     }
 }

@@ -87,7 +87,7 @@ class CheckoutViewModel(
             BLUETOOTH_MAC_ADDRESS_KEY,
             BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
         ) as String) {
-            "" -> _getBluetoothAddressError.postValue(true)
+            BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE -> _getBluetoothAddressError.postValue(true)
             else -> {
                 generateDataToPrint(
                     result,
