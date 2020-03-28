@@ -1,20 +1,20 @@
 package com.example.data.checkout
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.data.model.RoomCheckout
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CheckoutDao {
 
     @Query("SELECT * FROM checkout_table")
-    fun getArticles(): LiveData<List<RoomCheckout>>
+    fun getArticles(): Flow<List<RoomCheckout>>
 
     @Query("SELECT * FROM checkout_table WHERE name= :articleName")
-    fun getArticle(articleName:  String): RoomCheckout?
+    fun getArticle(articleName: String): RoomCheckout?
 
     @Query("SELECT SUM(inCheckout) FROM checkout_table ")
-    fun getCheckoutArticleCount(): LiveData<Int>
+    fun getCheckoutArticleCount(): Flow<Int>
 
     //if update successful, will return number of rows effected, which should be 1
     @Insert(onConflict = OnConflictStrategy.REPLACE)

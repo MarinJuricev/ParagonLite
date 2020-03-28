@@ -43,7 +43,6 @@ dependencies {
     implementation Dependencies.koinAndrodixScope
     // Koin for Unit tests
     testImplementation Dependencies.koinTest
-    implementation Dependencies.lifeCycleLiveData
 
     // Test
     testImplementation Dependencies.mockK

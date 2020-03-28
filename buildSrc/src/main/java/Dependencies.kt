@@ -35,6 +35,9 @@ object Dependencies {
     val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
 
+    val lifecyleCore = "androidx.lifecycle:lifecycle-livedata-core-ktx:${Versions.lifecycle}"
+    val lifecyleRuntime = "androidx.lifecycle:lifecycle-runtime:${Versions.lifecycle}"
+    val lifecyleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
     val lifecyleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     val lifeCycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
@@ -48,6 +51,7 @@ object Dependencies {
 
     val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+    val roomKtx = "androidx.room:room-ktx:${Versions.room}"
 
     // Presentation module dependencies
     val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
@@ -64,8 +68,6 @@ object Dependencies {
 
     //testing libraries
     val mockK = "io.mockk:mockk:${Versions.mockK}"
-
-    // (Required) Writing and executing Unit Tests on the JUnit Platform
     val junitApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitApi}"
     val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitApi}"
 

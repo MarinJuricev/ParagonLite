@@ -48,7 +48,7 @@ class ArticlesListFragment : Fragment() {
             ({ article: Article -> onArticleLongClick(article) })
         )
         articlesListViewModel.articleData.observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty())
+            if (it.isNullOrEmpty())
                 showEmptyScreenFields()
             else
                 hideEmptyScreensFields()

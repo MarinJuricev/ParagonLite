@@ -1,13 +1,13 @@
 package com.example.domain.usecase.bluetooth
 
-import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.repository.IBluetoothRepository
+import com.example.mockfactory.bluetoothEntry
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,9 +28,13 @@ internal class GetBluetoothDataTest {
     @Test
     fun `get bluetooth data is bluetooth repository triggered with success response`() =
         runBlocking {
+            val repositoryResult = flow {
+                emit(listOf(bluetoothEntry))
+            }
+
             coEvery {
                 bluetoothRepository.getBluetoothData()
-            } coAnswers { Result.build { MutableLiveData<List<BluetoothEntry>>() } }
+            } coAnswers { Result.build { repositoryResult } }
 
             getBluetoothData.execute()
 

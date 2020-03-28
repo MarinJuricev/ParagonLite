@@ -1,8 +1,8 @@
 package com.example.domain.repository
 
-import androidx.lifecycle.LiveData
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
+import kotlinx.coroutines.flow.Flow
 
 interface IBluetoothRepository {
 
@@ -12,6 +12,6 @@ interface IBluetoothRepository {
         dataToPrint: List<ByteArray>
     ): Result<Exception, Unit>
 
-    suspend fun getBluetoothData(): Result<Exception, LiveData<List<BluetoothEntry>>>
+    suspend fun getBluetoothData(): Result<Exception, Flow<List<BluetoothEntry>>>
     fun unRegisterReceiver(): Result<Exception, Unit>
 }

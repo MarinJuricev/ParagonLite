@@ -1,15 +1,15 @@
 package com.example.data.article
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.data.model.RoomArticle
 import com.example.data.toArticleList
 import com.example.data.toRoomArticle
-import com.example.domain.shared.DispatcherProvider
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.repository.IArticleRepository
+import com.example.domain.shared.DispatcherProvider
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class ArticleRepositoryImpl(
@@ -26,16 +26,17 @@ class ArticleRepositoryImpl(
             }
         }
 
-    override suspend fun getArticles(): Result<Exception, LiveData<List<Article>>> =
+    override suspend fun getArticles(): Result<Exception, Flow<List<Article>>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
             when (val result = articleDao.getArticles()) {
                 listOf<RoomArticle>() -> Result.build { throw ParagonError.LocalIOException }
-                else -> Result.build {
-                    Transformations.map(
-                        result,
-                        ::mapToArticle
-                    )
+                else -> {
+                    Result.build {
+                        result.map { value: List<RoomArticle> ->
+                            value.toArticleList()
+                        }
+                    }
                 }
             }
         }
@@ -49,5 +50,4 @@ class ArticleRepositoryImpl(
             }
         }
 
-    private fun mapToArticle(list: List<RoomArticle>) = list.toArticleList()
 }

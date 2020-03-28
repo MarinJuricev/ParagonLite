@@ -36,6 +36,7 @@ class BluetoothFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bluetoothViewModel.isBluetoothAvailable()
 
         bluetoothViewModel.isBluetoothAvailable.observe(viewLifecycleOwner, Observer {
             handleBluetoothAvailability(it)

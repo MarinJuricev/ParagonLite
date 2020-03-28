@@ -2,8 +2,9 @@ package com.example.presentation.ui.bluetooth
 
 import android.bluetooth.BluetoothAdapter
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain.model.BluetoothEntry
 import com.example.domain.model.Result
 import com.example.domain.shared.BLUETOOTH_MAC_ADDRESS_KEY
@@ -11,7 +12,7 @@ import com.example.domain.shared.ISharedPrefsService
 import com.example.domain.usecase.bluetooth.GetBluetoothData
 import com.example.domain.usecase.bluetooth.UnregisterBluetoothReceiver
 import com.example.domain.usecase.bluetooth.UpdateBluetoothData
-import com.example.presentation.shared.BaseViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 const val BLUETOOTH_REQUEST_ACCEPTED = -1
@@ -22,11 +23,7 @@ class BluetoothViewModel(
     private val updateBluetoothData: UpdateBluetoothData,
     private val getBluetoothData: GetBluetoothData,
     private val sharedPrefsService: ISharedPrefsService
-) : BaseViewModel() {
-
-    init {
-        isBluetoothAvailable()
-    }
+) : ViewModel() {
 
     private val _isBluetoothAvailable by lazy { MutableLiveData<Boolean>() }
     val isBluetoothAvailable: LiveData<Boolean> get() = _isBluetoothAvailable
@@ -34,13 +31,13 @@ class BluetoothViewModel(
     private val _isBluetoothEnabled by lazy { MutableLiveData<BluetoothStatus>() }
     val isBluetoothEnabled: LiveData<BluetoothStatus> get() = _isBluetoothEnabled
 
-    private val _bluetoothData by lazy { MediatorLiveData<List<BluetoothEntry>>() }
+    private val _bluetoothData by lazy { MutableLiveData<List<BluetoothEntry>>() }
     val bluetoothData: LiveData<List<BluetoothEntry>> get() = _bluetoothData
 
     private val _isMacAddressSaved by lazy { MutableLiveData<Boolean>() }
     val isMacAddressSaved: LiveData<Boolean> get() = _isMacAddressSaved
 
-    private fun isBluetoothAvailable() = launch {
+    fun isBluetoothAvailable() = viewModelScope.launch {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
         if (bluetoothAdapter == null) {
@@ -49,7 +46,7 @@ class BluetoothViewModel(
         }
         _isBluetoothAvailable.postValue(true)
 
-        val bluetoothStatus = if(bluetoothAdapter.isEnabled)
+        val bluetoothStatus = if (bluetoothAdapter.isEnabled)
             BluetoothStatus.Enabled
         else
             BluetoothStatus.Disabled
@@ -57,27 +54,21 @@ class BluetoothViewModel(
         _isBluetoothEnabled.postValue(bluetoothStatus)
     }
 
-    fun handleBluetoothRequest(resultCode: Int){
-        when(resultCode){
+    fun handleBluetoothRequest(resultCode: Int) {
+        when (resultCode) {
             BLUETOOTH_REQUEST_ACCEPTED -> _isBluetoothEnabled.postValue(BluetoothStatus.Enabled)
             BLUETOOTH_REQUEST_DISMISSED -> _isBluetoothEnabled.postValue(BluetoothStatus.Dismissed)
         }
     }
 
-    fun getData() = launch {
+    fun getData() = viewModelScope.launch {
         when (val result = getBluetoothData.execute()) {
-            is Result.Value -> {
-                _bluetoothData.addSource(
-                    result.value
-                ) {
-                    _bluetoothData.value = it
-                }
-            }
+            is Result.Value -> result.value.collect { data -> _bluetoothData.postValue(data) }
             is Result.Error -> _bluetoothData.postValue(listOf())
         }
     }
 
-    fun updateBluetoothData() = launch {
+    fun updateBluetoothData() = viewModelScope.launch {
         when (val result = updateBluetoothData.execute()) {
             is Result.Value -> _bluetoothData.postValue(result.value)
             is Result.Error -> _bluetoothData.postValue(listOf())
@@ -89,7 +80,7 @@ class BluetoothViewModel(
         unregisterBluetoothReceiver.execute()
     }
 
-    fun saveMacAddress(macAddress: String) = launch {
+    fun saveMacAddress(macAddress: String) = viewModelScope.launch {
         sharedPrefsService.saveValue(BLUETOOTH_MAC_ADDRESS_KEY, macAddress)
     }
 }

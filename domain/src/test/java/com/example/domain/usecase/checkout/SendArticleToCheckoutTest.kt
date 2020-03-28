@@ -1,6 +1,5 @@
 package com.example.domain.usecase.checkout
 
-import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.Result
 import com.example.domain.repository.ICheckoutRepository
 import com.example.mockfactory.articleTestData
@@ -8,6 +7,7 @@ import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,10 +27,13 @@ internal class SendArticleToCheckoutTest {
     @Test
     fun `send article in checkout triggers checkout repository triggered with success response`() =
         runBlocking {
+            val repositoryResult = flow {
+                emit(4)
+            }
 
             coEvery {
                 checkoutRepository.sendArticleToCheckout(articleTestData)
-            } coAnswers { Result.build { MutableLiveData<Int>() } }
+            } coAnswers { Result.build { repositoryResult } }
 
             checkoutRepository.sendArticleToCheckout(articleTestData)
 

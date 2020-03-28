@@ -1,14 +1,14 @@
 package com.example.data.article
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.data.model.RoomArticle
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArticleDao {
 
     @Query("SELECT * FROM article_table")
-    fun getArticles(): LiveData<List<RoomArticle>>
+    fun getArticles(): Flow<List<RoomArticle>>
 
     //if update successful, will return number of rows effected, which should be 1
     @Insert(onConflict = OnConflictStrategy.REPLACE)

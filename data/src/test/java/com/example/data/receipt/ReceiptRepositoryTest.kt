@@ -1,21 +1,21 @@
 package com.example.data.receipt
 
-import androidx.lifecycle.MutableLiveData
-import com.example.data.model.RoomReceipt
+import com.example.domain.model.Result
 import com.example.domain.repository.IReceiptRepository
 import com.example.domain.shared.DispatcherProvider
+import com.example.mockfactory.endDateTestData
+import com.example.mockfactory.roomReceiptTestData
+import com.example.mockfactory.startDateTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
-import com.example.domain.model.Result
-import com.example.mockfactory.endDateTestData
-import com.example.mockfactory.startDateTestData
-import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class ReceiptRepositoryTest {
@@ -37,7 +37,9 @@ internal class ReceiptRepositoryTest {
 
     @Test
     fun `get receipts success`() = runBlocking {
-        val receiptTestData = MutableLiveData<List<RoomReceipt>>()
+        val receiptTestData = flow {
+            emit(listOf(roomReceiptTestData))
+        }
 
         coEvery {
             receiptDao.getReceipts(

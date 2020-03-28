@@ -59,8 +59,12 @@ dependencies {
 
     // ViewModel
     implementation Dependencies.lifecyleExtensions
+    implementation Dependencies.lifecyleCore
+    implementation Dependencies.lifecyleRuntime
+    implementation Dependencies.lifecyleRuntimeKtx
     implementation Dependencies.lifecycleViewModelKtx
     implementation Dependencies.legacySupport
+    implementation Dependencies.lifeCycleLiveData
 
     kapt Dependencies.lifeCycleCompiler
 

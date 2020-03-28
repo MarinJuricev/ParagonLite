@@ -2,15 +2,16 @@ package com.example.presentation.ui.articles.creation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Article
 import com.example.domain.model.Result
 import com.example.domain.usecase.article.CreateArticle
-import com.example.presentation.shared.BaseViewModel
 import kotlinx.coroutines.launch
 
 class ArticleCreationViewModel(
     private val createArticle: CreateArticle
-) : BaseViewModel() {
+): ViewModel() {
 
     private val currentPrice by lazy { MutableLiveData<String>() }
     private val articleName by lazy { MutableLiveData<String>() }
@@ -21,7 +22,7 @@ class ArticleCreationViewModel(
     private val _isArticleCreationSuccess by lazy { MutableLiveData<Boolean>() }
     val isArticleCreationSuccess: LiveData<Boolean> get() = _isArticleCreationSuccess
 
-    fun onSaveClick(article: Article) = launch {
+    fun onSaveClick(article: Article) = viewModelScope.launch {
         when (createArticle.execute(article)) {
             is Result.Value -> _isArticleCreationSuccess.postValue(true)
             is Result.Error -> _isArticleCreationSuccess.postValue(false)

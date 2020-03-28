@@ -1,8 +1,7 @@
 package com.example.data.checkout
 
-import androidx.lifecycle.MutableLiveData
-import com.example.data.*
-import com.example.data.model.RoomCheckout
+import com.example.data.toRoomCheckout
+import com.example.data.toRoomCheckoutArticle
 import com.example.domain.error.ParagonError
 import com.example.domain.model.Result
 import com.example.domain.repository.ICheckoutRepository
@@ -16,6 +15,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -59,8 +59,9 @@ internal class CheckoutRepositoryTest {
 
     @Test
     fun `send article to checkout success`() = runBlocking {
-        val articleCount = MutableLiveData<Int>()
-        articleCount.postValue(2)
+        val articleCount = flow {
+            emit(4)
+        }
 
         coEvery {
             checkoutDao.getArticle(articleTestData.name)
@@ -82,7 +83,9 @@ internal class CheckoutRepositoryTest {
 
     @Test
     fun `get article in checkout success`() = runBlocking {
-        val articleTestData = MutableLiveData<List<RoomCheckout>>()
+        val articleTestData = flow {
+            emit(listOf(roomCheckoutTestData))
+        }
 
         coEvery {
             checkoutDao.getArticles()

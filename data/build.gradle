@@ -51,6 +51,7 @@ dependencies {
 
     // Room
     implementation Dependencies.roomRuntime
+    implementation Dependencies.roomKtx
     kapt Dependencies.roomCompiler
 
     // Koin for Kotlin

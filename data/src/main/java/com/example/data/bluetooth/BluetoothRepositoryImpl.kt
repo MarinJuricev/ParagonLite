@@ -6,8 +6,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.data.generateCurrentTime
 import com.example.data.model.RoomBluetoothEntry
 import com.example.data.toBluetoothList
@@ -20,6 +18,8 @@ import com.example.domain.repository.IBluetoothRepository
 import com.example.domain.shared.DispatcherProvider
 import com.zebra.sdk.comm.BluetoothConnectionInsecure
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
@@ -44,16 +44,15 @@ class BluetoothRepositoryImpl(
         }
     }
 
-    override suspend fun getBluetoothData(): Result<Exception, LiveData<List<BluetoothEntry>>> =
+    override suspend fun getBluetoothData(): Result<Exception, Flow<List<BluetoothEntry>>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
             when (val result = bluetoothDao.getBluetoothEntries()) {
                 listOf<RoomBluetoothEntry>() -> Result.build { throw ParagonError.LocalIOException }
                 else -> Result.build {
-                    Transformations.map(
-                        result,
-                        ::mapToBluetoothEntry
-                    )
+                    result.map { value: List<RoomBluetoothEntry> ->
+                        value.toBluetoothList()
+                    }
                 }
             }
         }
@@ -162,5 +161,3 @@ class BluetoothRepositoryImpl(
         return Result.build { Unit }
     }
 }
-
-private fun mapToBluetoothEntry(list: List<RoomBluetoothEntry>) = list.toBluetoothList()

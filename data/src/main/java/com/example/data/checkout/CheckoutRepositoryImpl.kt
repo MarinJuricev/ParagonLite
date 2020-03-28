@@ -1,7 +1,5 @@
 package com.example.data.checkout
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.example.data.model.RoomCheckout
 import com.example.data.toCheckoutList
 import com.example.data.toRoomCheckout
@@ -12,6 +10,8 @@ import com.example.domain.model.CheckoutArticle
 import com.example.domain.model.Result
 import com.example.domain.repository.ICheckoutRepository
 import com.example.domain.shared.DispatcherProvider
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class CheckoutRepositoryImpl(
@@ -21,7 +21,7 @@ class CheckoutRepositoryImpl(
 
     override suspend fun sendArticleToCheckout(
         article: Article
-    ): Result<Exception, LiveData<Int>> =
+    ): Result<Exception, Flow<Int>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
             val previousArticleCount = getPreviousCheckoutArticleNumberIfAvailable(article) ?: 0.00
@@ -33,7 +33,7 @@ class CheckoutRepositoryImpl(
             }
         }
 
-    override suspend fun getArticlesInCheckoutSize(): LiveData<Int> =
+    override suspend fun getArticlesInCheckoutSize(): Flow<Int> =
         withContext(dispatcherProvider.provideIOContext()) {
             checkoutDao.getCheckoutArticleCount()
         }
@@ -46,16 +46,15 @@ class CheckoutRepositoryImpl(
             }
         }
 
-    override suspend fun getArticlesInCheckout(): Result<Exception, LiveData<List<CheckoutArticle>>> =
+    override suspend fun getArticlesInCheckout(): Result<Exception, Flow<List<CheckoutArticle>>> =
         withContext(dispatcherProvider.provideIOContext()) {
 
-            when (val result= checkoutDao.getArticles()) {
+            when (val result = checkoutDao.getArticles()) {
                 listOf<RoomCheckout>() -> Result.build { throw ParagonError.LocalIOException }
                 else -> Result.build {
-                    Transformations.map(
-                        result,
-                        ::mapToCheckoutArticle
-                    )
+                    result.map { value: List<RoomCheckout> ->
+                        value.toCheckoutList()
+                    }
                 }
             }
         }
@@ -81,5 +80,3 @@ class CheckoutRepositoryImpl(
             }
         }
 }
-
-private fun mapToCheckoutArticle(list: List<RoomCheckout>) = list.toCheckoutList()

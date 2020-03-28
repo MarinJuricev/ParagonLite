@@ -12,6 +12,7 @@ import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.jupiter.api.BeforeEach
@@ -44,9 +45,9 @@ internal class GetReceiptsTest {
         val formattedStartDate = "03.03.20"
         val formattedEndDate = "31.03.20"
 
-        val repositoryResult = MutableLiveData<List<Receipt>>()
-        val listOfReceipts = listOf(receiptTestData)
-        repositoryResult.value = listOfReceipts
+        val repositoryResult = flow {
+            emit(listOf(receiptTestData))
+        }
 
         coEvery {
             receiptRepository.getReceipts(

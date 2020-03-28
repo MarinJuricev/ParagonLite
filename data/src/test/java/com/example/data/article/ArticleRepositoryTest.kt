@@ -7,6 +7,7 @@ import com.example.domain.error.ParagonError
 import com.example.domain.model.Result
 import com.example.domain.shared.DispatcherProvider
 import com.example.mockfactory.articleTestData
+import com.example.mockfactory.roomArticleTestData
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
@@ -14,6 +15,7 @@ import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -65,7 +67,9 @@ internal class ArticleRepositoryTest {
 
     @Test
     fun `get articles success`() = runBlocking {
-        val articlesTestData = MutableLiveData<List<RoomArticle>>()
+        val articlesTestData = flow {
+            emit(listOf(roomArticleTestData))
+        }
 
         coEvery {
             articleDao.getArticles()
