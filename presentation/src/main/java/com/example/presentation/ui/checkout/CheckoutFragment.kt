@@ -19,7 +19,6 @@ import com.example.presentation.ext.shrinkFabIfPossible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.checkout_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -61,8 +60,8 @@ class CheckoutFragment : Fragment() {
 
         checkoutViewModel.checkoutValue.observe(viewLifecycleOwner, Observer {
             when (it) {
-                CHECKOUT_VALUE_INITIAL_VALUE -> fabPrint.hide()
-                else -> fabPrint.show()
+                CHECKOUT_VALUE_INITIAL_VALUE -> binding.fabPrint.hide()
+                else -> binding.fabPrint.show()
             }
 
             val stringToDisplay = getString(R.string.total_amount, it)
@@ -91,45 +90,45 @@ class CheckoutFragment : Fragment() {
 
 
 
-        fabPrint.setOnClickListener {
+        binding.fabPrint.setOnClickListener {
             buildDialog()
-            fabPrint.shrinkFabIfPossible()
+            binding.fabPrint.shrinkFabIfPossible()
 
         }
 
         listenToRecyclerScroll()
 
-        rvCheckoutList.adapter = checkoutAdapter
+        binding.rvCheckoutList.adapter = checkoutAdapter
     }
 
     private fun animateCheckoutPriceChange(stringToDisplay: String) {
         val inAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_up)
         inAnimation.duration = 450
-        tvCheckoutPrice.inAnimation = inAnimation
+        binding.tvCheckoutPrice.inAnimation = inAnimation
 
 
         val outAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_out_up)
         outAnimation.duration = 450
-        tvCheckoutPrice.outAnimation = outAnimation
+        binding.tvCheckoutPrice.outAnimation = outAnimation
 
-        tvCheckoutPrice.setText(stringToDisplay)
+        binding.tvCheckoutPrice.setText(stringToDisplay)
     }
 
     private fun showEmptyScreenFields() {
-        noCheckoutGroup.visibility = View.VISIBLE
+        binding.noCheckoutGroup.visibility = View.VISIBLE
     }
 
     private fun hideEmptyScreensFields() {
-        noCheckoutGroup.visibility = View.GONE
+        binding.noCheckoutGroup.visibility = View.GONE
     }
 
     private fun listenToRecyclerScroll() {
-        rvCheckoutList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvCheckoutList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0)
-                    fabPrint.hide()
+                    binding.fabPrint.hide()
                 else if (dy < 0)
-                    fabPrint.show()
+                    binding.fabPrint.show()
             }
         })
     }
@@ -142,7 +141,7 @@ class CheckoutFragment : Fragment() {
 
     private fun showSnackBar(messageToShow: String) =
         Snackbar.make(
-            checkoutRoot,
+            binding.checkoutRoot,
             messageToShow,
             Snackbar.LENGTH_SHORT
         ).show()
@@ -155,12 +154,12 @@ class CheckoutFragment : Fragment() {
                 getString(R.string.ok),
                 DialogInterface.OnClickListener(positiveDialogClick)
             )
-            .setOnDismissListener { fabPrint.extendFabIfPossible() }
+            .setOnDismissListener { binding.fabPrint.extendFabIfPossible() }
             .show()
     }
 
     private val positiveDialogClick = { dialog: DialogInterface, _: Int ->
-        fabPrint.extendFabIfPossible()
+        binding.fabPrint.extendFabIfPossible()
 
         checkoutViewModel.printCheckout()
         dialog.dismiss()

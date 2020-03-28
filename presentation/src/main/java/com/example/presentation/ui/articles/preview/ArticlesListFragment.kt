@@ -14,7 +14,6 @@ import com.example.presentation.R
 import com.example.presentation.databinding.ArticlesListFragmentBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.articles_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ArticlesListFragment : Fragment() {
@@ -40,7 +39,7 @@ class ArticlesListFragment : Fragment() {
     }
 
     private fun bindUI() {
-        fabArticleCreation.setOnClickListener { view ->
+        binding.fabArticleCreation.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_navigation_articles_to_articleCreation)
         }
 
@@ -73,24 +72,24 @@ class ArticlesListFragment : Fragment() {
 
         listenToRecyclerScroll()
 
-        rvArticleList.adapter = articleAdapter
+        binding.rvArticleList.adapter = articleAdapter
     }
 
     private fun showEmptyScreenFields() {
-        noArticleGroup.visibility = View.VISIBLE
+        binding.noArticleGroup.visibility = View.VISIBLE
     }
 
     private fun hideEmptyScreensFields() {
-        noArticleGroup.visibility = View.GONE
+        binding.noArticleGroup.visibility = View.GONE
     }
 
     private fun listenToRecyclerScroll() {
-        rvArticleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvArticleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0)
-                    fabArticleCreation.hide()
+                    binding.fabArticleCreation.hide()
                 else if (dy < 0)
-                    fabArticleCreation.show()
+                    binding.fabArticleCreation.show()
             }
         })
     }
@@ -103,13 +102,13 @@ class ArticlesListFragment : Fragment() {
 
     private fun showArticleDeletionSuccess() =
         Snackbar.make(
-            articleListRoot,
+            binding.articleListRoot,
             getString(R.string.article_successfully_deleted),
             Snackbar.LENGTH_LONG
         ).show()
 
     private fun showArticleDeletionFail() =
-        Snackbar.make(articleListRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.articleListRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG)
             .show()
 
     private fun onArticleClick(article: Article) {

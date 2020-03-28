@@ -14,7 +14,6 @@ import com.example.presentation.databinding.BluetoothFragmentBinding
 import com.example.presentation.ext.extendFabIfPossible
 import com.example.presentation.ext.shrinkFabIfPossible
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.bluetooth_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val REQUEST_ENABLE_BT = 15
@@ -45,18 +44,19 @@ class BluetoothFragment : Fragment() {
         bluetoothViewModel.isBluetoothEnabled.observe(viewLifecycleOwner, Observer { isBluetoothEnabled ->
             when (isBluetoothEnabled) {
                 BluetoothStatus.Enabled -> {
-                    tvEmptyBluetoothDevices.text = getString(R.string.add_bluetooth_devices)
-                    btnEnableBluetooth.visibility = View.GONE
-                    fabActivateBluetoothSearch.show()
+                    binding.tvEmptyBluetoothDevices.text = getString(R.string.add_bluetooth_devices)
+                    binding.btnEnableBluetooth.visibility = View.GONE
+                    binding.fabActivateBluetoothSearch.show()
 
-                    swBluetoothEnabled.isChecked = true
+                    binding.swBluetoothEnabled.isChecked = true
 
                     bluetoothViewModel.getData()
                 }
                 BluetoothStatus.Disabled -> enableBluetooth()
                 BluetoothStatus.Dismissed -> {
-                    fabActivateBluetoothSearch.hide()
-                    tvEmptyBluetoothDevices.text = getString(R.string.bluetooth_canceled)
+                    binding.fabActivateBluetoothSearch.hide()
+                    binding.tvEmptyBluetoothDevices.text = getString(R.string.bluetooth_canceled)
+                    binding.btnEnableBluetooth.visibility = View.VISIBLE
                     showEmptyScreenFields()
                 }
             }
@@ -69,8 +69,8 @@ class BluetoothFragment : Fragment() {
         val blueToothAdapter = BluetoothDeviceAdapter { macAddress -> saveBluetoothMACAddress(macAddress) }
 
         bluetoothViewModel.bluetoothData.observe(viewLifecycleOwner, Observer {
-            pbBluetooth.hide()
-            fabActivateBluetoothSearch.extendFabIfPossible()
+            binding.pbBluetooth.hide()
+            binding.fabActivateBluetoothSearch.extendFabIfPossible()
 
             if (it.isEmpty())
                 showEmptyScreenFields()
@@ -87,44 +87,44 @@ class BluetoothFragment : Fragment() {
             }
         })
 
-        fabActivateBluetoothSearch.setOnClickListener {
-            pbBluetooth.show()
-            fabActivateBluetoothSearch.shrinkFabIfPossible()
+        binding.fabActivateBluetoothSearch.setOnClickListener {
+            binding.pbBluetooth.show()
+            binding.fabActivateBluetoothSearch.shrinkFabIfPossible()
 
             bluetoothViewModel.updateBluetoothData()
         }
 
-        btnEnableBluetooth.setOnClickListener {
+        binding.btnEnableBluetooth.setOnClickListener {
             enableBluetooth()
         }
 
-        rvAvailableBluetoothDevices.adapter = blueToothAdapter
+        binding.rvAvailableBluetoothDevices.adapter = blueToothAdapter
     }
 
     private fun showEmptyScreenFields() {
-        noBluetoothGroup.visibility = View.VISIBLE
+        binding.noBluetoothGroup.visibility = View.VISIBLE
     }
 
     private fun hideEmptyScreensFields() {
-        noBluetoothGroup.visibility = View.GONE
+        binding.noBluetoothGroup.visibility = View.GONE
     }
 
     private fun showMacAddressSavedSuccess() =
-        Snackbar.make(bluetoothRoot, getString(R.string.mac_address_saved), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.bluetoothRoot, getString(R.string.mac_address_saved), Snackbar.LENGTH_SHORT).show()
 
 
     private fun showMacAddressSavedFail() =
-        Snackbar.make(bluetoothRoot, getString(R.string.printer_save_error), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.bluetoothRoot, getString(R.string.printer_save_error), Snackbar.LENGTH_SHORT).show()
 
     private fun handleBluetoothAvailability(isBluetoothAvailable: Boolean) {
         if (!isBluetoothAvailable) {
-            swBluetoothEnabled.isChecked = false
-            tvBluetoothTurnOn.text = getString(R.string.no_bluetooth)
+            binding.swBluetoothEnabled.isChecked = false
+            binding.tvBluetoothTurnOn.text = getString(R.string.no_bluetooth)
         }
     }
 
     private fun enableBluetooth() {
-        swBluetoothEnabled.isChecked = false
+        binding.swBluetoothEnabled.isChecked = false
 
         val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)

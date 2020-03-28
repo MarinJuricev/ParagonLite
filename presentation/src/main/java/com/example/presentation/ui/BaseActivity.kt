@@ -32,6 +32,7 @@ class BaseActivity : AppCompatActivity() {
     private val sharedPrefsService: ISharedPrefsService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         checkAppTheme()
 

@@ -11,7 +11,6 @@ import com.example.domain.model.Article
 import com.example.presentation.R
 import com.example.presentation.databinding.ArticleCreationFragmentBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.article_creation_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ArticleCreationFragment : Fragment() {
@@ -51,36 +50,37 @@ class ArticleCreationFragment : Fragment() {
     }
 
     private fun enableSaveButton() {
-        btnSave.isClickable = true
-        btnSave.isEnabled = true
+        binding.btnSave.isClickable = true
+        binding.btnSave.isEnabled = true
     }
 
     private fun disableSaveButton() {
-        btnSave.isClickable = false
-        btnSave.isEnabled = false
+        binding.btnSave.isClickable = false
+        binding.btnSave.isEnabled = false
     }
 
     private fun showArticleCreationFail() =
-        Snackbar.make(articleCreationRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG)
-            .show()
+        Snackbar.make(
+            binding.articleCreationRoot, getString(R.string.error_occurred), Snackbar.LENGTH_LONG
+        ).show()
 
     private fun showArticleCreationSuccess() =
         Snackbar.make(
-            articleCreationRoot,
+            binding.articleCreationRoot,
             getString(R.string.article_successfully_created),
             Snackbar.LENGTH_LONG
         ).show()
 
     fun onCancelClick() {
-        etArticlePrice.editableText.clear()
-        etArticleName.editableText.clear()
+        binding.etArticlePrice.editableText.clear()
+        binding.etArticleName.editableText.clear()
     }
 
     fun onSaveClick() {
         val article = Article(
-            etArticleName.text.toString(),
-            spinnerQuantity.selectedItem.toString(),
-            etArticlePrice.text.toString().toDouble()
+            binding.etArticleName.text.toString(),
+            binding.spinnerQuantity.selectedItem.toString(),
+            binding.etArticlePrice.text.toString().toDouble()
         )
 
         articleCreationViewModel.onSaveClick(article)

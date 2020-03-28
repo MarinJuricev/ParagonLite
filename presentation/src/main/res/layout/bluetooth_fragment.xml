@@ -158,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/enable_bluetooth"
                     app:cornerRadius="8dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/rvAvailableBluetoothDevices"
                     app:layout_constraintTop_toBottomOf="@+id/tvEmptyBluetoothDevices" />

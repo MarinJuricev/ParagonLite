@@ -14,7 +14,6 @@ import com.example.presentation.ext.extendFabIfPossible
 import com.example.presentation.ext.shrinkFabIfPossible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.history_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListener {
@@ -87,47 +86,47 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
                     showSnackBar(getString(R.string.no_saved_bluetooth_address_warning))
             })
 
-        fabPrint.setOnClickListener {
+        binding.fabPrint.setOnClickListener {
             buildDialog()
-            fabPrint.shrinkFabIfPossible()
+            binding.fabPrint.shrinkFabIfPossible()
         }
 
         listenToRecyclerScroll()
 
-        rvReceiptList.adapter = receiptAdapter
+        binding.rvReceiptList.adapter = receiptAdapter
     }
 
     private fun showSnackBar(messageToShow: String) =
         Snackbar.make(
-            historyRoot,
+            binding.historyRoot,
             messageToShow,
             Snackbar.LENGTH_SHORT
         ).show()
 
     private fun showEmptyScreenFields() {
-        noReceiptGroup.visibility = View.VISIBLE
+        binding.noReceiptGroup.visibility = View.VISIBLE
     }
 
     private fun hideEmptyScreensFields() {
-        noReceiptGroup.visibility = View.GONE
+        binding.noReceiptGroup.visibility = View.GONE
     }
 
     private fun listenToRecyclerScroll() {
-        rvReceiptList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvReceiptList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0)
-                    fabPrint.hide()
+                    binding.fabPrint.hide()
                 else if (dy < 0)
-                    fabPrint.show()
+                    binding.fabPrint.show()
             }
         })
     }
 
     private fun handleFabVisibility(receiptList: List<Receipt>) {
         if (receiptList.isEmpty())
-            fabPrint.hide()
+            binding.fabPrint.hide()
         else
-            fabPrint.show()
+            binding.fabPrint.show()
     }
 
     private fun buildDialog() {
@@ -138,12 +137,12 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
                 getString(R.string.ok),
                 DialogInterface.OnClickListener(positiveDialogClick)
             )
-            .setOnDismissListener { fabPrint.extendFabIfPossible() }
+            .setOnDismissListener { binding.fabPrint.extendFabIfPossible() }
             .show()
     }
 
     private val positiveDialogClick = { dialog: DialogInterface, _: Int ->
-        fabPrint.extendFabIfPossible()
+        binding.fabPrint.extendFabIfPossible()
 
         historyViewModel.prepareDataForPrint()
         dialog.dismiss()
