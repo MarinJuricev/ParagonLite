@@ -104,6 +104,7 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
         ).show()
 
     private fun showEmptyScreenFields() {
+        binding.tvEmptyReceipts.text = getString(R.string.no_receipts_in_range)
         binding.noReceiptGroup.visibility = View.VISIBLE
     }
 

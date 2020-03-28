@@ -34,8 +34,8 @@ class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        checkAppTheme()
 
+        checkAppTheme()
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 

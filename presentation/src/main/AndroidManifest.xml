@@ -8,6 +8,7 @@
         <activity
                 android:name="com.example.presentation.ui.BaseActivity"
                 android:label="@string/app_name"
+                android:configChanges="uiMode"
                 android:theme="@style/SplashScreenTheme"
                 android:windowSoftInputMode="adjustPan">
             <intent-filter>

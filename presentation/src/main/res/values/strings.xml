@@ -59,5 +59,6 @@
     <string name="bluetooth_canceled">Bluetooth activation canceled, you can enable it by clicking the button below</string>
     <string name="enable_bluetooth">Enable bluetooth</string>
     <string name="bluetooth_status">Bluetooth Status</string>
+    <string name="no_receipts_in_range">No receipts in that range, select another date range</string>
 
 </resources>
