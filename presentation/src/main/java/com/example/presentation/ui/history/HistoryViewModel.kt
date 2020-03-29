@@ -31,7 +31,7 @@ class HistoryViewModel(
     fun fetchReceiptsFromTheSelectedDateRange(startDate: Long, endDate: Long) =
         viewModelScope.launch {
             when (val result = getReceipts.execute(startDate, endDate)) {
-                is Result.Value -> result.value.collect { data -> _receiptData.postValue(data) }
+                is Result.Value -> result.value.collect { data -> _receiptData.value = data }
                 is Result.Error -> _receiptData.value = listOf()
             }
         }

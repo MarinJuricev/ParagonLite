@@ -8,6 +8,8 @@ apply plugin: "kotlin-kapt"
 
 apply plugin: 'androidx.navigation.safeargs'
 
+apply plugin: "de.mannodermaus.android-junit5"
+
 android {
     compileSdkVersion Dependencies.androidSdkVersion
 
@@ -38,6 +40,7 @@ android {
 
 dependencies {
     implementation project(":domain")
+    testImplementation project(":mockFactory")
 
     implementation Dependencies.kotlinStandardLibrary
 
@@ -54,8 +57,6 @@ dependencies {
     // Kotlin Android Coroutines
     implementation Dependencies.coroutinesCore
     implementation Dependencies.coroutinesAndroid
-
-//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // ViewModel
     implementation Dependencies.lifecyleExtensions
@@ -91,4 +92,14 @@ dependencies {
     implementation Dependencies.koinAndroidxViewModel
     // Koin for Unit tests
     testImplementation Dependencies.koinTest
+
+    // Test
+    testImplementation Dependencies.junitApi
+    testRuntimeOnly Dependencies.junitEngine
+
+    testImplementation Dependencies.coroutinesCore
+    testImplementation Dependencies.coroutineTest
+    testImplementation Dependencies.liveDataTest
+
+    testImplementation Dependencies.mockK
 }

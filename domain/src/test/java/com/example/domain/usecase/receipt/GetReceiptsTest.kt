@@ -1,10 +1,7 @@
 package com.example.domain.usecase.receipt
 
-import InstantExecutorExtension
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.example.domain.error.ParagonError
-import com.example.domain.model.Receipt
 import com.example.domain.model.Result
 import com.example.domain.repository.IReceiptRepository
 import com.example.mockfactory.receiptTestData
@@ -17,9 +14,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(InstantExecutorExtension::class)
 internal class GetReceiptsTest {
 
     private val receiptRepository: IReceiptRepository = mockk()
@@ -76,10 +71,6 @@ internal class GetReceiptsTest {
 
         val formattedStartDate = "03.03.20"
         val formattedEndDate = "31.03.20"
-
-        val repositoryResult = MutableLiveData<List<Receipt>>()
-        val listOfReceipts = listOf(receiptTestData)
-        repositoryResult.value = listOfReceipts
 
         coEvery {
             receiptRepository.getReceipts(

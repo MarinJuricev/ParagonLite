@@ -3,10 +3,11 @@ object Versions {
     const val navigation = "2.3.0-alpha04"
     const val coroutines = "1.3.5"
     const val lifecycle = "2.2.0"
+    const val lifecycleTest = "2.1.0"
     const val koin = "2.1.4"
     const val room = "2.2.5"
     const val mockK = "1.9.3"
-    const val junitApi = "5.4.2"
+    const val junitApi = "5.6.0"
 
     const val appCompat = "1.2.0-alpha03"
     const val androidCore = "1.2.0"
@@ -19,7 +20,7 @@ object Versions {
     const val materialCalendar = "1.1.4"
     const val preferences = "1.1.0"
     const val livedata = "2.3.0-alpha01"
-    const val archVersion = "2.1.0"
+    const val coroutineTest = "1.3.4"
 }
 
 object Dependencies {
@@ -70,7 +71,7 @@ object Dependencies {
     val mockK = "io.mockk:mockk:${Versions.mockK}"
     val junitApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitApi}"
     val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitApi}"
-
-    val liveDataTest = "androidx.arch.core:core-testing:${Versions.archVersion}"
+    val liveDataTest = "androidx.arch.core:core-testing:${Versions.lifecycleTest}"
+    val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutineTest}"
 
 }

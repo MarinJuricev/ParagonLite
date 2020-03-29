@@ -13,8 +13,8 @@ class ArticleCreationViewModel(
     private val createArticle: CreateArticle
 ): ViewModel() {
 
-    private val currentPrice by lazy { MutableLiveData<String>() }
-    private val articleName by lazy { MutableLiveData<String>() }
+    private val _currentPrice by lazy { MutableLiveData<String>() }
+    private val _articleName by lazy { MutableLiveData<String>() }
 
     private val _shouldSaveButtonBeEnabled by lazy { MutableLiveData<Boolean>() }
     val shouldSaveButtonBeEnabled: LiveData<Boolean> get() = _shouldSaveButtonBeEnabled
@@ -31,20 +31,20 @@ class ArticleCreationViewModel(
 
     @SuppressWarnings
     fun onPriceChanged(text: CharSequence, start: Int, before: Int, count: Int) {
-        currentPrice.postValue(text.toString())
+        _currentPrice.postValue(text.toString())
         validateArticleData()
     }
 
     @SuppressWarnings
     fun onArticleNameChanged(text: CharSequence, start: Int, before: Int, count: Int) {
-        articleName.postValue(text.toString())
+        _articleName.postValue(text.toString())
         validateArticleData()
     }
 
     private fun validateArticleData() {
         _shouldSaveButtonBeEnabled.postValue(
-            !currentPrice.value.isNullOrEmpty() &&
-                    !articleName.value.isNullOrEmpty()
+            !_currentPrice.value.isNullOrEmpty() &&
+                    !_articleName.value.isNullOrEmpty()
         )
     }
 }
