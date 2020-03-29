@@ -36,6 +36,7 @@ class CheckoutViewModel(
     val articleData: LiveData<List<CheckoutArticle>> get() = _checkoutArticles
 
     private val _isArticleDeletionSuccess by lazy { MutableLiveData<Boolean>() }
+    val isArticleDeletionSuccess: LiveData<Boolean> get() = _isArticleDeletionSuccess
 
     private val _checkoutValue by lazy { MutableLiveData<String>() }
     val checkoutValue: LiveData<String> get() = _checkoutValue
@@ -61,19 +62,19 @@ class CheckoutViewModel(
         }
     }
 
-    private fun startObservingCheckoutSize() = viewModelScope.launch {
-        val result = getArticlesInCheckoutSize.execute()
-        result
-            .map { value: Int? -> value ?: 0 }
-            .collect { data -> _checkoutBadgeCount.value = data }
-    }
-
     private fun updateCheckoutAmount(newArticleList: List<CheckoutArticle>?) =
         viewModelScope.launch {
             val list = newArticleList ?: listOf()
 
             _checkoutValue.postValue(calculateCheckout.execute(list))
         }
+
+    private fun startObservingCheckoutSize() = viewModelScope.launch {
+        val result = getArticlesInCheckoutSize.execute()
+        result
+            .map { value: Int? -> value ?: 0 }
+            .collect { data -> _checkoutBadgeCount.value = data }
+    }
 
     fun deleteArticle(checkoutArticle: CheckoutArticle) = viewModelScope.launch {
         when (deleteCheckoutArticle.execute(checkoutArticle)) {
@@ -105,7 +106,7 @@ class CheckoutViewModel(
     private suspend fun generateDataToPrint(macAddress: String, receiptNumber: Int) =
         viewModelScope.launch {
             when (val result = generatePrintData.execute(
-                articleData.value!!,
+                articleData.value ?: listOf(),
                 checkoutValue.value ?: "",
                 receiptNumber
             )) {

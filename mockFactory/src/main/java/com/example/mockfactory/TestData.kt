@@ -59,4 +59,6 @@ const val startDateTestData = "14.07.2019"
 const val endDateTestData = "20.07.2019"
 const val macAddressTestData = "192.168.1.1"
 const val currentCheckoutTestData = "5"
+const val checkoutValueTestData = "100"
 const val receiptNumberTestData = 1
+const val checkoutBadgeCountTestData = 4

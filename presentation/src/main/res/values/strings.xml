@@ -60,5 +60,6 @@
     <string name="enable_bluetooth">Enable bluetooth</string>
     <string name="bluetooth_status">Bluetooth Status</string>
     <string name="no_receipts_in_range">No receipts in that range, select another date range</string>
+    <string name="article_failed_to_delete">We couldn\'t delete that article, please try later!</string>
 
 </resources>

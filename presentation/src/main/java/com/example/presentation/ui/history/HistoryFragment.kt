@@ -144,8 +144,9 @@ class HistoryFragment : Fragment(), HistoryFragmentDialog.HistoryCalendarListene
 
     private val positiveDialogClick = { dialog: DialogInterface, _: Int ->
         binding.fabPrint.extendFabIfPossible()
-
-        historyViewModel.prepareDataForPrint()
+        historyViewModel.receiptData.value?.let {
+            historyViewModel.prepareDataForPrint(it)
+        }
         dialog.dismiss()
     }
 

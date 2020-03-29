@@ -36,38 +36,49 @@ class BluetoothFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bluetoothViewModel.isBluetoothAvailable()
+        val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+        val isEnabled = bluetoothAdapter?.isEnabled ?: false
+
+        bluetoothViewModel.isBluetoothAvailable(
+            bluetoothAdapter != null,
+            isEnabled
+        )
 
         bluetoothViewModel.isBluetoothAvailable.observe(viewLifecycleOwner, Observer {
             handleBluetoothAvailability(it)
         })
 
-        bluetoothViewModel.isBluetoothEnabled.observe(viewLifecycleOwner, Observer { isBluetoothEnabled ->
-            when (isBluetoothEnabled) {
-                BluetoothStatus.Enabled -> {
-                    binding.tvEmptyBluetoothDevices.text = getString(R.string.add_bluetooth_devices)
-                    binding.btnEnableBluetooth.visibility = View.GONE
-                    binding.fabActivateBluetoothSearch.show()
+        bluetoothViewModel.isBluetoothEnabled.observe(
+            viewLifecycleOwner,
+            Observer { isBluetoothEnabled ->
+                when (isBluetoothEnabled) {
+                    BluetoothStatus.Enabled -> {
+                        binding.tvEmptyBluetoothDevices.text =
+                            getString(R.string.add_bluetooth_devices)
+                        binding.btnEnableBluetooth.visibility = View.GONE
+                        binding.fabActivateBluetoothSearch.show()
 
-                    binding.swBluetoothEnabled.isChecked = true
+                        binding.swBluetoothEnabled.isChecked = true
 
-                    bluetoothViewModel.getData()
+                        bluetoothViewModel.getData()
+                    }
+                    BluetoothStatus.Disabled -> enableBluetooth()
+                    BluetoothStatus.Dismissed -> {
+                        binding.fabActivateBluetoothSearch.hide()
+                        binding.tvEmptyBluetoothDevices.text =
+                            getString(R.string.bluetooth_canceled)
+                        binding.btnEnableBluetooth.visibility = View.VISIBLE
+                        showEmptyScreenFields()
+                    }
                 }
-                BluetoothStatus.Disabled -> enableBluetooth()
-                BluetoothStatus.Dismissed -> {
-                    binding.fabActivateBluetoothSearch.hide()
-                    binding.tvEmptyBluetoothDevices.text = getString(R.string.bluetooth_canceled)
-                    binding.btnEnableBluetooth.visibility = View.VISIBLE
-                    showEmptyScreenFields()
-                }
-            }
-        })
+            })
 
         bindUI()
     }
 
     private fun bindUI() {
-        val blueToothAdapter = BluetoothDeviceAdapter { macAddress -> saveBluetoothMACAddress(macAddress) }
+        val blueToothAdapter =
+            BluetoothDeviceAdapter { macAddress -> saveBluetoothMACAddress(macAddress) }
 
         bluetoothViewModel.bluetoothData.observe(viewLifecycleOwner, Observer {
             binding.pbBluetooth.hide()
@@ -111,11 +122,19 @@ class BluetoothFragment : Fragment() {
     }
 
     private fun showMacAddressSavedSuccess() =
-        Snackbar.make(binding.bluetoothRoot, getString(R.string.mac_address_saved), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(
+            binding.bluetoothRoot,
+            getString(R.string.mac_address_saved),
+            Snackbar.LENGTH_SHORT
+        ).show()
 
 
     private fun showMacAddressSavedFail() =
-        Snackbar.make(binding.bluetoothRoot, getString(R.string.printer_save_error), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(
+            binding.bluetoothRoot,
+            getString(R.string.printer_save_error),
+            Snackbar.LENGTH_SHORT
+        ).show()
 
     private fun handleBluetoothAvailability(isBluetoothAvailable: Boolean) {
         if (!isBluetoothAvailable) {
@@ -131,7 +150,8 @@ class BluetoothFragment : Fragment() {
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
     }
 
-    private fun saveBluetoothMACAddress(macAddress: String) = bluetoothViewModel.saveMacAddress(macAddress)
+    private fun saveBluetoothMACAddress(macAddress: String) =
+        bluetoothViewModel.saveMacAddress(macAddress)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

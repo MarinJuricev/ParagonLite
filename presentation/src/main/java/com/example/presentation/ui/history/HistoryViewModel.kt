@@ -36,21 +36,24 @@ class HistoryViewModel(
             }
         }
 
-    fun prepareDataForPrint() = viewModelScope.launch {
+    fun prepareDataForPrint(receiptList: List<Receipt>) = viewModelScope.launch {
         when (val result = sharedPrefsService.getValue(
             BLUETOOTH_MAC_ADDRESS_KEY,
             BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
         ) as String) {
             BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE -> _getBluetoothAddressError.postValue(true)
             else -> {
-                generatePrintData(result)
+                generatePrintData(result, receiptList)
             }
         }
     }
 
-    private suspend fun generatePrintData(savedMacAddress: String) {
+    private suspend fun generatePrintData(
+        savedMacAddress: String,
+        receiptList: List<Receipt>
+    ) {
         when (val result = generateReceiptPrintData.execute(
-            receiptData.value!!
+            receiptList
         )) {
             is Result.Value -> printHistory(savedMacAddress, result.value)
             is Result.Error -> _getBluetoothAddressError.postValue(true)

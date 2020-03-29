@@ -88,7 +88,12 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-
+        checkoutViewModel.isArticleDeletionSuccess.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                true -> showSnackBar(getString(R.string.article_successfully_deleted))
+                false -> showSnackBar(getString(R.string.article_failed_to_delete))
+            }
+        })
 
         binding.fabPrint.setOnClickListener {
             buildDialog()

@@ -1,6 +1,5 @@
 package com.example.presentation.ui.bluetooth
 
-import android.bluetooth.BluetoothAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,16 +36,17 @@ class BluetoothViewModel(
     private val _isMacAddressSaved by lazy { MutableLiveData<Boolean>() }
     val isMacAddressSaved: LiveData<Boolean> get() = _isMacAddressSaved
 
-    fun isBluetoothAvailable() = viewModelScope.launch {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-
-        if (bluetoothAdapter == null) {
+    fun isBluetoothAvailable(
+        isBluetoothPresent: Boolean,
+        enabled: Boolean
+    ) = viewModelScope.launch {
+        if (!isBluetoothPresent) {
             _isBluetoothAvailable.postValue(false)
             return@launch
         }
         _isBluetoothAvailable.postValue(true)
 
-        val bluetoothStatus = if (bluetoothAdapter.isEnabled)
+        val bluetoothStatus = if (enabled)
             BluetoothStatus.Enabled
         else
             BluetoothStatus.Disabled

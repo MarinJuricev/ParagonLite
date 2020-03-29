@@ -9,7 +9,9 @@ import com.example.domain.shared.ISharedPrefsService
 import com.example.domain.usecase.print.GenerateReceiptPrintData
 import com.example.domain.usecase.print.PrintHistory
 import com.example.domain.usecase.receipt.GetReceipts
+import com.example.mockfactory.macAddressTestData
 import com.example.mockfactory.receiptTestData
+import com.example.mockfactory.valuesToPrintTestData
 import com.example.presentation.ui.getOrAwaitValue
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -53,6 +55,15 @@ internal class HistoryViewModelTest {
     fun tearDown() {
         Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
         mainThreadSurrogate.close()
+    }
+
+    private fun setupSharedPrefsSuccess() {
+        coEvery {
+            sharedPrefsService.getValue(
+                BLUETOOTH_MAC_ADDRESS_KEY,
+                BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+            )
+        } coAnswers { macAddressTestData }
     }
 
     @Test
@@ -103,7 +114,7 @@ internal class HistoryViewModelTest {
                 )
             } coAnswers { BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE }
 
-            historyViewModel.prepareDataForPrint()
+            historyViewModel.prepareDataForPrint(listOf(receiptTestData))
 
             coVerify {
                 sharedPrefsService.getValue(
@@ -112,6 +123,59 @@ internal class HistoryViewModelTest {
                 )
             }
 
+            assert(historyViewModel.getBluetoothAddressError.getOrAwaitValue())
+        }
+
+    @Test
+    fun `should update _getBluetoothAddressError with true when generateReceiptPrintData fails`() =
+        runBlockingTest {
+            setupSharedPrefsSuccess()
+            val receiptTestData = listOf(receiptTestData)
+
+            coEvery {
+                generateReceiptPrintData.execute(
+                    receiptTestData
+                )
+            } coAnswers { Result.build { throw Exception() } }
+
+            historyViewModel.prepareDataForPrint(receiptTestData)
+
+            coVerify {
+                sharedPrefsService.getValue(
+                    BLUETOOTH_MAC_ADDRESS_KEY,
+                    BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+                )
+            }
+
+            coVerify { generateReceiptPrintData.execute(receiptTestData) }
+
             assert(historyViewModel.getBluetoothAddressError.value == true)
         }
+
+    @Test
+    fun `should update trigger printHistory use-case when generateReceiptPrintData is a success`() =
+        runBlockingTest {
+            setupSharedPrefsSuccess()
+            val receiptTestData = listOf(receiptTestData)
+
+            coEvery {
+                generateReceiptPrintData.execute(
+                    receiptTestData
+                )
+            } coAnswers { Result.build { valuesToPrintTestData } }
+
+            historyViewModel.prepareDataForPrint(receiptTestData)
+
+            coVerify {
+                sharedPrefsService.getValue(
+                    BLUETOOTH_MAC_ADDRESS_KEY,
+                    BLUETOOTH_MAC_ADDRESS_DEFAULT_VALUE
+                )
+            }
+
+            coVerify { generateReceiptPrintData.execute(receiptTestData) }
+            coVerify { printHistory.execute(macAddressTestData, valuesToPrintTestData) }
+        }
+
+
 }
