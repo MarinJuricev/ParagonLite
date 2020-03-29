@@ -1,8 +1,7 @@
 ### ParagonLite
 
 Native Android receipt printing app written in Kotlin, this project was done as an experiment on how to implement MVVM,
-and my first “real” Kotlin application, it was never meant to be a production app,
-more as a learning curve that turned out ok.
+it was never meant to be a production app, more as a learning curve that turned out into a fully functional/tested app.
 
 #NOTE: 
 
