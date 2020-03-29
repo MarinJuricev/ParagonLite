@@ -4,6 +4,7 @@ import InstantExecutorExtension
 import com.example.domain.model.Result
 import com.example.domain.usecase.article.CreateArticle
 import com.example.mockfactory.articleTestData
+import com.example.presentation.ui.getOrAwaitValue
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -63,7 +64,7 @@ internal class ArticleCreationViewModelTest {
             articleCreationViewModel.onSaveClick(articleTestData)
 
             coVerify { createArticle.execute(articleTestData) }
-            assert(articleCreationViewModel.isArticleCreationSuccess.value == false)
+            assert(articleCreationViewModel.isArticleCreationSuccess.getOrAwaitValue() == false)
         }
 
     @Test
