@@ -15,9 +15,9 @@ The overall architecture heavily borrows from Uncle Bob’s Clean Architecture, 
 
 Presentation module consists of the MVVM design pattern
 
-Doman module is a pure Kotlin module which utilizes Kotlin coroutines/flow for asynchronous flow
+Domian module is a pure Kotlin module which utilizes Kotlin coroutines/flow for asynchronous flow
 
-Domain module consists of android room library which is used for local persistence
+Data module consists of android room library which is used for local persistence
 
 
 ### TESTS
